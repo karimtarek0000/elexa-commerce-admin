@@ -1,7 +1,6 @@
 <template>
   <div>
-      <h1>products</h1>
-      <button>click here</button>
+    
   </div>
 </template>
 

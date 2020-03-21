@@ -1,0 +1,32 @@
+// ADMIN
+.admin {
+  // ASIDE
+  &__aside {
+    // ICON
+    [class$="__icon"] {
+      margin-left: 0.5rem;
+
+      // SVG
+      svg {
+        @include svgManger(
+          2rem,
+          2rem,
+          $fill: map-get($background, back-second)
+        );
+      }
+    }
+  }
+
+  // HEADER
+  &__header {
+    // ICON
+    [class$="__icon"] {
+      // SVG
+      svg {
+        @include svgManger(25px, 25px, $fill: lighten(black, 40%));
+      }
+    }
+  }
+}
+
+// END USER

@@ -2,6 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import components from './components/GlobalComponents/Admin/index';
+
+components.forEach(comp => {
+  // 
+  Vue.component(comp.name, comp);
+
+});
 
 Vue.config.productionTip = false
 

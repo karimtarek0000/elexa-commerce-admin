@@ -1,7 +1,7 @@
 <template>
-  <aside class="admin__aside">
+  <aside :class="['admin__aside', { 'admin__aside--active': toggleNav }]">
     <!-- START ADMIN TOGGLE -->
-    <button class="admin__aside__toggle">
+    <button class="admin__aside__toggle" @click="changeToggleNav">
       <span></span>
     </button>
 
@@ -23,18 +23,10 @@
         :to="{ name: item }"
         v-for="(item, index) in nav.items"
         :key="index"
-      >
+        >
         <!-- START ICON-->
         <span class="admin__aside__item__icon">
-          <svg>
-            <use
-              :xlink:href="
-                require('@/assets/image/icons/sprite.svg') +
-                  '#icon-' +
-                  nav.icons[index]
-              "
-            ></use>
-          </svg>
+          <GSvg :nameIcon="nav.icons[index]"></GSvg>
         </span>
 
         <!-- START TEXT -->
@@ -54,13 +46,24 @@ export default {
       nav: {
         items: ["home", "category", "products"],
         icons: ["home", "category", "product"]
-      }
+      },
+      toggleNav: false
     };
+  },
+  methods: {
+    // CHANGE TOGGLE NAV
+    changeToggleNav() {
+      // CHANGE TOGGLE
+      this.toggleNav = !this.toggleNav;
+      // CUSTOM EVENT ( ADD CLASS )
+      this.$emit("addClass", this.toggleNav);
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 // ADMIN ASIDE
 .admin {
   // ASIDE
@@ -73,6 +76,18 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    overflow: hidden;
+
+    // CLASS MODIFIRE ACTIVE
+    &--active {
+
+      // CHNAGE CLASS LOGO
+      [class$="__logo"] {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+    }
 
     // TOGGLE
     &__toggle {
@@ -151,46 +166,33 @@ export default {
       align-items: center;
       padding: 1rem;
       transition: background-color 0.5s ease;
+      transition: all 0.5s ease;
       cursor: pointer;
-      transition: all .5s ease;
 
       // MODIFIER CLASS ACTIVE
       &--active {
         color: map-get($color, color-second);
 
         // SELECT BY ATTRIBUTES
-       [class$="__icon"] {
-         svg {
-           use {
-             fill: map-get($color, color-second);
-           }
-         }
-       }
+        [class$="__icon"] {
+          svg {
+            use {
+              fill: map-get($color, color-second)!important;
+            }
+          }
+        }
 
         // AFTER
         &::after {
-          content: '';
-          mask-image: url('~@/assets/image/icons/shape.svg');
+          content: "";
+          mask-image: url("~@/assets/image/icons/shape.svg");
           mask-size: cover;
           background-color: map-get($background, back-second);
           position: absolute;
           display: block;
-          @include translate('top', 'right', -87%, -1px);
+          @include translate("top", "right", -87%, -1px);
           width: 100%;
-          height: 120px;
-        }
-      }
-
-      // ICON
-      &__icon {
-        margin-left: 2rem;
-        // SVG
-        svg {
-          @include svgManger(
-            2rem,
-            2rem,
-            $fill: map-get($background, back-second)
-          );
+          height: 125px;
         }
       }
 
@@ -199,8 +201,9 @@ export default {
         margin-left: 2rem;
       }
 
-      // 
-      &__icon, &__text {
+      //
+      &__icon,
+      &__text {
         z-index: 9999;
       }
 
