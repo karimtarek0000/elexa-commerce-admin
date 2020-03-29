@@ -3,7 +3,7 @@
   // ASIDE
   &__aside {
     // ICON
-    [class$="__icon"] {
+    &__item__icon {
       margin-left: 0.5rem;
 
       // SVG
@@ -20,10 +20,20 @@
   // HEADER
   &__header {
     // ICON
-    [class$="__icon"] {
+    &__user__icon {
       // SVG
       svg {
         @include svgManger(25px, 25px, $fill: lighten(black, 40%));
+      }
+    }
+
+    // USER OPTIONS
+    &__user__options {
+      // SVG
+      svg {
+        @include svgManger(25px, 25px, $fill: map-get($color, color-third)) {
+          margin-right: 20px;
+        }
       }
     }
   }

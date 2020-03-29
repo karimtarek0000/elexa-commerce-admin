@@ -18,16 +18,17 @@
     </div>
 
     <!-- START ADMIN HEADER USER CONTENT -->
-    <transition name="slide">
-      <ul class="admin__header__user__options" v-if="statusToggle">
-        <li>
-          <GSvg nameIcon="log_out"></GSvg>
-        </li>
-        <li>test 2</li>
-        <li>test 3</li>
-        <li>test 4</li>
-      </ul>
-    </transition>
+    <ul :class="['admin__header__user__options', { 'admin__header__user__options--active': statusToggle }]">
+      <li class="admin__header__user__options__item">
+        <GSvg nameIcon="settings"></GSvg>
+        <span class="admin__header__user__options__title">settings</span>
+      </li>
+
+      <li class="admin__header__user__options__item">
+        <GSvg nameIcon="log_out"></GSvg>
+        <span class="admin__header__user__options__title">log out</span>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -35,7 +36,7 @@
 //
 
 export default {
-  name: "User",
+  name: 'User',
   props: {
     imgUser: {
       type: String,
@@ -84,7 +85,7 @@ export default {
       width: 100%;
       padding: 3px;
       border-radius: 50px;
-      border: 1px solid lighten(map-get($background, back-first), 40%);
+      border: 1px solid map-get($background, back-fourth);
       background-color: white;
       cursor: pointer;
     }
@@ -105,6 +106,7 @@ export default {
 
     // NAME
     &__name {
+      user-select: none;
       // SPAN
       span {
         font-size: 1.5rem;
@@ -116,17 +118,46 @@ export default {
       position: absolute;
       display: block;
       width: 100%;
-      height: 100px;
+      height: auto;
+      max-height: 0;
+      transition: max-height 0.8s ease-in-out;
       background-color: white;
-      @include translate("top", "left", 110%, 0);
+      @include translate('top', 'left', 110%, 0);
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(darken(white, 20%), 0.3);
       list-style: none;
       overflow: hidden;
 
-      li {
-        background-color: red;
-        padding: 5px 2px;
+      // ADD CLASS ACTIVE
+      &--active {
+        max-height: 500px;
+      }
+
+      // ITEM
+      &__item {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem 0 1.5rem 2rem;
+        text-transform: capitalize;
+        font-size: 1.5rem;
+        transition: background-color 0.5s;
+        cursor: pointer;
+
+        // NOT
+        &:not(:last-of-type) {
+          border-bottom: 1px solid map-get($background, back-fourth);
+        }
+
+        // HOVER AND ACTIVE
+        &:hover,
+        &:active {
+          background-color: map-get($background, back-third);
+        }
+      }
+
+      // TITLE
+      &__title {
+        color: map-get($color, color-third);
       }
     }
   }

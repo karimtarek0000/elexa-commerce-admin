@@ -1,13 +1,16 @@
 //////////////////////////////
 // BACKGROUND COLOR
 $background: (
-    back-first: #0064ff,
-    back-second: #f5f6fa,
+  back-first: #0064ff,
+  back-second: #f5f6fa,
+  back-third: darken(#f5f6fa, 2%),
+  back-fourth: lighten(#0064ff, 40%)
 );
 
 //////////////////////////////
 // COLOR
 $color: (
-    color-first: #fff,
-    color-second: #0064ff,
-)
+  color-first: #fff,
+  color-second: #0064ff,
+  color-third: rgb(95, 82, 82)
+);
