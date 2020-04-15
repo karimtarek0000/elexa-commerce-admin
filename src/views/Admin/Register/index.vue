@@ -44,8 +44,9 @@
 
       <!-- ADMIN REGISTER FORM BOX -->
       <form class="admin__register__form__box">
+        <!-- FORM -->
         <transition name="form" mode="out-in" appear>
-          <component :is="status" @f="st = $event" :checkc="st">
+          <component :is="status" @f="st = $event" :checkc="st" @closeAlert="st = $event">
             <register-sign-in></register-sign-in>
             <register-sign-up></register-sign-up>
           </component>
@@ -145,15 +146,6 @@ export default {
       color: map-get($color, color-first);
       box-shadow: map-get($shadow, first);
     }
-  }
-
-  // ALERT STATUS
-  .alert__status {
-    position: absolute;
-    display: block;
-    padding: 2rem;
-    width: 60%;
-    @include translate('top', 'left', 2%, 50%);
   }
 }
 </style>

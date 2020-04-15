@@ -50,6 +50,7 @@
   &__confirm__password {
     & input {
       text-transform: none !important;
+      user-select: none;
     }
   }
 

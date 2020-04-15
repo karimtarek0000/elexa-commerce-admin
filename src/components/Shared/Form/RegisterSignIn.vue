@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="form form--signIn">
     <!-- EMAIL -->
     <div class="form__email">
       <label>enter your email</label>
@@ -12,6 +12,7 @@
         @blur="blurInput($event)"
       />
     </div>
+    <alert-status :title="allMessageError.messageErrorEmail" :status="allStatus.statusEmail"></alert-status>
     <!-- PASSWORD -->
     <div class="form__password">
       <label>password</label>
@@ -53,7 +54,7 @@ export default {
   },
   computed: {
     test() {
-      if (this.formValidation.email && this.formValidation.password) {
+      if (this.finalData.email && this.formValidation.password) {
         return false;
       } else {
         return true;
@@ -78,6 +79,9 @@ export default {
         this.wrong = false;
       }
     }
+  },
+  destroyed() {
+    return this.$emit('closeAlert', false);
   }
 };
 </script>

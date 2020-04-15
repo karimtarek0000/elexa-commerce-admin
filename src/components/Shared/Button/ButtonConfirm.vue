@@ -6,7 +6,9 @@
       @click.prevent="$emit('clicknow')"
       :disabled="statusDisabled"
     >
+      <!-- TITLE -->
       <span :class="['button__confirm__title', { 'button__confirm__title--title': classCheck }]">{{ textButton }}</span>
+      <!-- CONFIRM CHECK -->
       <div
         :class="[
           'button__confirm__check',
@@ -87,7 +89,7 @@ export default {
 .button__confirm {
   position: relative;
   overflow: hidden;
-  margin: 2rem 0;
+  margin-top: 0.5rem;
 
   // BTN MANGER
   @include btnManger(
@@ -103,7 +105,7 @@ export default {
     transition: all 0.5s ease;
   }
 
-  // ACTIVEp
+  // ACTIVE
   &--active {
     opacity: 0.5;
     cursor: auto;
