@@ -1,0 +1,72 @@
+.form {
+  border: 1px solid map-get($background, back-fifth);
+  font-size: 1.7rem;
+  margin-top: 30px;
+  padding: 10px;
+  border-radius: 10px;
+  text-transform: capitalize;
+
+  // INPUT
+  @include formManger(
+    $dir: block,
+    $widthForm: 100%,
+    $widthInput: 100%,
+    $padding: 10px 0 10px 10px,
+    $fontSize: 2rem,
+    $fontColor: black,
+    $fcPlaceholder: black,
+    $border: 1px solid map-get($background, back-fifth),
+    $bRadius: 5px
+  );
+
+  // LABEL
+  & label {
+    pointer-events: none;
+    color: map-get($color, color-fourth);
+    background-color: map-get($background, back-second);
+    padding: 5px;
+    transition: all 0.5s ease;
+    will-change: top;
+  }
+
+  // EMAIL AND PASSWORD
+  &__email,
+  &__password,
+  &__confirm__password,
+  &__id {
+    position: relative;
+    margin: 2.5rem 0;
+
+    // LABEL
+    & > label {
+      position: absolute;
+      @include translate('top', 'left', 50%, 0);
+      display: block;
+      margin-left: 10px;
+    }
+  }
+
+  &__password,
+  &__confirm__password {
+    & input {
+      text-transform: none !important;
+    }
+  }
+
+  // FORM ACTIVE
+  .form--active {
+    // LABEL
+    & label {
+      top: -10%;
+      color: map-get($color, color-third);
+    }
+  }
+
+  // EMAIL
+  &__email {
+  }
+
+  // PASSWORD
+  &__password {
+  }
+}

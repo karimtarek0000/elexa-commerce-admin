@@ -1,17 +1,23 @@
 <template>
   <div class="admin__header">
+    <!-- COMPONENT SEARCH -->
     <search-input fillIcon="white"></search-input>
+
+    <!-- COMPONENT OPTIONS CENTER -->
+    <options-center></options-center>
+
+    <!-- COMPONENT USER -->
     <user imgUser="https://picsum.photos/100/100" userName="karim tarek"></user>
   </div>
 </template>
 
 <script>
 //
-import SearchInput from "@/components/Shared/Search/SearchInput";
-import User from "@/components/Admin/OptionsUsers/User";
+import SearchInput from '@/components/Shared/Search/SearchInput';
+import User from '@/components/Admin/OptionsUsers/User';
 
 export default {
-  name: "HeaderAdmin",
+  name: 'HeaderAdmin',
   data() {
     return {};
   },
@@ -31,7 +37,8 @@ export default {
 
   //
   display: grid;
-  grid-template-columns: [start-search] 40rem [end-search] repeat(2, [col-start] 1fr [col-end] ) [start-avatar] 20rem [end-avatar];
+  grid-template-columns: [start-search] 40rem [end-search] repeat(2, [col-start] 1fr [col-end]) [start-avatar] 20rem [end-avatar];
+  grid-column-gap: 2rem;
   align-items: center;
 }
 </style>

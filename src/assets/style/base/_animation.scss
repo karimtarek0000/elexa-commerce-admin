@@ -1,0 +1,78 @@
+// ANIMATION FORM
+.form-enter-active {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.form-leave-active {
+  animation: slideOut 0.5s ease forwards;
+}
+
+//
+$translateY: 10px;
+
+//// KEYFRAMES
+// SLIDE IN
+@keyframes slideIn {
+  0% {
+    transform: translateY($translateY);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// SLIDE OUT
+@keyframes slideOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY($translateY);
+    opacity: 0;
+  }
+}
+
+// ANIMATION ALERT
+.alert-enter-active {
+  animation: slideDown 0.5s ease forwards;
+}
+.alert-leave-to {
+  animation: slideUp 0.5s ease forwards;
+}
+
+// SLIDE DOWN
+@keyframes slideDown {
+  0% {
+    transform: translate(-50%, -110%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+// SLIDE UP
+@keyframes slideUp {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -110%);
+    opacity: 0;
+  }
+}
+
+// ANIMATION LOADER
+@keyframes rotateLoader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

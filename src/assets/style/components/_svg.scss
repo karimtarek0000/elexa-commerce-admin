@@ -1,3 +1,10 @@
+// EXTEND OPTIONSVG
+%optionSvg {
+  opacity: 1;
+  right: 0;
+  transform: translateY(-50%) scale(1);
+}
+
 // ADMIN
 .admin {
   // ASIDE
@@ -8,11 +15,7 @@
 
       // SVG
       svg {
-        @include svgManger(
-          2rem,
-          2rem,
-          $fill: map-get($background, back-second)
-        );
+        @include svgManger(2rem, 2rem, $fill: map-get($background, back-second));
       }
     }
   }
@@ -34,6 +37,80 @@
         @include svgManger(25px, 25px, $fill: map-get($color, color-third)) {
           margin-right: 20px;
         }
+      }
+    }
+  }
+
+  // OPTIONS CENTER
+  &__options__center {
+    // FULL SCREEN
+    &__fullscreen {
+      // SVG
+      svg {
+        @include svgManger(30px, 30px, $fill: map-get($background, back-second));
+      }
+    }
+  }
+
+  // REGISTER
+  &__register {
+    // LOGO
+    &__logo {
+      // SVG
+      svg {
+        @include svgManger(20rem, 20rem, $fill: map-get($background, back-second));
+      }
+    }
+  }
+}
+
+// FORM
+.form {
+  // PASSWORD
+  &__password {
+    // ICON
+    &__icon {
+      // SVG
+      svg {
+        @include svgManger(30px, 30px, $fill: black) {
+          position: absolute;
+          @include translate('top', 'right', 50%, 4%);
+          padding: 3px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+// BUTTON CONFIRM CHECK
+.button__confirm__check {
+  // SVG
+  svg {
+    @include svgManger(100%, 60%, $fill: map-get($background, back-second)) {
+      position: absolute;
+      @include translate('top', 'right', 50%, -100%);
+      padding: 3px;
+    }
+    opacity: 0;
+    transform: translateY(-50%) scale(0);
+    transition: all 0.5s ease;
+  }
+
+  // CORRECT AND ERROR
+  &--correct {
+    [class$='__correct'] {
+      // SVG
+      svg {
+        @extend %optionSvg;
+      }
+    }
+  }
+  &--wrong {
+    [class$='__wrong'] {
+      // SVG
+      svg {
+        @extend %optionSvg;
       }
     }
   }

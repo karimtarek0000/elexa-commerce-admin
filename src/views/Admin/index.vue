@@ -1,5 +1,5 @@
 <template>
-  <div :class="['admin', { 'admin--active': toggle} ]">
+  <div :class="['admin', { 'admin--active': toggle }]">
     <!-- START ASIDE NAV -->
     <aside-nav @addClass="toggle = $event"></aside-nav>
 
@@ -17,12 +17,12 @@
 </template>
 
 <script>
-// 
-import AsideNav from "@/components/Admin/AsideNav/AsideNav";
+//
+import AsideNav from '@/components/Admin/AsideNav/AsideNav';
 import HeaderAdmin from '@/components/Admin/Header/HeaderAdmin';
 
 export default {
-  name: "Admin",
+  name: 'Admin',
   data() {
     return {
       toggle: false
@@ -43,7 +43,7 @@ export default {
   // MANGER GRID SYSTEM
   grid-template-rows: [start-global-row start-header] 8rem [end-header start-content] calc(100vh - 8rem) [end-content end-global-row];
   grid-template-columns: [start-global-column start-aside] 25rem [end-aside start-content start-header] 1fr [end-content end-header end-global-column];
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 
   // CLASS MODIFIRE ACTIVE
   &--active {
@@ -56,10 +56,11 @@ export default {
     background-color: map-get($background, back-second);
     padding: 1.5rem;
 
+    // TITLE
     &__title {
-      // background-color: white;
       padding: 1rem;
 
+      // H2
       h2 {
         font-size: 3rem;
         text-transform: capitalize;

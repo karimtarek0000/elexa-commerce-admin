@@ -4,7 +4,9 @@ $background: (
   back-first: #0064ff,
   back-second: #f5f6fa,
   back-third: darken(#f5f6fa, 2%),
-  back-fourth: lighten(#0064ff, 40%)
+  back-fourth: lighten(#0064ff, 40%),
+  back-fifth: lighten(#0064ff, 20%),
+  back-sixth: #b94a4a
 );
 
 //////////////////////////////
@@ -12,5 +14,13 @@ $background: (
 $color: (
   color-first: #fff,
   color-second: #0064ff,
-  color-third: rgb(95, 82, 82)
+  color-third: rgb(95, 82, 82),
+  color-fourth: lighten(#0064ff, 20%)
+);
+
+//////////////////////////////
+// COLOR
+$shadow: (
+  first: 0 3px 10px rgba(map-get($background, back-first), 0.5),
+  second: 0 3px 10px rgba(map-get($background, back-sixth), 0.5)
 );

@@ -1,23 +1,31 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
 import components from './components/GlobalComponents/Admin/index';
 
-components.forEach(comp => {
-  // 
-  Vue.component(comp.name, comp);
+// IMPORT MIXINS
+import allMixins from './mixin/Shared/index';
 
+// RENDER ALL MIXINS GLOBAL
+allMixins.forEach(nameMixin => {
+  Vue.mixin(nameMixin);
 });
 
-Vue.config.productionTip = false
+// RENDER ALL COMPONENTS GLOBAL
+components.forEach(comp => {
+  Vue.component(comp.name, comp);
+});
 
+//
+Vue.config.productionTip = false;
+
+//
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
-
+}).$mount('#app');
 
 ////////////////////////
 /// Target
@@ -51,7 +59,6 @@ new Vue({
 // var test1 = { a: 10, b: 20, c: 35};
 // var test2 = { a: 12, b: 122, c: 44};
 
-
 // const d = Object.assign({}, test, test1, test2);
 
 // console.log(d);
@@ -61,5 +68,3 @@ new Vue({
 // var data1 = [{ name: 'x', age: 22, car: 'bmw', id: 122 }].map( ({ name, ...reset }) => reset)[0];
 
 // console.log(data1);
-
-
