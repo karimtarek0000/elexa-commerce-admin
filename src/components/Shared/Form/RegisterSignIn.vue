@@ -35,7 +35,7 @@
       :classCorrect="correct"
       :classWrong="wrong"
       :statusDisabled="test"
-      @clicknow="v"
+      @clicknow="actionSubmit"
     ></button-confirm>
   </div>
 </template>
@@ -44,7 +44,12 @@
 export default {
   name: 'RegisterSignIn',
   mixins: ['actionsForms'],
-  props: ['checkc'],
+  props: {
+    getFunctionSignIn: {
+      type: Function,
+      required: false
+    }
+  },
   data() {
     return {
       check: false,
@@ -62,26 +67,17 @@ export default {
     }
   },
   methods: {
-    v() {
+    actionSubmit() {
       this.check = true;
 
-      setTimeout(() => {
-        this.wrong = true;
-        this.$emit('f', this.wrong);
-      }, 10000);
-    }
-  },
-  watch: {
-    //
-    checkc(n) {
-      if (!n) {
-        this.check = false;
-        this.wrong = false;
+      if (this.finalData.email && this.finalData.password) {
+        setTimeout(() => {
+          this.wrong = true;
+          this.$emit('f', this.wrong);
+          console.log(this.finalData.email);
+        }, 10000);
       }
     }
-  },
-  destroyed() {
-    return this.$emit('closeAlert', false);
   }
 };
 </script>

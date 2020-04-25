@@ -1,26 +1,36 @@
 const actionsForms = {
+  props: {
+    statusAlertNow: {
+      type: Boolean,
+      required: false
+    }
+  },
   data() {
     return {
       formValidation: {
         id: null,
+        name: null,
         email: null,
         password: null,
         confirmPassword: null
       },
       allStatus: {
         statusId: false,
+        statusName: false,
         statusEmail: false,
         statusPassword: false,
         statusConfirmPassword: false
       },
       allMessageError: {
         messageErrorId: null,
+        messageErrorName: null,
         messageErrorEmail: null,
         messageErrorPassword: null,
         messageErrorConfirmPassword: null
       },
       finalData: {
         id: null,
+        name: null,
         email: null,
         password: null,
         confirmPassword: null
@@ -62,6 +72,18 @@ const actionsForms = {
         this.allMessageError.messageErrorId = '✗ not correct this id';
       }
     },
+    // VALIDATE NAME
+    validateName() {
+      const validate = /^[a-z]{3,7}$/g;
+      if (this.formValidation.name && this.formValidation.name.match(validate)) {
+        this.allStatus.statusName = false;
+        this.finalData.name = this.formValidation.name;
+      } else {
+        this.allStatus.statusName = true;
+        this.finalData.name = null;
+        this.allMessageError.messageErrorName = '✗ must be between 5 to 8 letter small';
+      }
+    },
     // VALIDATE EMAIL
     validateEmail() {
       const validate = /^[A-z]{3,}@{1}[A-z]{5,}.{1}[A-z]{3,4}$/g;
@@ -99,7 +121,7 @@ const actionsForms = {
         this.finalData.password = null;
         this.statusDisabledConfirmPassword = true;
         this.allMessageError.messageErrorPassword =
-        '✗ not correct - at least 8 caracter letter include ( 2 uppercase and 2 lowercase) - 2 number - 2 symbol';
+          '✗ not correct - at least 8 caracter letter include ( 2 uppercase and 2 lowercase) - 2 number - 2 symbol';
       }
     },
     // VALIDATE CONFIRM PASSWORD
@@ -126,6 +148,18 @@ const actionsForms = {
         changeTypeInput
       };
     }
+  },
+  watch: {
+    //
+    statusAlertNow(n) {
+      if (!n) {
+        this.check = false;
+        this.wrong = false;
+      }
+    }
+  },
+  destroyed() {
+    return this.$emit('closeAlert', false);
   }
 };
 

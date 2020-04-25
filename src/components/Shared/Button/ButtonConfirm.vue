@@ -5,6 +5,7 @@
       :type="typeBtn"
       @click.prevent="$emit('clicknow')"
       :disabled="statusDisabled"
+      :style="classCheck ? 'pointer-events: none' : false"
     >
       <!-- TITLE -->
       <span :class="['button__confirm__title', { 'button__confirm__title--title': classCheck }]">{{ textButton }}</span>

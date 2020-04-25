@@ -1,5 +1,12 @@
 <template>
-  <div :class="['alert__status', 'alert__status--not-correct', { 'alert__status--slide': visibleClose }]" v-if="status">
+  <div
+    :class="[
+      'alert__status',
+      'alert__status--not-correct',
+      { 'alert__status--correct': statusCorrect, 'alert__status--slide': visibleSlide }
+    ]"
+    v-if="status"
+  >
     <span class="alert__status__close" v-if="visibleClose" @click="$emit('close', false)">&times;</span>
     <p class="alert__status__title" v-text="title"></p>
   </div>
@@ -19,7 +26,17 @@ export default {
       required: true,
       default: false
     },
+    statusCorrect: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     visibleClose: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    visibleSlide: {
       type: Boolean,
       required: false,
       default: false
@@ -45,6 +62,13 @@ export default {
   &--not-correct {
     background-color: map-get($background, back-sixth);
     box-shadow: map-get($shadow, second);
+  }
+
+  &--correct {
+    background-color: map-get($background, back-first);
+    color: map-get($color, color-first);
+    box-shadow: map-get($shadow, first);
+    text-align: center;
   }
 
   // SLIDE
