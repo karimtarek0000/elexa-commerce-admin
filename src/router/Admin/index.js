@@ -4,6 +4,7 @@ import Products from '@/views/Admin/products/index.vue';
 import Category from '@/views/Admin/category/index.vue';
 import Home from '@/views/Admin/home/index.vue';
 import Register from '@/views/Admin/Register/index.vue';
+import { currentUser } from '@/firebase/helps/firebaseauth';
 
 //
 export default [
@@ -14,23 +15,40 @@ export default [
       {
         path: '',
         name: 'home',
-        component: Home
+        component: Home,
+        meta: {
+          statusAdmin: true
+        }
       },
       {
         path: 'products',
         name: 'products',
-        component: Products
+        component: Products,
+        meta: {
+          statusAdmin: true
+        }
       },
       {
         path: 'category',
         name: 'category',
-        component: Category
+        component: Category,
+        meta: {
+          statusAdmin: true
+        }
       }
     ]
   },
   {
     path: '/admin/register',
     name: 'Register',
-    component: Register
+    component: Register,
+    beforeEnter(to, from, next) {
+      const status = currentUser();
+      if (status) {
+        next({ name: 'home' });
+      } else {
+        next();
+      }
+    }
   }
 ];

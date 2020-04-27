@@ -34,7 +34,7 @@
       :classCheck="check"
       :classCorrect="correct"
       :classWrong="wrong"
-      :statusDisabled="test"
+      :statusDisabled="statusDisabledBtnSubmit"
       @clicknow="actionSubmit"
     ></button-confirm>
   </div>
@@ -45,9 +45,9 @@ export default {
   name: 'RegisterSignIn',
   mixins: ['actionsForms'],
   props: {
-    getFunctionSignIn: {
-      type: Function,
-      required: false
+    targetPageName: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -57,25 +57,36 @@ export default {
       wrong: false
     };
   },
+  methods: {
+    // ACTION SUBMIT
+    actionSubmit() {
+      // RUN LOADER
+      this.check = true;
+      // ENTER SIGN IN
+      this.$store
+        .dispatch('Admin/enterSignIn', { email: this.finalData.email, password: this.finalData.password })
+        .then(() => {
+          this.correct = true;
+          // RUN ALL ACTION
+          this.allActions(this.correct, 'successful', false);
+          setTimeout(() => {
+            this.$router.push({ name: this.targetPageName });
+          }, 1000);
+        })
+        .catch(() => {
+          this.wrong = true;
+          // RUN ALL ACTION
+          this.allActions(this.wrong, 'this email or password not correct', true);
+        });
+    }
+  },
   computed: {
-    test() {
+    // STATUS DISABLED BTN SUBMIT
+    statusDisabledBtnSubmit() {
       if (this.finalData.email && this.formValidation.password) {
         return false;
       } else {
         return true;
-      }
-    }
-  },
-  methods: {
-    actionSubmit() {
-      this.check = true;
-
-      if (this.finalData.email && this.finalData.password) {
-        setTimeout(() => {
-          this.wrong = true;
-          this.$emit('f', this.wrong);
-          console.log(this.finalData.email);
-        }, 10000);
       }
     }
   }

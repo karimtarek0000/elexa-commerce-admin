@@ -44,6 +44,7 @@
           @closeAlert="statusClickCloseAlert = $event"
           @changeCompon="nameComponent = $event"
           :statusAlertNow="statusClickCloseAlert"
+          targetPageName="home"
         >
           <register-sign-in></register-sign-in>
           <register-sign-up></register-sign-up>

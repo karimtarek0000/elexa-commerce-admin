@@ -3,6 +3,11 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import components from './components/GlobalComponents/Admin/index';
+import { auth } from '@/firebase/init.js';
+import { currentUser } from '@/firebase/helps/firebaseauth';
+
+//
+Vue.config.productionTip = false;
 
 // IMPORT MIXINS
 import allMixins from './mixin/Shared/index';
@@ -17,15 +22,31 @@ components.forEach(comp => {
   Vue.component(comp.name, comp);
 });
 
-//
-Vue.config.productionTip = false;
+// GARDS - BEFORE EACH
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(cur => cur.meta.statusAdmin)) {
+    const status = currentUser();
+    if (status) {
+      next();
+    } else {
+      next({ name: 'Register' });
+    }
+  } else {
+    next();
+  }
+});
 
-//
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app');
+// ON AUTH STATE CHANGED WILL BE RENDER VUE SIGN IN OR SIGN UP
+let app = null;
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#app');
+  }
+});
 
 ////////////////////////
 /// Target

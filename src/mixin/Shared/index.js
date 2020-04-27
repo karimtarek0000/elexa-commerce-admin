@@ -134,6 +134,12 @@ const actionsForms = {
         this.finalData.confirmPassword = null;
         this.allMessageError.messageErrorConfirmPassword = '✗ confirm password not matched with password';
       }
+    },
+    // ALL ACTIONS THEN
+    allActions(pushAlert, pushTitle, statusClose) {
+      this.$emit('pushAlert', pushAlert);
+      this.$emit('pushTitle', pushTitle);
+      this.$emit('statusClose', statusClose);
     }
   },
   computed: {

@@ -109,7 +109,7 @@ export default {
       // IF ALL INPUT RETURN VALUE
       if (!this.statusDisabledBtnSubmit) {
         // 1) CHECK ID
-        this.$store.dispatch('checkInfo', this.finalData.name).then(data => {
+        this.$store.dispatch('Admin/checkInfo', this.finalData.name).then(data => {
           // IF GET ID EQUAL FINAL DATA ID
           if (data.getId == this.finalData.id) {
             // IF GET NAME NOT EXISTS BEFORE
@@ -127,17 +127,11 @@ export default {
         });
       }
     },
-    // ALL ACTIONS THEN
-    allActions(pushAlert, pushTitle, statusClose) {
-      this.$emit('pushAlert', pushAlert);
-      this.$emit('pushTitle', pushTitle);
-      this.$emit('statusClose', statusClose);
-    },
     // ADD DATA SUBMIT
     addDataSubmit() {
       // 2) CREATE NEW ACCOUNT
       this.$store
-        .dispatch('createNewAccount', {
+        .dispatch('Admin/createNewAccount', {
           email: this.finalData.email,
           password: this.finalData.password
         })
@@ -151,7 +145,7 @@ export default {
           };
           // 3) CREATE PROFILE USER
           this.$store
-            .dispatch('createProfileUser', { nameProfile: this.finalData.name, dataProfile })
+            .dispatch('Admin/createProfileUser', { nameProfile: this.finalData.name, dataProfile })
             // THEN
             .then(() => {
               this.correct = true;
@@ -174,6 +168,7 @@ export default {
     }
   },
   computed: {
+    // STATUS DISABLED BTN SUBMIT
     statusDisabledBtnSubmit() {
       if (
         this.finalData.id &&
