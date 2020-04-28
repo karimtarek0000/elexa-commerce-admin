@@ -44,6 +44,7 @@
           @closeAlert="statusClickCloseAlert = $event"
           @changeCompon="nameComponent = $event"
           :statusAlertNow="statusClickCloseAlert"
+          :nameCollection="nameCollection"
           targetPageName="home"
         >
           <register-sign-in></register-sign-in>
@@ -59,6 +60,10 @@ export default {
   name: 'Forms',
   props: {
     titleHead: {
+      type: [String, Number],
+      required: true
+    },
+    nameCollection: {
       type: [String, Number],
       required: true
     }

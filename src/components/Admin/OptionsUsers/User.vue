@@ -24,7 +24,7 @@
         <span class="admin__header__user__options__title">settings</span>
       </li>
 
-      <li class="admin__header__user__options__item">
+      <li class="admin__header__user__options__item" @click="logOut">
         <GSvg nameIcon="log_out"></GSvg>
         <span class="admin__header__user__options__title">log out</span>
       </li>
@@ -43,8 +43,11 @@ export default {
       required: true
     },
     userName: {
-      type: String,
+      type: [String, Boolean],
       required: true
+    },
+    logOut: {
+      type: Function
     }
   },
   data() {
@@ -107,6 +110,8 @@ export default {
     // NAME
     &__name {
       user-select: none;
+      text-transform: capitalize;
+
       // SPAN
       span {
         font-size: 1.5rem;

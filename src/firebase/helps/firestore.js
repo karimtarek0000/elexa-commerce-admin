@@ -18,4 +18,12 @@ const setData = (nameCollection, nameDoc, data) => {
     .set(data);
 };
 
-export { getData, setData };
+//
+const whereAndGet = (nameCollection, nameWhere, equalData) => {
+  return db
+    .collection(nameCollection)
+    .where(nameWhere, '==', equalData)
+    .get();
+};
+
+export { getData, setData, whereAndGet };

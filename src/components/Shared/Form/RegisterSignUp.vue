@@ -81,15 +81,17 @@
 </template>
 
 <script>
-import slugify from 'slugify';
-
+//
+import * as Types from '@/store/Type/index';
+import { mapActions } from 'vuex';
+//
 export default {
   name: 'RegisterSignUp',
   mixins: ['actionsForms'],
   props: {
-    getFunctionSignUp: {
-      type: Function,
-      required: false
+    nameCollection: {
+      type: [String, Number],
+      required: true
     }
   },
   data() {
@@ -101,6 +103,11 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      checkInfo: Types.CHECKINFO,
+      createNewAccount: Types.CREATENEWACCOUNT,
+      createProfileUser: Types.CREATEPROFILEUSER
+    }),
     // ACTION SUBMIT
     actionSubmit() {
       // RUN LOADER
@@ -109,32 +116,36 @@ export default {
       // IF ALL INPUT RETURN VALUE
       if (!this.statusDisabledBtnSubmit) {
         // 1) CHECK ID
-        this.$store.dispatch('Admin/checkInfo', this.finalData.name).then(data => {
-          // IF GET ID EQUAL FINAL DATA ID
-          if (data.getId == this.finalData.id) {
-            // IF GET NAME NOT EXISTS BEFORE
-            if (!data.getName.exists) {
-              // RUN DATA SUBMIT
-              this.addDataSubmit();
+        this.checkInfo({ nameCollection: this.nameCollection, nameDoc: this.finalData.name })
+          .then(data => {
+            // IF GET ID EQUAL FINAL DATA ID
+            if (data.getId == this.finalData.id) {
+              // IF GET NAME NOT EXISTS BEFORE
+              if (!data.getName.exists) {
+                // RUN DATA SUBMIT
+                this.addDataSubmit();
+              } else {
+                this.wrong = true;
+                this.allActions(this.wrong, 'this name exists before', true);
+              }
             } else {
               this.wrong = true;
-              this.allActions(this.wrong, 'this name exists before', true);
+              this.allActions(this.wrong, 'not correct id', true);
             }
-          } else {
+          })
+          .catch(() => {
             this.wrong = true;
-            this.allActions(this.wrong, 'not correct id', true);
-          }
-        });
+            this.allActions(this.wrong, 'someting error please try again!', true);
+          });
       }
     },
     // ADD DATA SUBMIT
     addDataSubmit() {
       // 2) CREATE NEW ACCOUNT
-      this.$store
-        .dispatch('Admin/createNewAccount', {
-          email: this.finalData.email,
-          password: this.finalData.password
-        })
+      this.createNewAccount({
+        email: this.finalData.email,
+        password: this.finalData.password
+      })
         // THEN
         .then(info => {
           // DATA PROFILE
@@ -144,8 +155,11 @@ export default {
             email: this.finalData.email
           };
           // 3) CREATE PROFILE USER
-          this.$store
-            .dispatch('Admin/createProfileUser', { nameProfile: this.finalData.name, dataProfile })
+          this.createProfileUser({
+            nameCollection: this.nameCollection,
+            nameProfile: this.finalData.name,
+            dataProfile
+          })
             // THEN
             .then(() => {
               this.correct = true;

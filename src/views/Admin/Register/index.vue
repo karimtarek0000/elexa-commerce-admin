@@ -2,21 +2,33 @@
   <section class="admin__register">
     <!-- ADMIN REGISTER WELCOME -->
     <div class="admin__register__welcome">
+      <!-- IMAGE WELCOME -->
       <div class="admin__register__image">
-        <img src="@/assets/image/image-admin/welcome-admin.svg" alt="" />
+        <img src="@/assets/image/image-admin/welcome-admin.svg" alt="welcome" />
       </div>
+      <!-- LOGO -->
       <div class="admin__register__logo">
         <GSvg nameIcon="elexa-logo"></GSvg>
       </div>
     </div>
     <!-- FORMS -->
-    <forms titleHead="admin register"></forms>
+    <forms titleHead="admin register" :nameCollection="getNameCollection"></forms>
   </section>
 </template>
 
 <script>
 export default {
-  name: 'Register'
+  name: 'Register',
+  data() {
+    return {};
+  },
+  methods: {},
+  computed: {
+    // GET NAME COLLECTION
+    getNameCollection() {
+      return this.$store.state.Admin.nameCollection;
+    }
+  }
 };
 </script>
 

@@ -11,10 +11,17 @@ const signIn = (email, password) => {
   return auth.signInWithEmailAndPassword(email, password);
 };
 
+// SIGN OUT
+const signOut = () => {
+  return auth.signOut();
+};
+
 //
 const currentUser = () => {
   return auth.currentUser;
 };
 
 //
-export { createUser, signIn, currentUser };
+
+//
+export { createUser, signIn, signOut, currentUser };

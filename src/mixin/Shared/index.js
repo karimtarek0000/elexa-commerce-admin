@@ -69,7 +69,7 @@ const actionsForms = {
       } else {
         this.allStatus.statusId = true;
         this.finalData.id = null;
-        this.allMessageError.messageErrorId = '✗ not correct this id';
+        this.allMessageError.messageErrorId = '✗ not correct this id - use number only';
       }
     },
     // VALIDATE NAME

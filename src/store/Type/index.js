@@ -1,3 +1,26 @@
-export const NAMECOLLECTIONID = 'id';
-export const NAMECOLLECTIONPROFILEADMIN = 'profiles-admin';
-export const NAMEDOCID = 'id-1';
+// FIREBASE
+const NAMECOLLECTIONID = 'id';
+const NAMECOLLECTIONPROFILEADMIN = 'profiles-admin';
+const NAMEDOCID = 'id-1';
+
+//// ADMIN
+// ACTIONS
+const EXITSIGNOUT = 'Shared/exitSignOut';
+const GETDATAUSER = 'Shared/getDataUser';
+const CHECKINFO = 'Shared/checkInfo';
+const CREATENEWACCOUNT = 'Shared/createNewAccount';
+const CREATEPROFILEUSER = 'Shared/createProfileUser';
+
+// END USER
+
+// ALL EXPORTS
+export {
+  NAMECOLLECTIONID,
+  NAMECOLLECTIONPROFILEADMIN,
+  NAMEDOCID,
+  EXITSIGNOUT,
+  GETDATAUSER,
+  CHECKINFO,
+  CREATENEWACCOUNT,
+  CREATEPROFILEUSER
+};

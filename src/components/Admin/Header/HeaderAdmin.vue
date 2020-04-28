@@ -7,7 +7,7 @@
     <options-center></options-center>
 
     <!-- COMPONENT USER -->
-    <user imgUser="https://picsum.photos/100/100" userName="karim tarek"></user>
+    <user imgUser="https://picsum.photos/100/100" :userName="userName" :logOut="logOutAction"></user>
   </div>
 </template>
 
@@ -15,15 +15,41 @@
 //
 import SearchInput from '@/components/Shared/Search/SearchInput';
 import User from '@/components/Admin/OptionsUsers/User';
-
+import * as Types from '@/store/Type/index';
+import { mapActions } from 'vuex';
+//
 export default {
   name: 'HeaderAdmin',
   data() {
-    return {};
+    return {
+      userName: ''
+    };
+  },
+  methods: {
+    ...mapActions({
+      exitSignOut: Types.EXITSIGNOUT,
+      getDataUser: Types.GETDATAUSER
+    }),
+    // GET DATA USER
+    dataUser() {
+      this.getDataUser({ nameCollection: 'profiles-admin', nameWhere: 'id' }).then(data => {
+        this.userName = data.name;
+      });
+    },
+    // LOG OUT ACTIONS
+    logOutAction() {
+      this.exitSignOut().then(() => {
+        this.$router.push({ name: 'Register' });
+      });
+    }
   },
   components: {
     SearchInput,
     User
+  },
+  created() {
+    // RUN GET DATA USER
+    this.dataUser();
   }
 };
 </script>

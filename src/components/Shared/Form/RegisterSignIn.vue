@@ -64,7 +64,7 @@ export default {
       this.check = true;
       // ENTER SIGN IN
       this.$store
-        .dispatch('Admin/enterSignIn', { email: this.finalData.email, password: this.finalData.password })
+        .dispatch('Shared/enterSignIn', { email: this.finalData.email, password: this.finalData.password })
         .then(() => {
           this.correct = true;
           // RUN ALL ACTION
