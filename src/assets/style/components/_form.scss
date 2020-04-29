@@ -33,7 +33,8 @@
   &__email,
   &__password,
   &__confirm__password,
-  &__id {
+  &__id,
+  &__name {
     position: relative;
     margin: 2.5rem 0;
 
@@ -69,5 +70,13 @@
 
   // PASSWORD
   &__password {
+  }
+
+  // NAME
+  &__name {
+  }
+
+  // ID
+  &__id {
   }
 }

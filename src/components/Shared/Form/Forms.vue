@@ -46,6 +46,8 @@
           :statusAlertNow="statusClickCloseAlert"
           :nameCollection="nameCollection"
           targetPageName="home"
+          :statusInputId="statusInputId"
+          :statusNameFunctionSubmit="statusNameFunctionSubmit"
         >
           <register-sign-in></register-sign-in>
           <register-sign-up></register-sign-up>
@@ -66,6 +68,15 @@ export default {
     nameCollection: {
       type: [String, Number],
       required: true
+    },
+    statusInputId: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    statusNameFunctionSubmit: {
+      type: String,
+      default: 'admin'
     }
   },
   data() {

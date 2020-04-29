@@ -7,7 +7,7 @@
     <options-center></options-center>
 
     <!-- COMPONENT USER -->
-    <user imgUser="https://picsum.photos/100/100" :userName="userName" :logOut="logOutAction"></user>
+    <user imgUser="image/image-global/avatar.png" :userName="userName" :logOut="logOutAction"></user>
   </div>
 </template>
 
@@ -22,7 +22,8 @@ export default {
   name: 'HeaderAdmin',
   data() {
     return {
-      userName: ''
+      userName: '',
+      d: '@/assets/image/image-global/avatar.png'
     };
   },
   methods: {

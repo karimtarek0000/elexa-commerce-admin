@@ -3,7 +3,7 @@
     <!-- START ADMIN HEADER OPTIONS USER CONTENT -->
     <div class="admin__header__user__content" @click.stop="toggleSlide">
       <div class="admin__header__user__avatar">
-        <img :src="imgUser" alt="" />
+        <img :src="require(`@/assets/${imgUser}`)" alt="avatar" />
       </div>
 
       <!-- START ADMIN HEADER OPTIONS USER NAME -->
@@ -19,7 +19,12 @@
 
     <!-- START ADMIN HEADER USER CONTENT -->
     <ul :class="['admin__header__user__options', { 'admin__header__user__options--active': statusToggle }]">
-      <li class="admin__header__user__options__item">
+      <!-- <router-link tag="li" :to="{ name: 'Setting' }">
+        <GSvg nameIcon="settings"></GSvg>
+        <span class="admin__header__user__options__title">settings</span>
+      </router-link> -->
+
+      <li class="admin__header__user__options__item" @click="v">
         <GSvg nameIcon="settings"></GSvg>
         <span class="admin__header__user__options__title">settings</span>
       </li>
@@ -59,6 +64,10 @@ export default {
     // TOGGLE SLIDE
     toggleSlide() {
       return (this.statusToggle = !this.statusToggle);
+    },
+    //
+    v() {
+      return this.$router.push({ name: 'Setting' });
     }
   },
   watch: {

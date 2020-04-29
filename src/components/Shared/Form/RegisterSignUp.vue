@@ -1,7 +1,7 @@
 <template>
   <div class="form form--signUp">
     <!-- ID -->
-    <div class="form__id">
+    <div v-if="statusInputId" class="form__id">
       <label>enter secret id</label>
       <input
         type="text"
@@ -14,7 +14,7 @@
     </div>
     <alert-status :title="allMessageError.messageErrorId" :status="allStatus.statusId"></alert-status>
     <!-- NAME -->
-    <div class="form__id">
+    <div class="form__name">
       <label>enter your name</label>
       <input
         type="text"
@@ -75,7 +75,7 @@
       :classCorrect="correct"
       :classWrong="wrong"
       :statusDisabled="statusDisabledBtnSubmit"
-      @clicknow="actionSubmit"
+      @clicknow="selectRunFnSubmit"
     ></button-confirm>
   </div>
 </template>
@@ -92,6 +92,15 @@ export default {
     nameCollection: {
       type: [String, Number],
       required: true
+    },
+    statusInputId: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    statusNameFunctionSubmit: {
+      type: String,
+      default: 'admin'
     }
   },
   data() {
@@ -109,7 +118,7 @@ export default {
       createProfileUser: Types.CREATEPROFILEUSER
     }),
     // ACTION SUBMIT
-    actionSubmit() {
+    actionSubmitAdmin() {
       // RUN LOADER
       this.check = true;
 
@@ -131,6 +140,31 @@ export default {
             } else {
               this.wrong = true;
               this.allActions(this.wrong, 'not correct id', true);
+            }
+          })
+          .catch(() => {
+            this.wrong = true;
+            this.allActions(this.wrong, 'someting error please try again!', true);
+          });
+      }
+    },
+    //
+    actionSubmitEndUser() {
+      // RUN LOADER
+      this.check = true;
+
+      // IF ALL INPUT RETURN VALUE
+      if (!this.statusDisabledBtnSubmit) {
+        // 1) CHECK ID
+        this.checkInfo({ nameCollection: this.nameCollection, nameDoc: this.finalData.name })
+          .then(data => {
+            // IF GET NAME NOT EXISTS BEFORE
+            if (!data.getName.exists) {
+              // RUN DATA SUBMIT
+              this.addDataSubmit();
+            } else {
+              this.wrong = true;
+              this.allActions(this.wrong, 'this name exists before', true);
             }
           })
           .catch(() => {
@@ -186,7 +220,7 @@ export default {
     // STATUS DISABLED BTN SUBMIT
     statusDisabledBtnSubmit() {
       if (
-        this.finalData.id &&
+        this.statusId &&
         this.finalData.name &&
         this.finalData.email &&
         this.finalData.password &&
@@ -196,6 +230,14 @@ export default {
       } else {
         return true;
       }
+    },
+    // STATUS ID
+    statusId() {
+      return this.statusInputId ? this.finalData.id : true;
+    },
+    //
+    selectRunFnSubmit() {
+      return this.statusNameFunctionSubmit == 'admin' ? this.actionSubmitAdmin : this.actionSubmitEndUser;
     }
   }
 };

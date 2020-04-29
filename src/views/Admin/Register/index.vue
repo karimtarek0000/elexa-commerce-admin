@@ -12,7 +12,7 @@
       </div>
     </div>
     <!-- FORMS -->
-    <forms titleHead="admin register" :nameCollection="getNameCollection"></forms>
+    <forms titleHead="admin register" :nameCollection="getNameCollection" :statusInputId="true"></forms>
   </section>
 </template>
 

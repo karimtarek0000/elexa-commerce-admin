@@ -1,44 +1,48 @@
 <template>
   <div class="profile-setting">
     <!-- PROFILE SETTING HEADER -->
-    <div class="profile-setting__header">
-      <div @click="back">
-        <GSvg nameIcon="angle-up"></GSvg>
+    <transition name="profile-head">
+      <div class="profile-setting__header" v-if="statusAnim">
+        <div class="profile-setting__icon" @click="back">
+          <GSvg nameIcon="angle-up"></GSvg>
+        </div>
+        <h2 class="profile-setting__title">profile setting</h2>
       </div>
-      <h2 class="profile-setting__title">profile setting</h2>
-    </div>
+    </transition>
 
     <!-- PROFILE SETTING OPTIONS -->
-    <div class="profile-setting__options">
-      <!-- OPTIONS SELECT IMAGE -->
-      <div class="profile-setting__options__select-image">
-        <!-- PREVIEW IMAGE -->
-        <div class="profile-setting__options__preview-image">
-          <img src="" alt="" />
-        </div>
-        <!-- SELECT -->
-        <div class="profile-setting__options__select">
-          <label for="file">change your image</label>
-          <div class="profile-setting__options__custom-input">
-            <input type="file" id="file" @input="getData($event)" accept="image/*" />
-            <div class="edit">
-              <button>uploade image</button>
-              <p>{{ nameFile }}</p>
+    <transition name="profile-setting">
+      <div class="profile-setting__options" v-if="statusAnim">
+        <!-- OPTIONS SELECT IMAGE -->
+        <div class="profile-setting__options__select-image">
+          <!-- PREVIEW IMAGE -->
+          <div class="profile-setting__options__preview-image">
+            <img src="@/assets/image/image-global/avatar.png" alt="" />
+          </div>
+          <!-- SELECT -->
+          <div class="profile-setting__options__select">
+            <label for="file">change your image</label>
+            <div class="profile-setting__options__custom-input">
+              <input type="file" id="file" @change="getData($event)" />
+              <div class="edit">
+                <button>uploade image</button>
+                <p>{{ nameFile }}</p>
+              </div>
             </div>
           </div>
         </div>
+        <!-- OPTIONS NAME -->
+        <div class="profile-setting__options__name">
+          <label for="name">change your name</label>
+          <input type="text" id="name" placeholder="change your name" />
+        </div>
+        <!--  -->
+        <div class="profile-setting__options__email">
+          <label for="email">change your email</label>
+          <input type="email" id="email" placeholder="change your email" />
+        </div>
       </div>
-      <!-- OPTIONS NAME -->
-      <div class="profile-setting__options__name">
-        <label for="name">change your name</label>
-        <input type="text" id="name" placeholder="change your name" />
-      </div>
-      <!--  -->
-      <div class="profile-setting__options__email">
-        <label for="email">change your email</label>
-        <input type="email" id="email" placeholder="change your email" />
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -47,7 +51,8 @@ export default {
   name: 'Setting',
   data() {
     return {
-      nameFile: 'no select image'
+      nameFile: 'no select image',
+      statusAnim: false
     };
   },
   methods: {
@@ -56,9 +61,19 @@ export default {
     },
     //
     back() {
-      return this.$router.go(-1);
+      return this.$router.back();
     }
+  },
+  mounted() {
+    // STATUS ANIMATION
+    this.statusAnim = true;
   }
+  // beforeRouteEnter(to, from, next) {
+  //   const pathFrom = from.path;
+  //   next(vm => {
+  //     vm.$router.push({ params: { namePage: `${pathFrom} #` } });
+  //   });
+  // }
 };
 </script>
 
@@ -86,6 +101,13 @@ export default {
     text-transform: capitalize;
     grid-area: start-head / start-form / end-head / end-form;
     margin-left: 2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  // ICON
+  &__icon {
+    animation: iconBack 1s ease 5 alternate;
   }
 
   // OPTIONS
@@ -97,9 +119,8 @@ export default {
 
     //
     & > * {
-      padding: 1.5rem 0;
+      padding: 2rem 0;
       &:not(:last-child) {
-        margin-bottom: 2rem;
         border-bottom: 1px solid rgb(215, 218, 230);
       }
     }
@@ -121,16 +142,20 @@ export default {
     &__preview-image {
       width: 100px;
       height: 100px;
-      background-color: rgb(204, 155, 155);
       margin-right: 1.5rem;
       border-radius: 50%;
+
+      //
+      & img {
+        max-width: 100%;
+      }
     }
 
     //
     &__select {
     }
 
-    //
+    // CUSTOM INPUT
     &__custom-input {
       position: relative;
       padding: 10px;
@@ -138,7 +163,7 @@ export default {
       height: 50px;
       background-color: transparent;
 
-      //
+      // INPUT TYPE FILE
       input[type='file'] {
         position: absolute;
         display: block;
@@ -151,7 +176,7 @@ export default {
         cursor: pointer;
       }
 
-      //
+      // EDIT
       & > .edit {
         position: absolute;
         display: flex;
@@ -160,9 +185,9 @@ export default {
         width: 100%;
         height: 100%;
         @include translate('top', 'left', 0, 0);
-        // background-color: orange;
         z-index: 1;
 
+        //
         & > button {
           @include btnManger(
             $fSize: 1.5rem,
@@ -175,6 +200,7 @@ export default {
           }
         }
 
+        //
         & > p {
           font-size: 1.5rem;
         }
@@ -189,15 +215,80 @@ export default {
         $widthForm: 100%,
         $widthInput: 60%,
         $padding: 1rem,
-        $fontSize: 2rem,
+        $fontSize: 1.5rem,
         $bacColor: transparent,
         $fontColor: black,
-        $border: 1px solid black,
+        $border: 1px solid lighten(map-get($background, back-first), 30%),
         $outline: none,
         $fcPlaceholder: black,
-        $bRadius: 1rem
-      );
+        $bRadius: 0.5rem
+      ) {
+        transition: all 0.5s;
+        &:focus {
+          border-color: map-get($background, back-first);
+        }
+      }
     }
+  }
+}
+
+//////////////////////////////////
+/// ANIMATION
+// PROFILE HEAD
+.profile-head-enter-active {
+  animation: slideRight 1s ease-out forwards;
+}
+.profile-head-leave-to {
+  animation: slideleft 1s ease-out forwards;
+}
+
+// PROFILE SETTING
+.profile-setting-enter-active {
+  animation: moveUp 1s ease-out forwards;
+}
+
+// SLIDE RIGHT
+@keyframes slideRight {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+// SLIDE RIGHT
+@keyframes slideleft {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(50px);
+    opacity: 1;
+  }
+}
+
+// MOVE UP
+@keyframes moveUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// ICON BACK
+@keyframes iconBack {
+  0% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 </style>

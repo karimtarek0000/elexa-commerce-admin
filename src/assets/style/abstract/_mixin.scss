@@ -321,6 +321,7 @@ $paragraphs: (
       border-radius: $bRadius;
       text-transform: lowercase;
       box-shadow: none;
+      @content;
     }
   }
   // PLACE HOLDER
