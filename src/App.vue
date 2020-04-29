@@ -9,5 +9,6 @@ export default {};
 </script>
 
 <style lang="scss">
-#app {}
+#app {
+}
 </style>

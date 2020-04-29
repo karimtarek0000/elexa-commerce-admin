@@ -118,4 +118,22 @@
   }
 }
 
+// PROFILE SETTING
+.profile-setting {
+  &__header {
+    // SVG
+    svg {
+      @include svgManger(5rem, 5rem, $fill: black) {
+        transform: rotate(-90deg);
+        transition: all 0.5s ease;
+        cursor: pointer;
+      }
+
+      &:hover {
+        transform: translateX(-1rem) rotate(-90deg);
+      }
+    }
+  }
+}
+
 // END USER

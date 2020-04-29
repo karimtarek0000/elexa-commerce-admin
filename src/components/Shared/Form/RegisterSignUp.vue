@@ -152,7 +152,8 @@ export default {
           const dataProfile = {
             id: info.user.uid,
             name: this.finalData.name,
-            email: this.finalData.email
+            email: this.finalData.email,
+            image: null
           };
           // 3) CREATE PROFILE USER
           this.createProfileUser({
