@@ -36,6 +36,17 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+// GARDS - AFTER EACH
+router.afterEach((to, from) => {
+  // DEFAULT TITLE
+  const defaultTitle = 'none';
+
+  // NEXT TICK
+  Vue.nextTick(() => {
+    document.title = to.meta.title || defaultTitle;
+  });
+});
+
 // ON AUTH STATE CHANGED WILL BE RENDER VUE SIGN IN OR SIGN UP
 let app = null;
 auth.onAuthStateChanged(() => {

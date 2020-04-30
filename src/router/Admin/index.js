@@ -18,7 +18,8 @@ export default [
         name: 'home',
         component: Home,
         meta: {
-          statusAdmin: true
+          statusAdmin: true,
+          title: 'Home'
         }
       },
       {
@@ -26,7 +27,8 @@ export default [
         name: 'products',
         component: Products,
         meta: {
-          statusAdmin: true
+          statusAdmin: true,
+          title: 'Products'
         }
       },
       {
@@ -34,7 +36,8 @@ export default [
         name: 'category',
         component: Category,
         meta: {
-          statusAdmin: true
+          statusAdmin: true,
+          title: 'Category'
         }
       }
     ]
@@ -43,6 +46,9 @@ export default [
     path: '/admin/register',
     name: 'Register',
     component: Register,
+    meta: {
+      title: 'Admin Register'
+    },
     beforeEnter(to, from, next) {
       const status = currentUser();
       if (status) {
@@ -57,7 +63,8 @@ export default [
     name: 'ProfileSettingAdmin',
     component: ProfileSettingAdmin,
     meta: {
-      statusAdmin: true
+      statusAdmin: true,
+      title: 'Profile Setting Admin'
     }
   }
 ];
