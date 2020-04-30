@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  name: 'Setting',
+  name: 'ProfileSetting',
   data() {
     return {
       nameFile: 'no select image',
@@ -68,12 +68,6 @@ export default {
     // STATUS ANIMATION
     this.statusAnim = true;
   }
-  // beforeRouteEnter(to, from, next) {
-  //   const pathFrom = from.path;
-  //   next(vm => {
-  //     vm.$router.push({ params: { namePage: `${pathFrom} #` } });
-  //   });
-  // }
 };
 </script>
 

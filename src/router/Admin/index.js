@@ -4,6 +4,7 @@ import Products from '@/views/Admin/products/index.vue';
 import Category from '@/views/Admin/category/index.vue';
 import Home from '@/views/Admin/home/index.vue';
 import Register from '@/views/Admin/Register/index.vue';
+import ProfileSettingAdmin from '@/views/Admin/ProfileSetting/index.vue';
 import { currentUser } from '@/firebase/helps/firebaseauth';
 
 //
@@ -49,6 +50,14 @@ export default [
       } else {
         next();
       }
+    }
+  },
+  {
+    path: '/admin/setting',
+    name: 'ProfileSettingAdmin',
+    component: ProfileSettingAdmin,
+    meta: {
+      statusAdmin: true
     }
   }
 ];

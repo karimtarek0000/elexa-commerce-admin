@@ -19,15 +19,15 @@
 
     <!-- START ADMIN HEADER USER CONTENT -->
     <ul :class="['admin__header__user__options', { 'admin__header__user__options--active': statusToggle }]">
-      <!-- <router-link tag="li" :to="{ name: 'Setting' }">
+      <router-link class="admin__header__user__options__item" tag="li" :to="{ name: 'ProfileSettingAdmin' }">
         <GSvg nameIcon="settings"></GSvg>
         <span class="admin__header__user__options__title">settings</span>
-      </router-link> -->
+      </router-link>
 
-      <li class="admin__header__user__options__item" @click="v">
+      <!-- <li class="admin__header__user__options__item" @click="v">
         <GSvg nameIcon="settings"></GSvg>
         <span class="admin__header__user__options__title">settings</span>
-      </li>
+      </li> -->
 
       <li class="admin__header__user__options__item" @click="logOut">
         <GSvg nameIcon="log_out"></GSvg>

@@ -40,7 +40,7 @@ export default {
     // LOG OUT ACTIONS
     logOutAction() {
       this.exitSignOut().then(() => {
-        this.$router.push({ name: 'Register' });
+        this.$router.replace({ name: 'Register' });
       });
     }
   },

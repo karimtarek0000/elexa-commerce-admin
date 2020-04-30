@@ -70,7 +70,7 @@ export default {
           // RUN ALL ACTION
           this.allActions(this.correct, 'successful', false);
           setTimeout(() => {
-            this.$router.push({ name: this.targetPageName });
+            this.$router.replace({ name: this.targetPageName });
           }, 1000);
         })
         .catch(() => {
