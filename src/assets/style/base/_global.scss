@@ -1,0 +1,5 @@
+// EDIT NORMAL BTN
+%editNormalBtn {
+  position: absolute;
+  @include translate('top', 'right', -45px, 22px);
+}

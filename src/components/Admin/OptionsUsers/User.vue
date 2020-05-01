@@ -141,6 +141,7 @@ export default {
       box-shadow: 0 2px 5px rgba(darken(white, 20%), 0.3);
       list-style: none;
       overflow: hidden;
+      z-index: 9999;
 
       // ADD CLASS ACTIVE
       &--active {

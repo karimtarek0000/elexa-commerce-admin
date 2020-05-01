@@ -23,7 +23,7 @@
         :to="{ name: item }"
         v-for="(item, index) in nav.items"
         :key="index"
-        >
+      >
         <!-- START ICON-->
         <span class="admin__aside__item__icon">
           <GSvg :nameIcon="nav.icons[index]"></GSvg>
@@ -40,12 +40,12 @@
 
 <script>
 export default {
-  name: "AsideNav",
+  name: 'AsideNav',
   data() {
     return {
       nav: {
-        items: ["home", "category", "products"],
-        icons: ["home", "category", "product"]
+        items: ['home', 'category', 'products'],
+        icons: ['home', 'category', 'product']
       },
       toggleNav: false
     };
@@ -56,14 +56,13 @@ export default {
       // CHANGE TOGGLE
       this.toggleNav = !this.toggleNav;
       // CUSTOM EVENT ( ADD CLASS )
-      this.$emit("addClass", this.toggleNav);
+      this.$emit('addClass', this.toggleNav);
     }
   }
 };
 </script>
 
 <style lang="scss">
-
 // ADMIN ASIDE
 .admin {
   // ASIDE
@@ -80,20 +79,18 @@ export default {
 
     // CLASS MODIFIRE ACTIVE
     &--active {
-
       // CHNAGE CLASS LOGO
-      [class$="__logo"] {
+      [class$='__logo'] {
         visibility: hidden;
         opacity: 0;
       }
-
     }
 
     // TOGGLE
     &__toggle {
       position: absolute;
       @include btnManger($backgroundColor: transparent) {
-        @include translate("top", "right", 0.5rem, 0.5rem);
+        @include translate('top', 'right', 0.5rem, 0.5rem);
         height: 40px;
         width: 40px;
         border-radius: 50%;
@@ -112,12 +109,12 @@ export default {
         background-color: map-get($background, back-second);
         height: 2px;
         width: 60%;
-        @include translate("top", "left", 50%, 50%);
+        @include translate('top', 'left', 50%, 50%);
 
         // AFTER AND BEFORE
         &::before,
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           width: 100%;
           height: 100%;
@@ -126,12 +123,12 @@ export default {
 
         // BEFORE
         &::before {
-          @include translate("top", "left", -7px, 0);
+          @include translate('top', 'left', -7px, 0);
         }
 
         // AFTER
         &::after {
-          @include translate("top", "left", 7px, 0);
+          @include translate('top', 'left', 7px, 0);
         }
       }
     }
@@ -143,11 +140,7 @@ export default {
 
       // SVG
       > svg {
-        @include svgManger(
-          6rem,
-          5rem,
-          $fill: map-get($background, back-second)
-        );
+        @include svgManger(6rem, 5rem, $fill: map-get($background, back-second));
       }
     }
 
@@ -174,23 +167,23 @@ export default {
         color: map-get($color, color-second);
 
         // SELECT BY ATTRIBUTES
-        [class$="__icon"] {
+        [class$='__icon'] {
           svg {
             use {
-              fill: map-get($color, color-second)!important;
+              fill: map-get($color, color-second) !important;
             }
           }
         }
 
         // AFTER
         &::after {
-          content: "";
-          mask-image: url("~@/assets/image/icons/shape.svg");
+          content: '';
+          mask-image: url('~@/assets/image/icons/shape.svg');
           mask-size: cover;
           background-color: map-get($background, back-second);
           position: absolute;
           display: block;
-          @include translate("top", "right", -87%, -1px);
+          @include translate('top', 'right', -84%, -0.5px);
           width: 100%;
           height: 125px;
         }
@@ -199,6 +192,7 @@ export default {
       // TEXT
       &__text {
         margin-left: 2rem;
+        font-size: 1.7rem;
       }
 
       //

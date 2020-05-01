@@ -8,6 +8,20 @@ import Loader from '@/components/Shared/Loader/Loader';
 import AlertStatus from '@/components/Shared/AlertStatus/AlertStatus';
 import Forms from '@/components/Shared/Form/Forms';
 import ProfileSetting from '@/components/Shared/ProfileSetting/ProfileSetting';
+import NotYet from '@/components/Shared/NotYet/NotYet';
+import NormalButton from '@/components/Shared/Button/NormalButton';
 
 // EXPORT
-export default [GSvg, OptionsCenter, RegisterSignIn, RegisterSignUp, ButtonConfirm, Loader, AlertStatus, Forms, ProfileSetting];
+export default [
+  GSvg,
+  OptionsCenter,
+  RegisterSignIn,
+  RegisterSignUp,
+  ButtonConfirm,
+  Loader,
+  AlertStatus,
+  Forms,
+  ProfileSetting,
+  NotYet,
+  NormalButton
+];

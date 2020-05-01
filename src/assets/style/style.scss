@@ -1,31 +1,18 @@
 // FONT
 @import 'https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap';
 
-// GUIDE
-@import './base/guide';
-
 // Variables
 @import 'abstract/variables';
 
 // Mixin
 @import 'abstract/mixin';
 
-//FUNCTION
-@import 'abstract/function';
-
 // Components
 @import 'components/svg';
 @import 'components/form';
+@import 'components/button';
 
 // Utilities
 @import 'base/base';
-@import 'base/utilities';
 @import 'base/animation';
-
-// layout
-@import 'layout/grid';
-@import 'layout/header';
-@import 'layout/footer';
-
-// Pages
-@import 'pages/home';
+@import 'base/global';

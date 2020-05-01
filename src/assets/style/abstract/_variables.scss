@@ -6,7 +6,10 @@ $background: (
   back-third: darken(#f5f6fa, 2%),
   back-fourth: lighten(#0064ff, 40%),
   back-fifth: lighten(#0064ff, 20%),
-  back-sixth: #b94a4a
+  back-sixth: #b94a4a,
+  back-seventh: #98acff,
+  back-eighth: black,
+  back-ninth: #ca9128
 );
 
 //////////////////////////////
@@ -15,12 +18,15 @@ $color: (
   color-first: #fff,
   color-second: #0064ff,
   color-third: rgb(95, 82, 82),
-  color-fourth: lighten(#0064ff, 20%)
+  color-fourth: lighten(#0064ff, 20%),
+  color-sixth: black
 );
 
 //////////////////////////////
 // COLOR
 $shadow: (
   first: 0 3px 10px rgba(map-get($background, back-first), 0.5),
-  second: 0 3px 10px rgba(map-get($background, back-sixth), 0.5)
+  second: 0 3px 10px rgba(map-get($background, back-sixth), 0.5),
+  third: 6px 6px 4px rgba(map-get($background, back-ninth), 0.6),
+  fourth: 0 3px 10px rgba(200, 202, 208, 0.5)
 );
