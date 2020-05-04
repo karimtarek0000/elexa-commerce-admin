@@ -1,38 +1,36 @@
 <template>
-  <div>
-    <button
-      :class="['button__confirm', { 'button__confirm--active': statusDisabled, 'button__confirm--wrong': classWrong }]"
-      :type="typeBtn"
-      @click.prevent="$emit('clicknow')"
-      :disabled="statusDisabled"
-      :style="classCheck ? 'pointer-events: none' : false"
+  <button
+    :class="['button__confirm', { 'button__confirm--active': statusDisabled, 'button__confirm--wrong': classWrong }]"
+    :type="typeBtn"
+    @click.prevent="$emit('clicknow')"
+    :disabled="statusDisabled"
+    :style="classCheck ? 'pointer-events: none' : false"
+  >
+    <!-- TITLE -->
+    <span :class="['button__confirm__title', { 'button__confirm__title--title': classCheck }]">{{ textButton }}</span>
+    <!-- CONFIRM CHECK -->
+    <div
+      :class="[
+        'button__confirm__check',
+        {
+          'button__confirm__check--check': classCheck,
+          'button__confirm__check--correct': classCorrect,
+          'button__confirm__check--wrong': classWrong
+        }
+      ]"
     >
-      <!-- TITLE -->
-      <span :class="['button__confirm__title', { 'button__confirm__title--title': classCheck }]">{{ textButton }}</span>
-      <!-- CONFIRM CHECK -->
-      <div
-        :class="[
-          'button__confirm__check',
-          {
-            'button__confirm__check--check': classCheck,
-            'button__confirm__check--correct': classCorrect,
-            'button__confirm__check--wrong': classWrong
-          }
-        ]"
-      >
-        <!-- LOADER -->
-        <loader :status="statusLoader"></loader>
-        <!-- ICON CORRECT -->
-        <div class="button__confirm__check__correct">
-          <GSvg nameIcon="correct"></GSvg>
-        </div>
-        <!-- ICON WRONG -->
-        <div class="button__confirm__check__wrong">
-          <GSvg nameIcon="wrong"></GSvg>
-        </div>
+      <!-- LOADER -->
+      <loader :status="statusLoader"></loader>
+      <!-- ICON CORRECT -->
+      <div class="button__confirm__check__correct">
+        <GSvg nameIcon="correct"></GSvg>
       </div>
-    </button>
-  </div>
+      <!-- ICON WRONG -->
+      <div class="button__confirm__check__wrong">
+        <GSvg nameIcon="wrong"></GSvg>
+      </div>
+    </div>
+  </button>
 </template>
 
 <script>
@@ -101,7 +99,7 @@ export default {
     $border: 1px solid transparent,
     $tTransform: uppercase
   ) {
-    border-radius: 5px;
+    border-radius: map-get($border-radius, second);
     box-shadow: map-get($shadow, first);
     transition: all 0.5s ease;
   }

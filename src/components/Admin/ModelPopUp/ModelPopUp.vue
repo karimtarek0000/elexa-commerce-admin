@@ -12,33 +12,64 @@
       <div class="model-pop-up__box">
         <!-- NAME ITEM -->
         <div class="model-pop-up__category model-pop-up__category--name-item">
-          <label for="nameItem">enter name item</label>
-          <input type="text" name="nameItem" placeholder="enter name item" />
+          <label for="nameItem">enter name</label>
+          <input type="text" name="nameItem" v-model="allData.name" placeholder="enter name" />
+        </div>
+        <!-- SELECT IMAGE -->
+        <div class="model-pop-up__category model-pop-up__category--select-image" v-if="statusSelectImage">
+          <upload-file
+            addImageAvatar="image-global/avatar.png"
+            nameLabel="select image product"
+            @postFile="allData.image = $event"
+          ></upload-file>
         </div>
         <!-- PRICE ITEM -->
-        <div class="model-pop-up__category model-pop-up__category--price-item">
-          <label for="priceItem">enter price item</label>
-          <input type="number" name="priceItem" value="0" />
+        <div class="model-pop-up__category model-pop-up__category--price-item" v-if="statusPrice">
+          <label for="priceItem">enter price</label>
+          <input type="number" name="priceItem" v-model="allData.price" />
         </div>
         <!-- DISCOUNT ITEM -->
-        <div class="model-pop-up__category model-pop-up__category--discount-item">
-          <label for="discountItem">enter discount item</label>
-          <input type="number" name="discountItem" value="0" />
+        <div class="model-pop-up__category model-pop-up__category--discount-item" v-if="statusDiscount">
+          <label for="discountItem">enter discount</label>
+          <input type="number" name="discountItem" v-model="allData.discount" />
         </div>
-        <!-- ADD ITEM -->
-        <normal-button :statusIcon="false" nameBtn="add item"></normal-button>
-        <!-- CANCEL -->
-        <normal-button :statusIcon="false" @normalBtn="sendEventCancel" nameBtn="cancel"></normal-button>
-        <!-- BUTTON SUBMIT -->
-        <!-- <button-confirm
-          :statusLoader="true"
-          textButton="add item"
-          :classCheck="check"
-          :classCorrect="correct"
-          :classWrong="wrong"
-          :statusDisabled="statusDisabledBtnSubmit"
-          @clicknow="actionSubmit"
-        ></button-confirm> -->
+        <!-- QUANTITY ITEM -->
+        <div class="model-pop-up__category model-pop-up__category--quantity-item" v-if="statusQuantity">
+          <label for="quantityItem">enter quantity</label>
+          <input type="number" name="quantityItem" v-model="allData.quantity" />
+        </div>
+        <!-- SELECT CATEGORY -->
+        <div class="model-pop-up__category model-pop-up__category--select-category" v-if="statusSelect">
+          <label for="selectCategory">select category</label>
+          <!--  -->
+          <div class="custom-select">
+            <div class="custom-select__icon">
+              <GSvg nameIcon="angle-up"></GSvg>
+              <GSvg nameIcon="angle-down"></GSvg>
+            </div>
+            <!--  -->
+            <select v-model="allData.selectCategory">
+              <option value="one">one</option>
+              <option value="two">two</option>
+              <option value="three">three</option>
+            </select>
+          </div>
+        </div>
+        <!-- ALL BUTTON -->
+        <div class="model-pop-up__category model-pop-up__category--buttons">
+          <!-- ADD ITEM -->
+          <button-confirm
+            :statusLoader="true"
+            textButton="add"
+            :classCheck="statusAdd.check"
+            :classCorrect="statusAdd.correct"
+            :classWrong="statusAdd.wrong"
+            :statusDisabled="statusDisabled"
+            @clicknow="actionSubmit"
+          ></button-confirm>
+          <!-- CANCEL -->
+          <normal-button :statusIcon="false" @normalBtn="sendEventCancel" nameBtn="cancel"></normal-button>
+        </div>
       </div>
     </div>
   </div>
@@ -51,13 +82,80 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    statusPrice: {
+      type: Boolean,
+      default: true
+    },
+    statusDiscount: {
+      type: Boolean,
+      default: true
+    },
+    statusQuantity: {
+      type: Boolean,
+      default: true
+    },
+    statusSelect: {
+      type: Boolean,
+      default: true
+    },
+    statusSelectImage: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
-    return {};
+    return {
+      statusAdd: {
+        check: false,
+        correct: false,
+        wrong: false,
+        statusDisabled: true
+      },
+      allData: {
+        name: null,
+        price: 0,
+        discount: 0,
+        image: null,
+        quantity: 0,
+        selectCategory: null
+      }
+    };
+  },
+  computed: {
+    // STATUS DISABLED
+    statusDisabled() {
+      if (this.statusPrice && this.statusDiscount && this.statusSelect && this.statusQuantity) {
+        if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity) {
+          return false;
+        } else {
+          return true;
+        }
+      } else if (this.allData.name) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
   methods: {
-    //
+    // ACTION SUBMIT
+    actionSubmit() {
+      if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity) {
+        // CONVERT DATA TO NUMBER FROM INPUT
+        const price = parseFloat(this.allData.price);
+        const discount = parseFloat(this.allData.discount);
+        const quantity = parseFloat(this.allData.quantity);
+        // ASSIGN DATA INTO OBJECT
+        const finalData = Object.assign({}, this.allData, { price, discount, quantity });
+        // CUSTOM EVENT RETURN ALL DATA
+        return this.$emit('postAllData', finalData);
+      } else if (this.allData.name) {
+        // CUSTOM EVENT RETURN DATA NAME
+        return this.$emit('postAllData', this.allData.name);
+      }
+    },
+    // SEND EVENT CANCEL
     sendEventCancel() {
       return this.$emit('clickExit', false);
     }
@@ -71,14 +169,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: relative;
   background-color: map-get($background, back-second);
   padding: 4rem;
   box-shadow: map-get($shadow, fourth);
-  border-radius: 7px;
-  @include translate('top', 'right', -20%, 0);
+  border-radius: map-get($border-radius, first);
+  @include translate('top', 'right', -150px, 0);
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: 9999;
 
   //
@@ -92,11 +190,10 @@ export default {
 
   // INNER
   &__inner {
-    background-color: red;
     width: 50%;
     padding: 2rem;
     background-color: white;
-    border-radius: 7px;
+    border-radius: map-get($border-radius, first);
     text-transform: capitalize;
   }
 
@@ -104,7 +201,7 @@ export default {
   &__title {
     font-size: 3rem;
     font-weight: 300;
-    border-bottom: 0.5px solid black;
+    border-bottom: 0.5px solid map-get($background, back-fifth);
     padding: 0.5em 0;
     margin-bottom: 0.8em;
   }
@@ -148,33 +245,87 @@ export default {
     }
     // PRICE ITEM AND DISCOUNT ITEM
     &--price-item,
-    &--discount-item {
+    &--discount-item,
+    &--quantity-item {
+      width: 40%;
+      display: inline-block;
+      //
       & input[type='number'] {
-        width: 40%;
+        width: 100%;
       }
     }
+
     // DISCOUNT ITEM
     &--discount-item {
+      margin-left: 10%;
+    }
+
+    // SELECT CATEGORY
+    &--select-category {
+      // CUSTOM SELECT
+      .custom-select {
+        position: relative;
+        width: 40%;
+        height: 100%;
+        background-color: blue;
+
+        // ICON
+        &__icon {
+          position: absolute;
+          display: block;
+          @include translate('top', 'right', 1.5px, 10px);
+          z-index: 200;
+          pointer-events: none;
+
+          // ALL DIRECT
+          & > * {
+            display: block;
+          }
+        }
+      }
+      // SELECT
+      & select {
+        position: absolute;
+        display: block;
+        @include translate('top', 'left', 0, 0);
+        width: 100%;
+        appearance: none;
+        border: 1px solid map-get($background, back-first);
+        padding: 1rem;
+        outline: none;
+        font-size: 1.7rem;
+        border-radius: map-get($border-radius, first);
+        text-transform: capitalize;
+        background-color: map-get($background, back-second);
+      }
+    }
+
+    // CHANGE NORMAL BTN
+    &--buttons {
+      display: flex;
+      font-size: 1.7rem;
+      margin-top: 7rem;
+
+      //
+      .button__confirm {
+        margin: 0;
+        padding: 2.5rem 7rem;
+        font-size: 1.6rem;
+      }
+      //
+      .normal-btn {
+        padding: 1.2rem 3rem;
+        margin-left: 0.5rem;
+        background-color: map-get($background, back-second);
+        border: 0.5px solid map-get($background, back-first);
+        color: map-get($color, color-third);
+        box-shadow: none;
+        text-transform: uppercase;
+        font-size: 1.6rem;
+      }
     }
   }
 
-  // CHANGE NORMAL BTN
-  .normal-btn {
-    display: inline-block;
-    padding: 1rem 2rem;
-    margin-top: 2rem;
-
-    // NTH OF TYPE 1
-    &:nth-of-type(1) {
-      margin-right: 1.7rem;
-    }
-    // NTH OF TYPE 2
-    &:nth-of-type(2) {
-      background-color: map-get($background, back-second);
-      border: 0.5px solid map-get($background, back-first);
-      color: map-get($color, color-third);
-      box-shadow: none;
-    }
-  }
+  //
 }
 </style>

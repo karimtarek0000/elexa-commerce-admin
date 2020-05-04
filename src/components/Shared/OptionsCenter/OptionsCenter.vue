@@ -74,7 +74,7 @@ export default {
       display: flex;
       align-items: center;
       background-color: map-get($background, back-first);
-      border-radius: 5px;
+      border-radius: map-get($border-radius, second);
       cursor: pointer;
     }
   }

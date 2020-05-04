@@ -30,3 +30,11 @@ $shadow: (
   third: 6px 6px 4px rgba(map-get($background, back-ninth), 0.6),
   fourth: 0 3px 10px rgba(200, 202, 208, 0.5)
 );
+
+//////////////////////////////
+// BORDER RADIUS
+$border-radius: (
+  first: 7px,
+  second: 5px,
+  third: 10px
+);

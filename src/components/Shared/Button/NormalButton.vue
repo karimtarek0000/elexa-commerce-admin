@@ -1,5 +1,5 @@
 <template>
-  <button class="normal-btn" @click="$emit('normalBtn')">
+  <button class="normal-btn" v-if="status" @click="$emit('normalBtn')">
     {{ nameBtn }}
     <GSvg v-if="statusIcon" nameIcon="add"></GSvg>
   </button>
@@ -9,6 +9,10 @@
 export default {
   name: 'NormalButton',
   props: {
+    status: {
+      type: Boolean,
+      default: true
+    },
     nameBtn: {
       type: String,
       default: 'click here'
@@ -40,7 +44,7 @@ export default {
     $fontColor: map-get($color, color-first),
     // $tTransform: uppercase
   ) {
-    border-radius: 5px;
+    border-radius: map-get($border-radius, second);
     box-shadow: map-get($shadow, first);
   }
 }

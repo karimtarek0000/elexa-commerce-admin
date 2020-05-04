@@ -3,7 +3,7 @@
   font-size: 1.7rem;
   margin-top: 30px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: map-get($border-radius, third);
   text-transform: capitalize;
 
   // INPUT

@@ -24,11 +24,6 @@
         <span class="admin__header__user__options__title">settings</span>
       </router-link>
 
-      <!-- <li class="admin__header__user__options__item" @click="v">
-        <GSvg nameIcon="settings"></GSvg>
-        <span class="admin__header__user__options__title">settings</span>
-      </li> -->
-
       <li class="admin__header__user__options__item" @click="logOut">
         <GSvg nameIcon="log_out"></GSvg>
         <span class="admin__header__user__options__title">log out</span>
@@ -137,7 +132,7 @@ export default {
       transition: max-height 0.8s ease-in-out;
       background-color: white;
       @include translate('top', 'left', 110%, 0);
-      border-radius: 10px;
+      border-radius: map-get($border-radius, third);
       box-shadow: 0 2px 5px rgba(darken(white, 20%), 0.3);
       list-style: none;
       overflow: hidden;

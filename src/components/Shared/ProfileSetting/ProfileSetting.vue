@@ -14,23 +14,7 @@
     <transition name="profile-setting">
       <div class="profile-setting__options" v-if="statusAnim">
         <!-- OPTIONS SELECT IMAGE -->
-        <div class="profile-setting__options__select-image">
-          <!-- PREVIEW IMAGE -->
-          <div class="profile-setting__options__preview-image">
-            <img src="@/assets/image/image-global/avatar.png" alt="" />
-          </div>
-          <!-- SELECT -->
-          <div class="profile-setting__options__select">
-            <label for="file">change your image</label>
-            <div class="profile-setting__options__custom-input">
-              <input type="file" id="file" @change="getData($event)" />
-              <div class="edit">
-                <button>uploade image</button>
-                <p>{{ nameFile }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <upload-file addImageAvatar="image-global/avatar.png"></upload-file>
         <!-- OPTIONS NAME -->
         <div class="profile-setting__options__name">
           <label for="name">change your name</label>
@@ -51,14 +35,10 @@ export default {
   name: 'ProfileSetting',
   data() {
     return {
-      nameFile: 'no select image',
       statusAnim: false
     };
   },
   methods: {
-    getData(el) {
-      this.nameFile = el.target.files[0].name;
-    },
     //
     back() {
       return this.$router.back();
@@ -109,7 +89,7 @@ export default {
     grid-area: start-body / start-form / end-body / end-form;
     background-color: map-get($background, back-second);
     padding: 1rem;
-    border-radius: 1rem;
+    border-radius: map-get($border-radius, third);
 
     //
     & > * {
@@ -124,81 +104,6 @@ export default {
       display: block;
       font-size: 2rem;
       margin-bottom: 1rem;
-    }
-
-    //
-    &__select-image {
-      display: flex;
-      align-items: center;
-    }
-
-    //
-    &__preview-image {
-      width: 100px;
-      height: 100px;
-      margin-right: 1.5rem;
-      border-radius: 50%;
-
-      //
-      & img {
-        max-width: 100%;
-      }
-    }
-
-    //
-    &__select {
-    }
-
-    // CUSTOM INPUT
-    &__custom-input {
-      position: relative;
-      padding: 10px;
-      width: 300px;
-      height: 50px;
-      background-color: transparent;
-
-      // INPUT TYPE FILE
-      input[type='file'] {
-        position: absolute;
-        display: block;
-        @include translate('top', 'left', 0, 0);
-        width: 100%;
-        height: 100%;
-        background-color: red;
-        z-index: 2;
-        opacity: 0;
-        cursor: pointer;
-      }
-
-      // EDIT
-      & > .edit {
-        position: absolute;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        @include translate('top', 'left', 0, 0);
-        z-index: 1;
-
-        //
-        & > button {
-          @include btnManger(
-            $fSize: 1.5rem,
-            $backgroundColor: map-get($background, back-first),
-            $padding: 1rem,
-            $fontColor: black
-          ) {
-            border-radius: 0.5rem;
-            color: map-get($color, color-first);
-          }
-        }
-
-        //
-        & > p {
-          font-size: 1.5rem;
-        }
-      }
     }
 
     //

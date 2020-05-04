@@ -46,7 +46,7 @@ export default {
     background: linear-gradient(to right, map-get($background, back-first) 60%, map-get($background, back-seventh));
     padding: 15px 10px;
     color: white;
-    border-radius: 10px;
+    border-radius: map-get($border-radius, third);
     box-shadow: map-get($shadow, first);
 
     // INFO
@@ -57,7 +57,7 @@ export default {
       &__title {
         font-size: 2.3rem;
         padding: 1rem 1.5rem;
-        border-radius: 7px;
+        border-radius: map-get($border-radius, second);
         background-color: map-get($background, back-ninth);
         box-shadow: map-get($shadow, third);
         font-weight: 400;

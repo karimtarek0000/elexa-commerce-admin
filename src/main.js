@@ -10,7 +10,10 @@ import { currentUser } from '@/firebase/helps/firebaseauth';
 Vue.config.productionTip = false;
 
 // IMPORT MIXINS
-import allMixins from './mixin/Shared/index';
+import allMixinsShared from './mixin/Shared/index';
+import allMixinsAdmin from './mixin/Admin/index';
+// ALL MIXINS CONCAT
+const allMixins = [...allMixinsShared, ...allMixinsAdmin];
 
 // RENDER ALL MIXINS GLOBAL
 allMixins.forEach(nameMixin => {

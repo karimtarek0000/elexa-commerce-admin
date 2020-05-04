@@ -1,0 +1,8 @@
+// GRID PRODUCTS AND CATEGORY
+%gridPageItem {
+  display: grid;
+  grid-template-rows: 200px;
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
+  grid-gap: 1rem;
+  grid-auto-rows: 200px;
+}

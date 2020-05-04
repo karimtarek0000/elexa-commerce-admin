@@ -1,6 +1,9 @@
 <template>
   <div class="loader" v-if="status">
-    <span class="loader__icon"></span>
+    <span
+      class="loader__icon"
+      :style="`borderColor: ${selectColorLoader} transparent ${selectColorLoader} ${selectColorLoader}`"
+    ></span>
   </div>
 </template>
 
@@ -12,6 +15,10 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    selectColorLoader: {
+      type: String,
+      required: false
     }
   },
   data() {

@@ -10,6 +10,8 @@ import Forms from '@/components/Shared/Form/Forms';
 import ProfileSetting from '@/components/Shared/ProfileSetting/ProfileSetting';
 import NotYet from '@/components/Shared/NotYet/NotYet';
 import NormalButton from '@/components/Shared/Button/NormalButton';
+import UploadFile from '@/components/Shared/UploadFile/UploadFile';
+import SearchInputTable from '@/components/Shared/Search/SearchInputTable';
 
 // EXPORT
 export default [
@@ -23,5 +25,7 @@ export default [
   Forms,
   ProfileSetting,
   NotYet,
-  NormalButton
+  NormalButton,
+  UploadFile,
+  SearchInputTable
 ];

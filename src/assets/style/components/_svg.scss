@@ -147,7 +147,7 @@
   }
 }
 
-//
+// NORMAL BTN
 .normal-btn {
   svg {
     @include svgManger(2rem, 2rem, $fill: map-get($background, back-second)) {
@@ -156,12 +156,37 @@
   }
 }
 
-//
+// MODEL POP UP
 .model-pop-up {
   //
   &__exit {
     svg {
       @include svgManger(3rem, 3rem, $fill: map-get($background, back-first));
+    }
+  }
+}
+
+// CUSTOM SELECT
+.custom-select {
+  //
+  &__icon {
+    svg {
+      @include svgManger(2rem, 2rem, $fill: black);
+    }
+  }
+}
+
+// CARD VIEW AND TAVLE INFO
+.card-view {
+  svg {
+    @include svgManger(2rem, 2rem, $fill: map-get($background, back-second));
+  }
+}
+// TABLE INFO
+.table-info {
+  svg {
+    @include svgManger(2rem, 2rem, $fill: black) {
+      cursor: pointer;
     }
   }
 }

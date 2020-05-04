@@ -101,14 +101,14 @@ export default {
     width: 60%;
     text-transform: capitalize;
     margin-top: 4rem;
-    border-radius: 10px;
+    border-radius: map-get($border-radius, third);
   }
 
   // ITEM
   &__item {
     justify-content: space-between;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: map-get($border-radius, second);
     font-size: 2.2rem;
     text-align: center;
     flex-basis: 47%;

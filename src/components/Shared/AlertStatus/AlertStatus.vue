@@ -52,7 +52,7 @@ export default {
 // ALERT STATUS
 .alert__status {
   padding: 10px;
-  border-radius: 5px;
+  border-radius: map-get($border-radius, second);
   color: map-get($color, color-first);
   box-shadow: map-get($shadow, first);
   text-transform: capitalize;

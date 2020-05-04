@@ -47,7 +47,9 @@ export default {
 
   // MANGER GRID SYSTEM
   grid-template-rows: [start-global-row start-header] 8rem [end-header start-content] calc(100vh - 8rem) [end-content end-global-row];
-  grid-template-columns: [start-global-column start-aside] 25rem [end-aside start-content start-header] 1fr [end-content end-header end-global-column];
+  grid-template-columns:
+    [start-global-column start-aside] 25rem [end-aside start-content start-header] minmax(20rem, 1fr)
+    [end-content end-header end-global-column];
   transition: all 0.5s ease;
 
   // CLASS MODIFIRE ACTIVE
