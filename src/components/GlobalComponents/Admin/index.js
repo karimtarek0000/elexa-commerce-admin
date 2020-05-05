@@ -12,6 +12,7 @@ import NotYet from '@/components/Shared/NotYet/NotYet';
 import NormalButton from '@/components/Shared/Button/NormalButton';
 import UploadFile from '@/components/Shared/UploadFile/UploadFile';
 import SearchInputTable from '@/components/Shared/Search/SearchInputTable';
+import Pagination from '@/components/Shared/Pagination/Pagination';
 
 // EXPORT
 export default [
@@ -27,5 +28,6 @@ export default [
   NotYet,
   NormalButton,
   UploadFile,
-  SearchInputTable
+  SearchInputTable,
+  Pagination
 ];

@@ -190,4 +190,31 @@
     }
   }
 }
+
+// PRODUCTS PAGE
+.products-page {
+  // PAGINATION
+  .pagination {
+    // BTN PREV AND BTN NEXT
+    &__btn__prev,
+    &__btn__next {
+      svg {
+        @include svgManger(3rem, 3rem, $fill: map-get($background, back-sixth));
+      }
+    }
+    // BTN PREV
+    &__btn__prev {
+      svg {
+        transform: rotate(-90deg);
+      }
+    }
+    // BTN NEXT
+    &__btn__next {
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+
 // END USER

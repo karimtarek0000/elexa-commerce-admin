@@ -4,7 +4,12 @@
     <div class="table-info__head">
       <div class="table-info__row">
         <template v-for="(title, index) in headerData">
-          <span class="table-info__data" :key="index">{{ title }}</span>
+          <span
+            :class="['table-info__data', { 'table-info__data--active': index == current }]"
+            :key="index"
+            @click="getHeaderTitle(index, title)"
+            >{{ title }}</span
+          >
         </template>
       </div>
     </div>
@@ -16,8 +21,11 @@
         <span class="table-info__data price"><span>&dollar;</span>{{ data.price }}</span>
         <span class="table-info__data discount" v-text="data.discount"></span>
         <span class="table-info__data quantity" v-text="data.quantity">5</span>
+        <span class="table-info__data edit">
+          <slot name="icon-edit"></slot>
+        </span>
         <span class="table-info__data delete">
-          <GSvg nameIcon="delete"></GSvg>
+          <slot name="icon-delete"></slot>
         </span>
       </div>
     </div>
@@ -38,7 +46,18 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      current: 1
+    };
+  },
+  methods: {
+    // GET HEADER TITLE
+    getHeaderTitle(index, title) {
+      if (title !== 'edit' && title !== 'delete' && title !== '#') {
+        this.$emit('dataFilter', title);
+        this.current = index;
+      }
+    }
   }
 };
 </script>
@@ -57,6 +76,7 @@ export default {
     fill: black;
     font-weight: 400;
     text-transform: uppercase;
+    cursor: pointer;
   }
 
   // BODY
@@ -70,10 +90,13 @@ export default {
     .num {
       width: 5%;
     }
-    //
+
+    // NAME
     .name {
       width: 60%;
     }
+
+    // PRICE AND DISCOUNT AND QUANTITY
     .price,
     .discount,
     .quantity {
@@ -100,6 +123,11 @@ export default {
     padding: 10px;
     border: 0.5px solid;
     border-color: transparent transparent black black;
+
+    //
+    &--active {
+      background-color: map-get($background, back-sixth);
+    }
 
     // LAST OF TYPE
     &:last-of-type {

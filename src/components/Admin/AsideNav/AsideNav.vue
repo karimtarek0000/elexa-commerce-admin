@@ -18,7 +18,7 @@
       <router-link
         class="admin__aside__item"
         active-class="admin__aside__item--active"
-        exact
+        :exact="index == 0"
         tag="li"
         :to="{ name: item }"
         v-for="(item, index) in nav.items"

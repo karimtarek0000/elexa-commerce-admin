@@ -22,11 +22,19 @@
       ></card-view>
     </div>
     <!-- SEARCH INPUT TABLE -->
-    <search-input-table :getData="vv" @postData="newDataFilter = $event" filterBy="name"></search-input-table>
+    <search-input-table :getData="vv" @postData="newDataFilter = $event" :filterBy="filterBy"></search-input-table>
     <!-- ALL PRODUCTS TABLE -->
     <div class="products-page__all-products-tabel">
-      <table-data :headerData="titles" :bodyData="newDataFilter"></table-data>
+      <table-data :headerData="titles" :bodyData="newDataFilter" @dataFilter="filterBy = $event">
+        <GSvg slot="icon-edit" nameIcon="add"></GSvg>
+        <GSvg slot="icon-delete" nameIcon="delete"></GSvg>
+      </table-data>
     </div>
+    <!-- PAGINATION -->
+    <pagination :total="5000" :perPage="10" :currentPage="current" @changePage="mm">
+      <GSvg slot="prev" nameIcon="angle-up"></GSvg>
+      <GSvg slot="next" nameIcon="angle-up"></GSvg>
+    </pagination>
   </div>
 </template>
 
@@ -41,11 +49,13 @@ export default {
   mixins: ['modelPop'],
   data() {
     return {
+      filterBy: 'name',
+      current: this.$route.query.page || 1,
       allData: [],
       newDataFilter: [],
       vv: [
         {
-          name: 'samsung not 10',
+          name: 'samsung note 10',
           price: 2000,
           discount: 300,
           quantity: 10
@@ -73,9 +83,21 @@ export default {
           price: 5000,
           discount: 1000,
           quantity: 45
+        },
+        {
+          name: 'nokia 20',
+          price: 10000,
+          discount: 1000,
+          quantity: 40
+        },
+        {
+          name: 'nokia 23',
+          price: 10000,
+          discount: 1000,
+          quantity: 40
         }
       ],
-      titles: ['#', 'name products', 'price', 'discount', 'quantity', 'delete']
+      titles: ['#', 'name', 'price', 'discount', 'quantity', 'edit', 'delete']
     };
   },
   methods: {
@@ -87,6 +109,10 @@ export default {
     },
     n(c) {
       return console.log(c);
+    },
+    mm(page) {
+      this.current = page;
+      this.$router.push({ query: { page } });
     }
   },
   //

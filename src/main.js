@@ -62,6 +62,8 @@ auth.onAuthStateChanged(() => {
   }
 });
 
+// console.log(typeof test);
+
 ////////////////////////
 /// Target
 // var test = { a: 1, b: 2, c:3 };
