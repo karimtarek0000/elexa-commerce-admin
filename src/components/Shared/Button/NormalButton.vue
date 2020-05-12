@@ -1,7 +1,7 @@
 <template>
   <button class="normal-btn" v-if="status" @click="$emit('normalBtn')">
     {{ nameBtn }}
-    <GSvg v-if="statusIcon" nameIcon="add"></GSvg>
+    <slot></slot>
   </button>
 </template>
 

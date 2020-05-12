@@ -2,7 +2,10 @@
   <div class="admin__options__center">
     <!-- START GSVG -->
     <div class="admin__options__center__fullscreen" @click="toggleFullScreen">
-      <GSvg :nameIcon="statusFullBrowser ? 'fullscreen' : 'fullscreen_exit'"></GSvg>
+      <GSvg
+        :nameIcon="statusFullBrowser ? 'fullscreen' : 'fullscreen_exit'"
+        :title="statusFullBrowser ? 'full screen icon' : 'exit full screen icon'"
+      ></GSvg>
     </div>
   </div>
 </template>
@@ -76,6 +79,11 @@ export default {
       background-color: map-get($background, back-first);
       border-radius: map-get($border-radius, second);
       cursor: pointer;
+
+      // RESPONSIVE
+      @include respond(800px) {
+        opacity: 0;
+      }
     }
   }
 }

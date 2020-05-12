@@ -185,7 +185,7 @@
 // TABLE INFO
 .table-info {
   svg {
-    @include svgManger(2rem, 2rem, $fill: black) {
+    @include svgManger(2rem, 2rem, $fill: map-get($background, back-eighth)) {
       cursor: pointer;
     }
   }
@@ -215,6 +215,81 @@
       }
     }
   }
+
+  // ACTIONS SORT
+  &__actions__sort {
+    // SVG
+    svg {
+      @include svgManger(2rem, 2rem, $fill: map-get($background, back-eighth)) {
+        cursor: pointer;
+      }
+    }
+    // ASC ACTIVE AND DESC ACTIVE
+    &__asc--active,
+    &__desc--active {
+      svg {
+        use {
+          fill: map-get($color, color-first);
+        }
+      }
+    }
+  }
+
+  // ACTIONS GRID
+  &__actions__grid {
+    // TABLE
+    &__table {
+      // SVG
+      svg {
+        @include svgManger(3rem, 3rem, $fill: map-get($background, back-eighth)) {
+          cursor: pointer;
+        }
+      }
+    }
+    // CARD
+    &__card {
+      // SVG
+      svg {
+        @include svgManger(3.5rem, 3.5rem, $fill: map-get($background, back-eighth)) {
+          cursor: pointer;
+        }
+      }
+    }
+
+    // TABLE AND CARD
+    &__table,
+    &__card {
+      // ACTIVE
+      &--active {
+        svg {
+          use {
+            fill: map-get($color, color-first);
+          }
+        }
+      }
+    }
+  }
 }
 
+//
+.category-page__all-category {
+  &__category {
+    //
+    &__icon-folder {
+      svg {
+        @include svgManger(2.5rem, 2.5rem, $fill: map-get($background, back-second)) {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    &__icon-delete,
+    &__icon-edit,
+    &__icon-close {
+      svg {
+        @include svgManger(2rem, 2rem, $fill: map-get($background, back-second));
+      }
+    }
+  }
+}
 // END USER

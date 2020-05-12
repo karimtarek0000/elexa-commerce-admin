@@ -3,5 +3,6 @@ import { NAMECOLLECTIONPROFILEADMIN } from '@/store/Type/index';
 
 //
 export default {
-  nameCollection: NAMECOLLECTIONPROFILEADMIN
+  nameCollection: NAMECOLLECTIONPROFILEADMIN,
+  statusAside: false
 };

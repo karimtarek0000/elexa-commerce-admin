@@ -2,7 +2,7 @@
   <div class="search-table">
     <div class="search-table__input">
       <!-- SEARCH INPUT -->
-      <input class="search-table__input__feild" v-model="value" type="text" placeholder="search in table with select type..." />
+      <input class="search-table__input__feild" v-model="value" type="text" :placeholder="placeholder" />
       <!-- SEARCH ICONS SEARCH -->
       <div class="search-table__icons search-table__icons--search">
         <svg xmlns="http://www.w3.org/2000/svg" width="50.875" height="50.875">
@@ -32,47 +32,35 @@ export default {
       type: Array,
       required: true
     },
+    filterData: {
+      type: Function
+    },
     filterBy: {
       type: String,
+      required: true
+    },
+    placeholder: {
       required: true
     }
   },
   data() {
     return {
-      value: null
+      value: null,
+      regExp: /^[<>=]{1}\d+$/
     };
   },
   computed: {
-    // // FILTER DATA
-    // filterData() {
-    //   // IF THE VALUE EQUAL FALSE WILL BE RETURN GET DATA
-    //   if (!this.value) return this.getData;
-
-    //   // FILTER GET DATA
-    //   return this.getData.filter(data => data[this.filterBy].toLowerCase().includes(this.value.toLowerCase()));
-    // },
     // STATUS VALUE INPUT
     statusValueInput() {
       return this.value ? true : false;
     }
   },
   methods: {
-    // FILTER DATA
-    filterData() {
-      // IF THE VALUE EQUAL FALSE WILL BE RETURN GET DATA
-      if (!this.value) {
-        return this.getData;
-      } else if (isNaN(this.value)) {
-        return this.getData.filter(data => data[this.filterBy].toLowerCase().includes(this.value.toLowerCase()));
-      } else if (!isNaN(this.value)) {
-        return this.getData.filter(data => data[this.filterBy] == this.value);
-      }
-    },
-    // INPUT EMPTY
+    // INPUT EMPTY WILL BR RETURN INPUT NULL
     inputEmpty() {
       return (this.value = null);
     },
-    // POST DATA
+    // POST DATA WILL BE CREATE CUSTOM EVENT AND POST NEW DATA AFTER FILTER
     postData(target) {
       return this.$emit('postData', target);
     }
@@ -80,12 +68,16 @@ export default {
   watch: {
     // WATCH ON VALUE IF CHANGE WILL BE POST DATA COMPUTED FILTER DATA
     value() {
-      this.postData(this.filterData());
+      this.postData(this.filterData(this.getData, this.value, this.filterBy, this.regExp));
+    },
+    // WATCH ON PLACE HOLDER IF CHANGED WILL BE RETURN INPUT NULL
+    placeholder() {
+      return this.inputEmpty();
     }
   },
   created() {
     // INIT DATA BEGINING WILL BE RETURN FILTER DATA
-    this.postData(this.filterData());
+    this.postData(this.filterData(this.getData, this.value, this.filterBy, this.regExp));
   }
 };
 </script>
@@ -94,8 +86,7 @@ export default {
 //
 .search-table {
   position: relative;
-  width: 40%;
-  margin-bottom: 1rem;
+  width: 50%;
   // INPUT
   &__input {
     position: relative;
@@ -105,8 +96,8 @@ export default {
     // FEILD
     &__feild {
       width: 100%;
-      padding: 1rem 0 1rem 7rem;
-      font-size: 20px;
+      padding: 10px 0 10px 70px;
+      font-size: 2rem;
       border: 0;
       color: map-get($color, color-sixth);
       background-color: map-get($background, back-second);

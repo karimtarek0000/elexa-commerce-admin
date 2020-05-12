@@ -1,7 +1,7 @@
 <template>
   <div :class="['admin', { 'admin--active': toggle }]">
     <!-- START ASIDE NAV -->
-    <aside-nav @addClass="toggle = $event"></aside-nav>
+    <aside-nav @addClass="toggle = $event" :statusButtonAside="statusButtonAside"></aside-nav>
 
     <!-- START HEADER -->
     <header-admin></header-admin>
@@ -27,14 +27,37 @@ import HeaderAdmin from '@/components/Admin/Header/HeaderAdmin';
 
 export default {
   name: 'Admin',
+  mixins: ['dynamicHeightPages'],
   data() {
     return {
-      toggle: false
+      toggle: false,
+      statusButtonAside: true
     };
+  },
+  methods: {
+    // FIXED WIDTH RESPONSIVE
+    fixedWidthResponsive() {
+      if (window.innerWidth <= 1200) {
+        this.toggle = true;
+        this.statusButtonAside = false;
+      } else {
+        this.toggle = false;
+        this.statusButtonAside = true;
+      }
+      // WILL BE CHNAGE IN STATE WIDTH MUTATIONS
+      this.$store.commit('Admin/chnageStatusAside', this.toggle);
+    }
   },
   components: {
     AsideNav,
     HeaderAdmin
+  },
+  mounted() {
+    // WIDTH
+    this.fixedWidthResponsive();
+
+    // RESIZE
+    window.addEventListener('resize', this.fixedWidthResponsive);
   }
 };
 </script>
@@ -42,25 +65,12 @@ export default {
 <style lang="scss">
 // ADMIN
 .admin {
-  display: grid;
   overflow: hidden;
-
-  // MANGER GRID SYSTEM
-  grid-template-rows: [start-global-row start-header] 8rem [end-header start-content] calc(100vh - 8rem) [end-content end-global-row];
-  grid-template-columns:
-    [start-global-column start-aside] 25rem [end-aside start-content start-header] minmax(20rem, 1fr)
-    [end-content end-header end-global-column];
   transition: all 0.5s ease;
-
-  // CLASS MODIFIRE ACTIVE
-  &--active {
-    grid-template-columns: [start-global-column start-aside] 5rem [end-aside start-content start-header] 1fr [end-content end-header end-global-column];
-  }
 
   // CONTENT
   &__content {
     perspective: 4000px;
-    grid-area: start-content / start-content / end-content / end-content;
     background-color: map-get($background, back-second);
     padding: 1.5rem;
 

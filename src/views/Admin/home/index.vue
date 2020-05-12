@@ -1,5 +1,5 @@
 <template>
-  <section class="home-page">
+  <section class="home-page setHeight">
     <!-- START CARD OVERVIEW -->
     <card-overview></card-overview>
     <!-- END CARD OVERVIEW -->
@@ -26,15 +26,20 @@ export default {
 .home-page {
   text-transform: capitalize;
   margin-top: 1rem;
+  height: 50vh;
 
   // CARD OVERVIEW BOX
   &__card-overview-box {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-direction: row;
+    grid-area: start-card / start-card / end-card / end-all;
+    height: 100%;
 
-    // ALL DIRECT
-    & > * {
-      flex: 0 1 calc(95% / 4);
+    // RESPONSIVE
+    @include respond(1000px) {
+      flex-direction: column;
+      grid-area: start-card / start-card / end-chart / end-card;
     }
   }
 
@@ -48,6 +53,18 @@ export default {
     color: white;
     border-radius: map-get($border-radius, third);
     box-shadow: map-get($shadow, first);
+    flex-basis: calc(95% / 4);
+
+    // RESPONSIVE
+    @include respond(1000px) {
+      flex-basis: 90%;
+      height: calc(75vh / 4);
+
+      //
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
 
     // INFO
     &__info {
@@ -55,7 +72,7 @@ export default {
 
       // TITLE
       &__title {
-        font-size: 2.3rem;
+        font-size: 1.9rem;
         padding: 1rem 1.5rem;
         border-radius: map-get($border-radius, second);
         background-color: map-get($background, back-ninth);

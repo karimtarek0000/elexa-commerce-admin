@@ -24,7 +24,7 @@
         <span class="table-info__data edit">
           <slot name="icon-edit"></slot>
         </span>
-        <span class="table-info__data delete">
+        <span class="table-info__data delete" @click="deleteItem(data.name)">
           <slot name="icon-delete"></slot>
         </span>
       </div>
@@ -57,6 +57,10 @@ export default {
         this.$emit('dataFilter', title);
         this.current = index;
       }
+    },
+    //
+    deleteItem(name) {
+      return this.$emit('deleteItem', name);
     }
   }
 };
@@ -126,7 +130,7 @@ export default {
 
     //
     &--active {
-      background-color: map-get($background, back-sixth);
+      background-color: map-get($background, back-eighth);
     }
 
     // LAST OF TYPE

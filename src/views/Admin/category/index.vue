@@ -1,10 +1,12 @@
 <template>
-  <div class="category-page">
-    <!--  -->
-    <not-yet nameStatus="category" :status="!statusModel"></not-yet>
-    <!--  -->
-    <normal-button nameBtn="add" @normalBtn="c" :status="!statusModel"></normal-button>
-    <!--  -->
+  <div class="category-page setHeight">
+    <!-- NOT YET -->
+    <not-yet nameStatus="category" :status="false"></not-yet>
+    <!-- ADD BUTTON -->
+    <normal-button nameBtn="add" @normalBtn="c" :status="!statusModel">
+      <GSvg nameIcon="add" title="add icon"></GSvg>
+    </normal-button>
+    <!-- MODEL POP UP -->
     <transition name="model">
       <model-pop-up
         v-if="statusModel"
@@ -18,18 +20,23 @@
         @postAllData="v"
       ></model-pop-up>
     </transition>
+    <!-- CATEGORY -->
+    <category-card v-if="allData.length !== 0" :allCategory="allData"></category-card>
   </div>
 </template>
 
 <script>
 //
 import ModelPopUp from '@/components/Admin/ModelPopUp/ModelPopUp';
+import CategoryCard from '@/components/Admin/CategoryCard/CategoryCard';
 //
 export default {
   name: 'Category',
-  mixins: ['modelPop'],
+  mixins: ['modelPop', 'dynamicHeightPages'],
   data() {
-    return {};
+    return {
+      allData: []
+    };
   },
   methods: {
     c() {
@@ -37,12 +44,13 @@ export default {
     },
     //
     v(data) {
-      return console.log(data);
+      return this.allData.push(data);
     }
   },
   //
   components: {
-    ModelPopUp
+    ModelPopUp,
+    CategoryCard
   }
 };
 </script>

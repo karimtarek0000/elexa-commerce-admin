@@ -24,10 +24,15 @@
         </svg>
       </div>
       <!-- SEARCH ICONS CLOSE -->
-      <div class="search__icons search__icons--close" :style="{ opacity: statusFocus ? 1 : 0, pointerEvents: statusFocus ? 'all' : 'none' }" @click="emptyInput">
+      <div
+        class="search__icons search__icons--close"
+        :style="{ opacity: statusFocus ? 1 : 0, pointerEvents: statusFocus ? 'all' : 'none' }"
+        @click="emptyInput"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="49.347" height="49.345">
-          <path d="M7.226 42.117a24.673 24.673 0 1134.895 0 24.674 24.674 0 01-34.895 0zm30.531-30.531a18.5 18.5 0 100 26.167 18.5 18.5 0 000-26.167zM18.13 35.576l-4.36-4.363 6.541-6.541-6.541-6.542 4.361-4.364 6.541 6.544 6.541-6.544 4.361 4.364-6.541 6.541 6.541 6.541-4.361 4.364-6.541-6.544-6.542 6.544z" 
-         />
+          <path
+            d="M7.226 42.117a24.673 24.673 0 1134.895 0 24.674 24.674 0 01-34.895 0zm30.531-30.531a18.5 18.5 0 100 26.167 18.5 18.5 0 000-26.167zM18.13 35.576l-4.36-4.363 6.541-6.541-6.541-6.542 4.361-4.364 6.541 6.544 6.541-6.544 4.361 4.364-6.541 6.541 6.541 6.541-4.361 4.364-6.541-6.544-6.542 6.544z"
+          />
         </svg>
       </div>
     </div>
@@ -36,7 +41,13 @@
       <!-- SEARCH RESULT -->
       <div class="search__result" v-if="statusFocus">
         <ul class="search__list" ref="searchList">
-          <li :class="['search__item', {'search__item--active': selected == index}]" @click="clicks(index)" ref="searchItem" v-for="(data, index) in filtersData" :key="data.id">
+          <li
+            :class="['search__item', { 'search__item--active': selected == index }]"
+            @click="clicks(index)"
+            ref="searchItem"
+            v-for="(data, index) in filtersData"
+            :key="data.id"
+          >
             {{ data[filterBy] }}
           </li>
         </ul>
@@ -47,7 +58,7 @@
 
 <script>
 export default {
-  name: "SearchInput",
+  name: 'SearchInput',
   // PROPS
   props: {
     getData: {
@@ -61,12 +72,12 @@ export default {
     fillIcon: {
       type: [Number, String],
       required: false,
-      default: "white"
+      default: 'white'
     },
     placeholder: {
       type: String,
       required: false,
-      default: "search"
+      default: 'search'
     }
   },
   data() {
@@ -74,14 +85,14 @@ export default {
       selected: 0,
       statusFocus: false,
       statusAction: true,
-      value: "",
-      newValue: ""
+      value: '',
+      newValue: ''
     };
   },
   watch: {
     // IF INPUT VALUE NOT EMPTY WILL BE RETURN STATUS FOCUS EQUAL TRUE ELSE STATUS FOCUS EQUAL FALSE
     value(ne) {
-      if(ne && this.statusAction) {
+      if (ne && this.statusAction) {
         this.statusFocus = true;
         this.selected = 0;
       } else {
@@ -90,22 +101,19 @@ export default {
     },
     // FILTERS DATA
     filtersData(ne) {
-     if(ne.length == 0) {
-       return this.statusFocus = false;
-     }
+      if (ne.length == 0) {
+        return (this.statusFocus = false);
+      }
     }
   },
   computed: {
     // FILTERS DATA
     filtersData() {
-
       // IF VALUE EQUAL EMPTY WILL BE RETURN EMTY ARRAY
       if (!this.value) return [];
 
       // RETURN FILTER DATA
-      return this.getData.filter(item =>
-        item[this.filterBy].toLowerCase().startsWith(this.value.toLowerCase())
-      );
+      return this.getData.filter(item => item[this.filterBy].toLowerCase().startsWith(this.value.toLowerCase()));
     },
     // HEIGHT ITEM
     heightItem() {
@@ -116,7 +124,7 @@ export default {
     // SUBMIT
     submit() {
       this.newValue = this.filtersData[this.selected];
-      this.$emit('change',  JSON.parse(JSON.stringify(this.newValue)));
+      this.$emit('change', JSON.parse(JSON.stringify(this.newValue)));
       this.statusFocus = false;
       this.value = this.newValue[this.filterBy];
       this.statusAction = false;
@@ -132,24 +140,24 @@ export default {
       setTimeout(() => {
         // RUNINNG SUBMIT
         this.submit();
-      },50);
+      }, 50);
     },
     // MOVE SCROLL
     moveScroll() {
-      return this.$refs.searchList.scrollTop = this.selected * this.heightItem;
+      return (this.$refs.searchList.scrollTop = this.selected * this.heightItem);
     },
     // UP
     up() {
-      if(this.selected > 0) {
-        this.selected-=1;
+      if (this.selected > 0) {
+        this.selected -= 1;
         // RUNINNG MOVE SCROLL
         this.moveScroll();
       }
     },
     // DOWN
     down() {
-      if(this.selected < this.filtersData.length-1) {
-        this.selected+=1;
+      if (this.selected < this.filtersData.length - 1) {
+        this.selected += 1;
         // RUNINNG MOVE SCROLL
         this.moveScroll();
       }
@@ -161,10 +169,10 @@ export default {
 <style lang="scss" scoped>
 ////////////////////////////////
 // VARIABLES
-$borderRadius: .8rem;
+$borderRadius: 0.8rem;
 $background: (
   color-first: white,
-  color-second: #0064ff,
+  color-second: #0064ff
 );
 $colors: (
   color-first: #a28a8a,
@@ -172,16 +180,14 @@ $colors: (
   color-third: #0064ff
 );
 
-
 //////////////////////////////
 // SEARCH
 .search {
   position: relative;
-  // width: 30%;
   min-height: 50px;
   padding: 5px;
   grid-column: start-search / end-search;
-  
+
   // INPUT
   &__input {
     position: relative;
@@ -197,7 +203,7 @@ $colors: (
     // FEILD
     &__feild {
       width: 100%;
-      padding: 1rem 0 1rem 7rem;
+      padding: 1rem 0 1rem 70px;
       font-size: 20px;
       border: 0;
       color: map-get($colors, color-third);
@@ -210,7 +216,7 @@ $colors: (
 
     // PLACEHOLDER
     ::placeholder {
-      color: map-get($colors, color-third) ;
+      color: map-get($colors, color-third);
       text-transform: capitalize;
     }
   }
@@ -234,14 +240,14 @@ $colors: (
     // CLOSE
     &--close {
       right: 0;
-      transition: opacity .5s;
+      transition: opacity 0.5s;
       cursor: pointer;
 
       & svg {
         fill: map-get($background, color-second);
-        transition: fill .5s;
+        transition: fill 0.5s;
 
-        // 
+        //
         &:hover {
           fill: white;
         }
@@ -277,7 +283,7 @@ $colors: (
     background-color: map-get($background, color-second);
     padding: 10px;
     margin: 10px 0;
-    transition: background-color .5s;
+    transition: background-color 0.5s;
     cursor: pointer;
 
     // ACTIVE

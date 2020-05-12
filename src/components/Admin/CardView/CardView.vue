@@ -109,6 +109,9 @@ export default {
       margin-bottom: auto;
       letter-spacing: 1px;
       font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     // DATA

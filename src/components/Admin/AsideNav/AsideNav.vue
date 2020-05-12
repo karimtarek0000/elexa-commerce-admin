@@ -1,7 +1,7 @@
 <template>
-  <aside :class="['admin__aside', { 'admin__aside--active': toggleNav }]">
+  <aside :class="['admin__aside', { 'admin__aside--active': statusToggleActive }]">
     <!-- START ADMIN TOGGLE -->
-    <button class="admin__aside__toggle" @click="changeToggleNav">
+    <button class="admin__aside__toggle" v-if="statusButtonAside" @click="changeToggleNav">
       <span></span>
     </button>
 
@@ -41,20 +41,33 @@
 <script>
 export default {
   name: 'AsideNav',
+  props: {
+    statusButtonAside: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       nav: {
         items: ['home', 'category', 'products'],
         icons: ['home', 'category', 'product']
-      },
-      toggleNav: false
+      }
     };
+  },
+  computed: {
+    // STATUS TOGGLE ACTIVE
+    statusToggleActive() {
+      return this.$store.state.Admin.statusAside;
+    }
   },
   methods: {
     // CHANGE TOGGLE NAV
     changeToggleNav() {
       // CHANGE TOGGLE
       this.toggleNav = !this.toggleNav;
+      // WILL BE CHANGE IN STATE VUEX
+      this.$store.commit('Admin/chnageStatusAside', this.toggleNav);
       // CUSTOM EVENT ( ADD CLASS )
       this.$emit('addClass', this.toggleNav);
     }
@@ -186,6 +199,16 @@ export default {
           @include translate('top', 'right', -84%, -0.5px);
           width: 100%;
           height: 125px;
+
+          // RESPONSIVE
+          @include respond(1196px) {
+            top: -57%;
+            height: 87px;
+          }
+          @include respond(tablet-p) {
+            top: -73%;
+            height: 91px;
+          }
         }
       }
 

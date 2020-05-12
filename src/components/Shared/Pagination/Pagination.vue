@@ -124,9 +124,9 @@ export default {
 // PAGINATION
 .pagination {
   position: absolute;
-  @include translate('bottom', 'left', 10%, 50%);
   display: flex;
   justify-content: center;
+  @include translate('bottom', 'left', 10%, 50%);
 
   // UL
   & ul {
@@ -167,13 +167,14 @@ export default {
       // SPREAD
       &--spread {
         margin: 0 1rem;
-        background-color: map-get($background, back-sixth);
         border: 0;
-        color: white;
+        color: map-get($color, color-third);
+        cursor: default;
 
-        //
+        // HOVER
         &:hover {
-          background-color: map-get($background, back-sixth);
+          background-color: transparent;
+          color: currentColor;
           box-shadow: none;
         }
       }

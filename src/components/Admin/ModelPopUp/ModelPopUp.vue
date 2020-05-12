@@ -166,20 +166,25 @@ export default {
 <style lang="scss">
 // MODEL POP UP
 .model-pop-up {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
   background-color: map-get($background, back-second);
   padding: 4rem;
   box-shadow: map-get($shadow, fourth);
   border-radius: map-get($border-radius, first);
-  @include translate('top', 'right', -150px, 0);
+  @include translate('top', 'right', -148px, 0);
   width: 100%;
   height: 100vh;
   z-index: 9999;
 
-  //
+  // RESPONSIVE
+  @include respond(tablet-p) {
+    top: -120px;
+  }
+
+  // EXIT
   &__exit {
     position: absolute;
     font-size: 5rem;
@@ -190,11 +195,19 @@ export default {
 
   // INNER
   &__inner {
-    width: 50%;
+    width: 60%;
     padding: 2rem;
     background-color: white;
     border-radius: map-get($border-radius, first);
     text-transform: capitalize;
+
+    // RESPONSIVE
+    @include respond(tablet-p) {
+      width: 70%;
+    }
+    @include respond(760px) {
+      width: 85%;
+    }
   }
 
   // TITLE
@@ -306,13 +319,13 @@ export default {
       font-size: 1.7rem;
       margin-top: 7rem;
 
-      //
+      // BUTTON CONFIRM
       .button__confirm {
         margin: 0;
         padding: 2.5rem 7rem;
         font-size: 1.6rem;
       }
-      //
+      // NORMAL BTN
       .normal-btn {
         padding: 1.2rem 3rem;
         margin-left: 0.5rem;
