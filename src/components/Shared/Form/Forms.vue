@@ -6,7 +6,7 @@
       <alert-status
         key="1"
         v-if="statusClickCloseAlert"
-        :title="title"
+        :title="titles"
         :visibleSlide="true"
         :status="statusClickCloseAlert"
         :statusCorrect="!statusClose"
@@ -39,7 +39,7 @@
         <component
           :is="nameComponent"
           @pushAlert="statusClickCloseAlert = $event"
-          @pushTitle="title = $event"
+          @pushTitle="titles = $event"
           @statusClose="statusClose = $event"
           @closeAlert="statusClickCloseAlert = $event"
           @changeCompon="nameComponent = $event"
@@ -60,6 +60,7 @@
 <script>
 export default {
   name: 'Forms',
+  mixins: ['alertStatus'],
   props: {
     titleHead: {
       type: [String, Number],
@@ -81,10 +82,7 @@ export default {
   },
   data() {
     return {
-      nameComponent: 'RegisterSignIn',
-      title: null,
-      statusClickCloseAlert: false,
-      statusClose: true
+      nameComponent: 'RegisterSignIn'
     };
   }
 };

@@ -61,9 +61,9 @@
           <button-confirm
             :statusLoader="true"
             textButton="add"
-            :classCheck="statusAdd.check"
-            :classCorrect="statusAdd.correct"
-            :classWrong="statusAdd.wrong"
+            :classCheck="check"
+            :classCorrect="correct"
+            :classWrong="wrong"
             :statusDisabled="statusDisabled"
             @clicknow="actionSubmit"
           ></button-confirm>
@@ -79,6 +79,18 @@
 export default {
   name: 'ModelPopUp',
   props: {
+    check: {
+      type: Boolean,
+      default: false
+    },
+    correct: {
+      type: Boolean,
+      default: false
+    },
+    wrong: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       required: true
@@ -106,12 +118,6 @@ export default {
   },
   data() {
     return {
-      statusAdd: {
-        check: false,
-        correct: false,
-        wrong: false,
-        statusDisabled: true
-      },
       allData: {
         name: null,
         price: 0,

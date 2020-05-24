@@ -8,6 +8,7 @@
 
     <!-- START ADMIN CONTENT -->
     <div class="admin__content">
+      <!-- CONTENT TITLE -->
       <div class="admin__content__title">
         <h2>{{ $route.name }}</h2>
       </div>
@@ -27,7 +28,6 @@ import HeaderAdmin from '@/components/Admin/Header/HeaderAdmin';
 
 export default {
   name: 'Admin',
-  mixins: ['dynamicHeightPages'],
   data() {
     return {
       toggle: false,

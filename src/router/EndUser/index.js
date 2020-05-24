@@ -1,11 +1,20 @@
 // ALL IMPORT COMPONENTS
-import About from '@/views/EndUser/About.vue'
+import Home from '@/views/EndUser/Home.vue';
+import About from '@/views/EndUser/About.vue';
 
-// 
+//
 export default [
-    {
-        path: '/about',
-        name: 'About',
-        component: About
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+    meta: {
+      title: 'Elexa'
     }
-]
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
+  }
+];

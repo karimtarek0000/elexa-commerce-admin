@@ -41,8 +41,7 @@ export default {
     $height: auto,
     $backgroundColor: map-get($background, back-first),
     $padding: 0.5rem 1rem,
-    $fontColor: map-get($color, color-first),
-    // $tTransform: uppercase
+    $fontColor: map-get($color, color-first)
   ) {
     border-radius: map-get($border-radius, second);
     box-shadow: map-get($shadow, first);

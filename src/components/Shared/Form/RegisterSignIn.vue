@@ -18,8 +18,7 @@
       <label>password</label>
       <input
         :type="changedStatusPassword.changeTypeInput"
-        v-model="formValidation.password"
-        @keyup="validatePassword"
+        v-model="finalData.password"
         @focus="focusInput($event)"
         @blur="blurInput($event)"
       />
@@ -83,7 +82,7 @@ export default {
   computed: {
     // STATUS DISABLED BTN SUBMIT
     statusDisabledBtnSubmit() {
-      if (this.finalData.email && this.formValidation.password) {
+      if (this.finalData.email && this.finalData.password) {
         return false;
       } else {
         return true;

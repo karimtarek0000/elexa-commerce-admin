@@ -45,6 +45,8 @@ export default {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
+
+      // this.statusFullBrowser = true;
     }
   },
   watch: {
@@ -59,6 +61,11 @@ export default {
         this.closeFullScreen();
       }
     }
+  },
+  mounted() {
+    window.addEventListener('resize', () => {
+      console.log('yes');
+    });
   }
 };
 </script>

@@ -11,7 +11,6 @@
       ]"
       v-for="(category, index) in allCategory"
       :key="index"
-      ref="d"
       @click="categoryOpen(index)"
     >
       <!-- INFO -->

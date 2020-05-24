@@ -28,7 +28,6 @@ export default {
     await whereAndGet(info.nameCollection, info.nameWhere, uid).then(docs => {
       docs.forEach(doc => {
         data = doc.data();
-        context.currentUser = doc.data().name;
       });
     });
     return data;

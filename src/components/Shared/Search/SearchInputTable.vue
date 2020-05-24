@@ -87,6 +87,11 @@ export default {
 .search-table {
   position: relative;
   width: 50%;
+
+  // RESPONSIVE
+  @include respond(1300px) {
+    width: 70%;
+  }
   // INPUT
   &__input {
     position: relative;

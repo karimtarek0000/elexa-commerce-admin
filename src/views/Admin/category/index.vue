@@ -1,9 +1,21 @@
 <template>
-  <div class="category-page setHeight">
+  <div class="category-page">
+    <!-- ALERT STATUS -->
+    <transition name="alert">
+      <alert-status
+        key="1"
+        v-if="statusClickCloseAlert"
+        :title="titles"
+        :visibleSlide="true"
+        :status="statusClickCloseAlert"
+        :statusCorrect="!statusClose"
+        :visibleClose="false"
+      ></alert-status>
+    </transition>
     <!-- NOT YET -->
-    <not-yet nameStatus="category" :status="false"></not-yet>
+    <not-yet nameStatus="category" :status="getAllGategory == 0"></not-yet>
     <!-- ADD BUTTON -->
-    <normal-button nameBtn="add" @normalBtn="c" :status="!statusModel">
+    <normal-button nameBtn="add" @normalBtn="statusModel = true" :status="!statusModel">
       <GSvg nameIcon="add" title="add icon"></GSvg>
     </normal-button>
     <!-- MODEL POP UP -->
@@ -17,11 +29,14 @@
         :statusQuantity="false"
         :statusSelect="false"
         :statusSelectImage="false"
-        @postAllData="v"
+        @postAllData="sendAllCategory"
+        :check="statusCheckData.check"
+        :correct="statusCheckData.correct"
+        :wrong="statusCheckData.wrong"
       ></model-pop-up>
     </transition>
     <!-- CATEGORY -->
-    <category-card v-if="allData.length !== 0" :allCategory="allData"></category-card>
+    <category-card v-if="getAllGategory.length !== 0" :allCategory="getAllGategory"></category-card>
   </div>
 </template>
 
@@ -32,25 +47,55 @@ import CategoryCard from '@/components/Admin/CategoryCard/CategoryCard';
 //
 export default {
   name: 'Category',
-  mixins: ['modelPop', 'dynamicHeightPages'],
+  mixins: ['modelPop', 'alertStatus', 'btnConfirmAndAlert'],
   data() {
-    return {
-      allData: []
-    };
+    return {};
   },
-  methods: {
-    c() {
-      return (this.statusModel = true);
-    },
-    //
-    v(data) {
-      return this.allData.push(data);
+  computed: {
+    // GET ALL CATEGORY
+    getAllGategory() {
+      return this.$store.state.Admin.allCategory;
     }
   },
-  //
+  methods: {
+    // SEND ALL CATEGORY
+    sendAllCategory(nameCategory) {
+      //
+      this.allActionsChangeStatus({ check: true });
+      //
+      this.$store
+        .dispatch('Admin/addAndUpdateCategory', nameCategory)
+        .then(() => {
+          this.allActionsChangeStatus({ correct: true });
+          //
+          setTimeout(() => {
+            this.statusModel = false;
+            this.allActionsChangeStatus({});
+          }, 2000);
+        })
+        .catch(data => {
+          this.allActionsChangeStatus({ check: true, wrong: true, data, statusAlert: true });
+          setTimeout(() => {
+            this.allActionsChangeStatus({});
+          }, 2000);
+        });
+    }
+  },
   components: {
     ModelPopUp,
     CategoryCard
+  },
+  watch: {
+    statusModel(n) {
+      if (!n) {
+        this.allActionsChangeStatus({});
+      }
+    }
+  },
+  mounted() {
+    if (this.getAllGategory.length == 0) {
+      this.$store.dispatch('Admin/getAllCategoryFromDatabase');
+    }
   }
 };
 </script>
@@ -64,6 +109,25 @@ export default {
 
   & > .normal-btn {
     @extend %editNormalBtn;
+  }
+
+  // ALERT STATUS SLIDE
+  .alert__status--slide {
+    top: -110px;
+    z-index: 10000;
+    width: 56%;
+
+    // RESPONSIVE
+    @include respond(tablet-l) {
+      top: -40px;
+    }
+    @include respond(tablet-p) {
+      width: 65%;
+      top: -20px;
+    }
+    @include respond(760px) {
+      width: 77%;
+    }
   }
 }
 </style>

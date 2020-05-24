@@ -35,5 +35,12 @@ const ProfileSettingAdmin = resolve => {
   });
 };
 
+// Not Found
+const NotFound = resolve => {
+  require.ensure(['@/views/PageNotFound/NotFound.vue'], () => {
+    resolve(require('@/views/PageNotFound/NotFound.vue'));
+  });
+};
+
 // ALL EXPORT
-export { Admin, Home, Products, Category, Register, ProfileSettingAdmin };
+export { Admin, Home, Products, Category, Register, ProfileSettingAdmin, NotFound };

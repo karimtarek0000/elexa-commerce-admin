@@ -1,55 +1,17 @@
 // ALL IMPORT COMPONENTS
-// import * as lazilye from '@/router/Lazilye/Admin.js';
 import { currentUser } from '@/firebase/helps/firebaseauth';
-
-////////////////////////////////////////
-// Admin
-const Admin = resolve => {
-  require.ensure(['@/views/Admin/index.vue'], () => {
-    resolve(require('@/views/Admin/index.vue'));
-  });
-};
-// Products
-const Products = resolve => {
-  require.ensure(['@/views/Admin/products/index.vue'], () => {
-    resolve(require('@/views/Admin/products/index.vue'));
-  });
-};
-// Category
-const Category = resolve => {
-  require.ensure(['@/views/Admin/category/index.vue'], () => {
-    resolve(require('@/views/Admin/category/index.vue'));
-  });
-};
-// Home
-const Home = resolve => {
-  require.ensure(['@/views/Admin/home/index.vue'], () => {
-    resolve(require('@/views/Admin/home/index.vue'));
-  });
-};
-// Register
-const Register = resolve => {
-  require.ensure(['@/views/Admin/Register/index.vue'], () => {
-    resolve(require('@/views/Admin/Register/index.vue'));
-  });
-};
-// ProfileSettingAdmin
-const ProfileSettingAdmin = resolve => {
-  require.ensure(['@/views/Admin/ProfileSetting/index.vue'], () => {
-    resolve(require('@/views/Admin/ProfileSetting/index.vue'));
-  });
-};
+import * as lazily from '@/router/Lazilye/index.js';
 
 //
 export default [
   {
     path: '/admin',
-    component: Admin,
+    component: lazily.Admin,
     children: [
       {
         path: '',
         name: 'home',
-        component: Home,
+        component: lazily.Home,
         meta: {
           statusAdmin: true,
           title: 'Home'
@@ -58,7 +20,7 @@ export default [
       {
         path: 'products',
         name: 'products',
-        component: Products,
+        component: lazily.Products,
         meta: {
           statusAdmin: true,
           title: 'Products'
@@ -67,7 +29,7 @@ export default [
       {
         path: 'category',
         name: 'category',
-        component: Category,
+        component: lazily.Category,
         meta: {
           statusAdmin: true,
           title: 'Category'
@@ -78,7 +40,7 @@ export default [
   {
     path: '/admin/register',
     name: 'Register',
-    component: Register,
+    component: lazily.Register,
     meta: {
       title: 'Admin Register'
     },
@@ -94,7 +56,7 @@ export default [
   {
     path: '/admin/setting',
     name: 'ProfileSettingAdmin',
-    component: ProfileSettingAdmin,
+    component: lazily.ProfileSettingAdmin,
     meta: {
       statusAdmin: true,
       title: 'Profile Setting Admin'

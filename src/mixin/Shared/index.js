@@ -168,6 +168,40 @@ const actionsForms = {
     return this.$emit('closeAlert', false);
   }
 };
+// ALERT STATUS
+const alertStatus = {
+  data() {
+    return {
+      titles: null,
+      statusClickCloseAlert: false,
+      statusClose: true
+    };
+  }
+};
+
+// BTN CONFIRM AND ALERT
+const btnConfirmAndAlert = {
+  data() {
+    return {
+      // // BTN CONFIRM
+      statusCheckData: {
+        check: false,
+        correct: false,
+        wrong: false
+      }
+    };
+  },
+  methods: {
+    // ALL ACTIONS WILL BE RUNNING WITH AJAX CALL
+    allActionsChangeStatus({ check = false, wrong = false, correct = false, statusAlert = false, data = null }) {
+      this.statusCheckData.wrong = wrong;
+      this.statusCheckData.check = check;
+      this.statusCheckData.correct = correct;
+      this.statusClickCloseAlert = statusAlert;
+      this.titles = data;
+    }
+  }
+};
 
 // EXPORT DEFAULT
-export default [actionsForms];
+export default [actionsForms, alertStatus, btnConfirmAndAlert];
