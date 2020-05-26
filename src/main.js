@@ -26,18 +26,18 @@ components.forEach(comp => {
 });
 
 // GARDS - BEFORE EACH
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(cur => cur.meta.statusAdmin)) {
-//     const status = currentUser();
-//     if (status) {
-//       next();
-//     } else {
-//       next({ name: 'Register' });
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(cur => cur.meta.statusAdmin)) {
+    const status = currentUser();
+    if (status) {
+      next();
+    } else {
+      next({ name: 'Register' });
+    }
+  } else {
+    next();
+  }
+});
 
 // GARDS - AFTER EACH
 router.afterEach((to, from) => {
