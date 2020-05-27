@@ -1,9 +1,9 @@
 //
-import { NAMECOLLECTIONPROFILEADMIN } from '@/store/Type/index';
+import * as Type from '@/store/Type/index';
 
 //
 export default {
-  nameCollection: NAMECOLLECTIONPROFILEADMIN,
+  nameCollection: Type.NAME_COLLECTION_PROFILE_ADMIN,
   statusAside: false,
   // ----------------
   allCategory: []

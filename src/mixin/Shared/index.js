@@ -187,17 +187,26 @@ const btnConfirmAndAlert = {
       statusCheckData: {
         check: false,
         correct: false,
-        wrong: false
+        wrong: false,
+        statusCorrect: false
       }
     };
   },
   methods: {
     // ALL ACTIONS WILL BE RUNNING WITH AJAX CALL
-    allActionsChangeStatus({ check = false, wrong = false, correct = false, statusAlert = false, data = null }) {
+    allActionsChangeStatus({
+      check = false,
+      wrong = false,
+      correct = false,
+      statusAlert = false,
+      statusCorrect = false,
+      data = null
+    }) {
       this.statusCheckData.wrong = wrong;
       this.statusCheckData.check = check;
       this.statusCheckData.correct = correct;
       this.statusClickCloseAlert = statusAlert;
+      this.statusCheckData.statusCorrect = statusCorrect;
       this.titles = data;
     }
   }

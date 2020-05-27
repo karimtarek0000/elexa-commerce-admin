@@ -61,11 +61,6 @@ export default {
         this.closeFullScreen();
       }
     }
-  },
-  mounted() {
-    window.addEventListener('resize', () => {
-      console.log('yes');
-    });
   }
 };
 </script>

@@ -10,7 +10,7 @@
     <div class="admin__content">
       <!-- CONTENT TITLE -->
       <div class="admin__content__title">
-        <h2>{{ $route.name }}</h2>
+        <h2>{{ $route.name == 'admin' ? 'home' : $route.name }}</h2>
       </div>
 
       <!-- ROUTER VIEW -->
@@ -25,6 +25,7 @@
 //
 import AsideNav from '@/components/Admin/AsideNav/AsideNav';
 import HeaderAdmin from '@/components/Admin/Header/HeaderAdmin';
+import * as Type from '@/store/Type/index';
 
 export default {
   name: 'Admin',
@@ -45,7 +46,7 @@ export default {
         this.statusButtonAside = true;
       }
       // WILL BE CHNAGE IN STATE WIDTH MUTATIONS
-      this.$store.commit('Admin/chnageStatusAside', this.toggle);
+      this.$store.commit(Type.CHANGE_STATUS_ASIDE, this.toggle);
     }
   },
   components: {

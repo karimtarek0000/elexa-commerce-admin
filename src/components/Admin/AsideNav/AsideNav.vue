@@ -7,7 +7,7 @@
 
     <!-- START LOGO -->
     <div class="admin__aside__logo">
-      <router-link :to="{ name: 'home' }" tag="svg">
+      <router-link :to="{ name: 'admin' }" tag="svg">
         <use xlink:href="@/assets/image/icons/sprite.svg#icon-elexa-logo"></use>
       </router-link>
     </div>
@@ -20,7 +20,7 @@
         active-class="admin__aside__item--active"
         :exact="index == 0"
         tag="li"
-        :to="{ name: item }"
+        :to="{ name: item == 'home' ? 'admin' : item }"
         v-for="(item, index) in nav.items"
         :key="index"
       >
@@ -39,6 +39,9 @@
 </template>
 
 <script>
+//
+import * as Type from '@/store/Type/index';
+//
 export default {
   name: 'AsideNav',
   props: {
@@ -67,7 +70,7 @@ export default {
       // CHANGE TOGGLE
       this.toggleNav = !this.toggleNav;
       // WILL BE CHANGE IN STATE VUEX
-      this.$store.commit('Admin/chnageStatusAside', this.toggleNav);
+      this.$store.commit(Type.CHANGE_STATUS_ASIDE, this.toggleNav);
       // CUSTOM EVENT ( ADD CLASS )
       this.$emit('addClass', this.toggleNav);
     }

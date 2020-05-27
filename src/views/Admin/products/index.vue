@@ -14,6 +14,7 @@
         v-if="statusModel"
         @clickExit="statusModel = $event"
         title="add new product"
+        :getAllCategory="getAllGategory"
         @postAllData="getNewData"
       ></model-pop-up>
     </transition>
@@ -238,6 +239,10 @@ export default {
       } else {
         return 'no';
       }
+    },
+    // GET ALL CATEGORY
+    getAllGategory() {
+      return this.$store.state.Admin.allCategory;
     }
   },
   // COMPONENTS

@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
     if (status) {
       next();
     } else {
-      next({ name: 'Register' });
+      next({ name: 'register' });
     }
   } else {
     next();
@@ -46,7 +46,7 @@ router.afterEach((to, from) => {
 
   // NEXT TICK
   Vue.nextTick(() => {
-    document.title = to.meta.title || defaultTitle;
+    document.title = `Elexa - ${to.meta.title}` || defaultTitle;
   });
 });
 

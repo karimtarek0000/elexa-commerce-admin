@@ -10,7 +10,7 @@ export default [
     children: [
       {
         path: '',
-        name: 'home',
+        name: 'admin',
         component: lazily.Home,
         meta: {
           statusAdmin: true,
@@ -39,7 +39,7 @@ export default [
   },
   {
     path: '/admin/register',
-    name: 'Register',
+    name: 'register',
     component: lazily.Register,
     meta: {
       title: 'Admin Register'
@@ -47,7 +47,7 @@ export default [
     beforeEnter(to, from, next) {
       const status = currentUser();
       if (status) {
-        next({ name: 'home' });
+        next({ name: 'admin' });
       } else {
         next();
       }

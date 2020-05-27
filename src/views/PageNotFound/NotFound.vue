@@ -26,9 +26,9 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.fullPath.includes('admin')) {
-        vm.name = 'home';
+        vm.name = 'admin';
       } else {
-        vm.name = 'about';
+        vm.name = 'home';
       }
     });
   }

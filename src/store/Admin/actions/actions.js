@@ -1,44 +1,46 @@
 //
 import { setData, loopIntoCollections } from '@/firebase/helps/firestore';
-import { NAMECOLLECTIONCATEGORY } from '@/store/Type/index';
+import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
 
 export default {
   // ADD CATEGORY
-  addAndUpdateCategory({ commit, state }, nameDoc) {
-    //
-    // if (state.allCategory.some(cur => cur === nameDoc)) return false;
-
+  [Type.ADD_AND_UPDATE_CATEGORY]({ commit, state }, nameDoc) {
     return new Promise((resolve, reject) => {
-      const ref = db.collection(NAMECOLLECTIONCATEGORY).doc(nameDoc);
-
+      // REF
+      const ref = db.collection(Type.NAME_COLLECTION_CATEGORY).doc(nameDoc);
+      // PROMISE
       ref
         .get()
         .then(doc => {
           if (!doc.exists) {
             ref.set({});
             // ADD IN ALL CATEGORY A NEW CATEGORY
-            commit('setAllCategory', nameDoc);
+            commit(Type.SET_ALL_CATEGORY, nameDoc);
             // WIIL BE RETURN RESOLVE
-            resolve('done');
+            resolve('create category successfully');
           } else {
             // WIIL BE RETURN REJECT
             reject('exists before please change name and add again');
           }
         })
         .catch(() => {
+          // WILL BE RETURN REJECT
           reject('somthing error please check internet');
         });
     });
-
-    // SET CATEGORY IN FIREBASE
-    // await setData(NAMECOLLECTIONCATEGORY, nameDoc);
   },
-  // GET ALL CATEGORY FROM DATA BASE
-  getAllCategoryFromDatabase({ commit }) {
-    loopIntoCollections(NAMECOLLECTIONCATEGORY).then(docs => {
-      docs.forEach(doc => {
-        commit('setAllCategory', doc.id);
+  // GET ALL CATEGORY FROM FIREBASE
+  [Type.GET_ALL_CATEGORY_FROM_DATABASE]({ commit }) {
+    // WILL BE PROMISE RETURN RESOLVE OR REJECT
+    return new Promise((resolve, reject) => {
+      loopIntoCollections(Type.NAME_COLLECTION_CATEGORY).then(docs => {
+        if (docs) {
+          docs.forEach(doc => commit(Type.SET_ALL_CATEGORY, doc.id));
+          resolve();
+        } else {
+          reject();
+        }
       });
     });
   }

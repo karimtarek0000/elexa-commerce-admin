@@ -6,12 +6,13 @@ import Shared from './Shared/index.js';
 
 // ALL ROUTES
 const routes = [...Admin, ...EndUser, ...Shared];
-
-Vue.use(VueRouter);
-
 //
-export default new VueRouter({
+Vue.use(VueRouter);
+//
+const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 });
+//
+export default router;

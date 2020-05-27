@@ -5,7 +5,6 @@ import actions from './actions/actions';
 
 //
 export default {
-  namespaced: true,
   state,
   getters,
   mutations,

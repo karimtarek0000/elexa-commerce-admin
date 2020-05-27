@@ -1,10 +1,13 @@
+//
+import * as Type from '@/store/Type/index';
+//
 export default {
   // CHANGE STATUS ASIDE
-  chnageStatusAside(state, payload) {
+  [Type.CHANGE_STATUS_ASIDE](state, payload) {
     state.statusAside = payload;
   },
   // SET ALL CATEGORY
-  setAllCategory(state, payload) {
+  [Type.SET_ALL_CATEGORY](state, payload) {
     state.allCategory.push(payload);
   }
 };

@@ -18,7 +18,7 @@
         <!-- SELECT IMAGE -->
         <div class="model-pop-up__category model-pop-up__category--select-image" v-if="statusSelectImage">
           <upload-file
-            addImageAvatar="image-global/avatar.png"
+            addImageAvatar="image-global/item.png"
             nameLabel="select image product"
             @postFile="allData.image = $event"
           ></upload-file>
@@ -26,17 +26,17 @@
         <!-- PRICE ITEM -->
         <div class="model-pop-up__category model-pop-up__category--price-item" v-if="statusPrice">
           <label for="priceItem">enter price</label>
-          <input type="number" name="priceItem" v-model="allData.price" />
+          <input type="number" name="priceItem" min="0" v-model="allData.price" />
         </div>
         <!-- DISCOUNT ITEM -->
         <div class="model-pop-up__category model-pop-up__category--discount-item" v-if="statusDiscount">
           <label for="discountItem">enter discount</label>
-          <input type="number" name="discountItem" v-model="allData.discount" />
+          <input type="number" name="discountItem" min="0" v-model="allData.discount" />
         </div>
         <!-- QUANTITY ITEM -->
         <div class="model-pop-up__category model-pop-up__category--quantity-item" v-if="statusQuantity">
           <label for="quantityItem">enter quantity</label>
-          <input type="number" name="quantityItem" v-model="allData.quantity" />
+          <input type="number" name="quantityItem" min="0" v-model="allData.quantity" />
         </div>
         <!-- SELECT CATEGORY -->
         <div class="model-pop-up__category model-pop-up__category--select-category" v-if="statusSelect">
@@ -49,9 +49,7 @@
             </div>
             <!--  -->
             <select v-model="allData.selectCategory">
-              <option value="one">one</option>
-              <option value="two">two</option>
-              <option value="three">three</option>
+              <option v-for="(category, index) in getAllCategory" :key="index" :value="category" v-text="category"></option>
             </select>
           </div>
         </div>
@@ -114,6 +112,10 @@ export default {
     statusSelectImage: {
       type: Boolean,
       default: true
+    },
+    getAllCategory: {
+      type: Array,
+      default: null
     }
   },
   data() {

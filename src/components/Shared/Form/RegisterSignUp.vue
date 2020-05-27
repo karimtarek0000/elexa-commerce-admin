@@ -82,7 +82,7 @@
 
 <script>
 //
-import * as Types from '@/store/Type/index';
+import * as Type from '@/store/Type/index';
 import { mapActions } from 'vuex';
 //
 export default {
@@ -113,9 +113,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      checkInfo: Types.CHECKINFO,
-      createNewAccount: Types.CREATENEWACCOUNT,
-      createProfileUser: Types.CREATEPROFILEUSER
+      checkInfo: Type.CHECK_INFO,
+      createNewAccount: Type.CREATE_NEW_ACCOUNT,
+      createProfileUser: Type.CREATE_PROFILE_USER
     }),
     // ACTION SUBMIT
     actionSubmitAdmin() {

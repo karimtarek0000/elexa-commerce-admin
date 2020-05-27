@@ -13,7 +13,6 @@ export default {
   props: {
     status: {
       type: Boolean,
-      required: false,
       default: false
     },
     selectColorLoader: {

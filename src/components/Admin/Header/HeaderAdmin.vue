@@ -15,21 +15,20 @@
 //
 import SearchInput from '@/components/Shared/Search/SearchInput';
 import User from '@/components/Admin/OptionsUsers/User';
-import * as Types from '@/store/Type/index';
+import * as Type from '@/store/Type/index';
 import { mapActions } from 'vuex';
 //
 export default {
   name: 'HeaderAdmin',
   data() {
     return {
-      userName: '',
-      d: '@/assets/image/image-global/avatar.png'
+      userName: ''
     };
   },
   methods: {
     ...mapActions({
-      exitSignOut: Types.EXITSIGNOUT,
-      getDataUser: Types.GETDATAUSER
+      exitSignOut: Type.EXIT_SIGN_OUT,
+      getDataUser: Type.GET_DATA_USER
     }),
     // GET DATA USER
     dataUser() {
@@ -40,7 +39,7 @@ export default {
     // LOG OUT ACTIONS
     logOutAction() {
       this.exitSignOut().then(() => {
-        this.$router.replace({ name: 'Register' });
+        this.$router.replace({ name: 'register' });
       });
     }
   },

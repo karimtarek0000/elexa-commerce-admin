@@ -40,6 +40,9 @@
 </template>
 
 <script>
+//
+import * as Type from '@/store/Type/index';
+//
 export default {
   name: 'RegisterSignIn',
   mixins: ['actionsForms'],
@@ -63,7 +66,7 @@ export default {
       this.check = true;
       // ENTER SIGN IN
       this.$store
-        .dispatch('Shared/enterSignIn', { email: this.finalData.email, password: this.finalData.password })
+        .dispatch(Type.ENTER_SIGN_IN, { email: this.finalData.email, password: this.finalData.password })
         .then(() => {
           this.correct = true;
           // RUN ALL ACTION

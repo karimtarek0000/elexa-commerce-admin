@@ -45,7 +45,7 @@
           @changeCompon="nameComponent = $event"
           :statusAlertNow="statusClickCloseAlert"
           :nameCollection="nameCollection"
-          targetPageName="home"
+          targetPageName="admin"
           :statusInputId="statusInputId"
           :statusNameFunctionSubmit="statusNameFunctionSubmit"
         >
