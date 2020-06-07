@@ -7,12 +7,12 @@
     </div>
     <!-- SELECT -->
     <div class="upload-file__select-image">
-      <label for="file" v-text="nameLabel"></label>
+      <label @click="$refs.file.click()" v-text="nameLabel"></label>
       <div class="upload-file__custom-input">
-        <input type="file" id="file" @change="getData($event)" />
+        <input type="file" ref="file" @change="getData($event)" />
         <div class="edit">
           <button>upload image</button>
-          <p>{{ nameFile }}</p>
+          <p>{{ nameFile.name ? nameFile.name : nameFile }}</p>
         </div>
       </div>
     </div>
@@ -44,7 +44,8 @@ export default {
   methods: {
     // GET DATA
     getData(el) {
-      this.nameFile = el.target.files[0].name;
+      // NAME FILE
+      this.nameFile = el.target.files[0];
       //   WILL BE POST DATA OTHER COMPONENTS
       this.$emit('postFile', this.nameFile);
     }
@@ -55,30 +56,40 @@ export default {
 <style lang="scss">
 //
 .upload-file {
-  //
+  width: 57px;
+  // SELECT
   &__select {
     display: flex;
     align-items: center;
   }
-  //
+  // PREVIEW IMAGE
   &__preview-image {
     width: 80px;
     height: 80px;
     margin-right: 1.5rem;
     border-radius: 50%;
     flex-shrink: 0;
+    overflow: hidden;
+    border: 1px solid map-get($background, back-fifth);
 
-    //
+    // IMAGE
     & img {
       max-width: 100%;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
     }
+  }
+  //
+  &__select-image {
+    width: calc(100% - 100px);
   }
   // CUSTOM INPUT
   &__custom-input {
     position: relative;
     padding: 10px;
-    width: 300px;
-    height: 50px;
+    width: 500px;
+    height: 40px;
     background-color: transparent;
 
     // INPUT TYPE FILE
@@ -100,8 +111,6 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      height: 100%;
       @include translate('top', 'left', 0, 0);
       z-index: 1;
 
@@ -115,6 +124,7 @@ export default {
         ) {
           border-radius: map-get($border-radius, second);
           color: map-get($color, color-first);
+          margin-right: 10px;
         }
       }
 

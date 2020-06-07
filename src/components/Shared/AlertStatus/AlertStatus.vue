@@ -78,6 +78,7 @@ export default {
     padding: 2rem;
     width: 60%;
     @include translate('top', 'left', 2%, 50%);
+    z-index: 10000;
   }
 
   // CLOSE

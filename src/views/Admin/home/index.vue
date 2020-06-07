@@ -1,7 +1,7 @@
 <template>
   <section class="home-page">
     <!-- START CARD OVERVIEW -->
-    <card-overview></card-overview>
+    <card-overview :countCategory="getAllCategory || 0"></card-overview>
     <!-- END CARD OVERVIEW -->
   </section>
 </template>
@@ -9,14 +9,26 @@
 <script>
 //
 import CardOverview from '@/components/Admin/CardOverview/CardOverview';
+import * as Type from '@/store/Type/index';
 //
 export default {
   name: 'Home',
   data() {
     return {};
   },
+  computed: {
+    // GET ALL CATEGORY
+    getAllCategory() {
+      return this.$store.state.Admin.allCategory.length;
+    }
+  },
   components: {
     CardOverview
+  },
+  created() {
+    if (this.getAllCategory == 0) {
+      this.$store.dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE);
+    }
   }
 };
 </script>

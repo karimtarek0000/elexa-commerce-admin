@@ -13,14 +13,15 @@
         <!-- NAME ITEM -->
         <div class="model-pop-up__category model-pop-up__category--name-item">
           <label for="nameItem">enter name</label>
-          <input type="text" name="nameItem" v-model="allData.name" placeholder="enter name" />
+          <input type="text" name="nameItem" v-model="allData.name" placeholder="enter name" ref="nameItem" />
         </div>
         <!-- SELECT IMAGE -->
         <div class="model-pop-up__category model-pop-up__category--select-image" v-if="statusSelectImage">
           <upload-file
             addImageAvatar="image-global/item.png"
+            :sendNewImage="sendNewImage"
             nameLabel="select image product"
-            @postFile="allData.image = $event"
+            @postFile="allData.dataImg = $event"
           ></upload-file>
         </div>
         <!-- PRICE ITEM -->
@@ -113,6 +114,10 @@ export default {
       type: Boolean,
       default: true
     },
+    sendNewImage: {
+      type: String,
+      required: false
+    },
     getAllCategory: {
       type: Array,
       default: null
@@ -124,6 +129,7 @@ export default {
         name: null,
         price: 0,
         discount: 0,
+        dataImg: null,
         image: null,
         quantity: 0,
         selectCategory: null
@@ -152,7 +158,7 @@ export default {
       if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity) {
         // CONVERT DATA TO NUMBER FROM INPUT
         const price = parseFloat(this.allData.price);
-        const discount = parseFloat(this.allData.discount);
+        const discount = parseFloat(this.allData.discount) || 0;
         const quantity = parseFloat(this.allData.quantity);
         // ASSIGN DATA INTO OBJECT
         const finalData = Object.assign({}, this.allData, { price, discount, quantity });
@@ -167,6 +173,18 @@ export default {
     sendEventCancel() {
       return this.$emit('clickExit', false);
     }
+  },
+  watch: {
+    'allData.dataImg'() {
+      this.$emit('sendDataImg', this.allData.dataImg);
+    }
+  },
+  mounted() {
+    // VAR INPUT NAME ITEM
+    const inputNameItem = this.$refs.nameItem;
+
+    // INIT INPUT WILL BE FOCUS IN
+    if (inputNameItem) inputNameItem.focus();
   }
 };
 </script>

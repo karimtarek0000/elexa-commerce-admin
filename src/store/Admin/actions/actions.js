@@ -1,5 +1,6 @@
 //
-import { setData, loopIntoCollections } from '@/firebase/helps/firestore';
+import { loopIntoCollections, createSubCollection } from '@/firebase/helps/firestore';
+import { addImageAndGetImage } from '@/firebase/helps/firestorge';
 import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
 
@@ -43,5 +44,22 @@ export default {
         }
       });
     });
+  },
+  // ADD PRODUCTS IN CATEGORY
+  [Type.ADD_PRODUCT_IN_CATEGORY]({ commit }, info) {
+    return new Promise((resolve, reject) => {
+      createSubCollection(Type.NAME_COLLECTION_CATEGORY, info.nameDoc, info.name, info.data)
+        .then(() => {
+          addImageAndGetImage(info.image);
+          resolve('create products successfully');
+        })
+        .catch(() => {
+          reject('some error please try again!');
+        });
+    });
+  },
+  // PREVIEW IMAGE PRODUCTS
+  [Type.PREVIEW_IMAGE_PRODUCT]({ commit }, dataImage) {
+    return addImageAndGetImage(Type.FOLDER_NAME_STORAGE, dataImage);
   }
 };

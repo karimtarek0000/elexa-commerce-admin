@@ -3,3 +3,22 @@
   position: absolute;
   @include translate('top', 'right', -4.5rem, 2.2rem);
 }
+
+// ALERT STATUS SLIDE
+%alert-status-slide {
+  top: -110px;
+  z-index: 10000;
+  width: 56%;
+
+  // RESPONSIVE
+  @include respond(tablet-l) {
+    top: -40px;
+  }
+  @include respond(tablet-p) {
+    width: 65%;
+    top: -20px;
+  }
+  @include respond(760px) {
+    width: 77%;
+  }
+}

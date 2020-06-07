@@ -209,6 +209,13 @@ const btnConfirmAndAlert = {
       this.statusCheckData.statusCorrect = statusCorrect;
       this.titles = data;
     }
+  },
+  watch: {
+    statusModel(n) {
+      if (!n) {
+        this.allActionsChangeStatus({});
+      }
+    }
   }
 };
 

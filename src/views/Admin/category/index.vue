@@ -14,6 +14,7 @@
     </transition>
     <!-- NOT YET -->
     <not-yet nameStatus="category" :status="getAllGategory == 0 || statusError"></not-yet>
+    <!--  -->
     <loader class="beforeSend" :status="statusLoader" selectColorLoader="#0064ff"></loader>
     <!-- ADD BUTTON -->
     <normal-button nameBtn="add" @normalBtn="statusModel = true" :status="!statusModel">
@@ -95,13 +96,6 @@ export default {
     ModelPopUp,
     CategoryCard
   },
-  watch: {
-    statusModel(n) {
-      if (!n) {
-        this.allActionsChangeStatus({});
-      }
-    }
-  },
   created() {
     if (this.getAllGategory.length == 0) {
       this.statusLoader = true;
@@ -132,21 +126,7 @@ export default {
 
   // ALERT STATUS SLIDE
   .alert__status--slide {
-    top: -110px;
-    z-index: 10000;
-    width: 56%;
-
-    // RESPONSIVE
-    @include respond(tablet-l) {
-      top: -40px;
-    }
-    @include respond(tablet-p) {
-      width: 65%;
-      top: -20px;
-    }
-    @include respond(760px) {
-      width: 77%;
-    }
+    @extend %alert-status-slide;
   }
   // LOADER
   .beforeSend {

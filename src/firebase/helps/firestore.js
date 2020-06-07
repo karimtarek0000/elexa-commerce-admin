@@ -11,6 +11,22 @@ const getData = (nameCollection, nameDoc = null) => {
     .get();
 };
 
+// ADD DATA
+const setData = (nameCollection, nameDoc, data = {}) => {
+  return db
+    .collection(nameCollection)
+    .doc(nameDoc)
+    .set(data);
+};
+
+// ADD DATA
+const createSubCollection = (nameCollection, nameDoc, name, data) => {
+  return db
+    .collection(nameCollection)
+    .doc(nameDoc)
+    .set({ [name]: data }, { merge: true });
+};
+
 // LOOP INTO COLLECTIONS
 const loopIntoCollections = nameCollection => {
   return db.collection(nameCollection).get();
@@ -26,14 +42,6 @@ const onSnapShot = (nameCollection, nameDoc) => {
     });
 };
 
-// ADD DATA
-const setData = (nameCollection, nameDoc, data = {}) => {
-  return db
-    .collection(nameCollection)
-    .doc(nameDoc)
-    .set(data);
-};
-
 // WHERE AND GET
 const whereAndGet = (nameCollection, nameWhere, equalData) => {
   return db
@@ -43,4 +51,4 @@ const whereAndGet = (nameCollection, nameWhere, equalData) => {
 };
 
 // ALL EXPORTS
-export { getData, setData, whereAndGet, loopIntoCollections, onSnapShot };
+export { getData, setData, whereAndGet, loopIntoCollections, onSnapShot, createSubCollection };

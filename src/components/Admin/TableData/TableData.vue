@@ -20,7 +20,7 @@
         <span class="table-info__data name" v-text="data.name"></span>
         <span class="table-info__data price"><span>&dollar;</span>{{ data.price }}</span>
         <span class="table-info__data discount" v-text="data.discount"></span>
-        <span class="table-info__data quantity" v-text="data.quantity">5</span>
+        <span class="table-info__data quantity" v-text="data.quantity"></span>
         <span class="table-info__data edit">
           <slot name="icon-edit"></slot>
         </span>
@@ -116,8 +116,7 @@ export default {
 
     //
     &:nth-child(even) {
-      background-color: map-get($background, back-ninth);
-      color: white;
+      background-color: map-get($background, back-fifth);
     }
   }
 
@@ -126,16 +125,16 @@ export default {
     display: table-cell;
     padding: 10px;
     border: 0.5px solid;
-    border-color: transparent transparent black black;
+    border-color: transparent transparent map-get($background, back-eleventh) map-get($background, back-eleventh);
 
-    //
+    // ACTIVE
     &--active {
       background-color: map-get($background, back-eighth);
     }
 
     // LAST OF TYPE
     &:last-of-type {
-      border-right-color: black;
+      border-right-color: map-get($background, back-eleventh);
     }
   }
 }

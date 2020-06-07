@@ -1,9 +1,21 @@
 <template>
-  <section class="products-page setHeight">
+  <section class="products-page">
+    <!-- ALERT STATUS -->
+    <transition name="alert">
+      <alert-status
+        key="1"
+        v-if="statusClickCloseAlert"
+        :title="titles"
+        :visibleSlide="true"
+        :status="statusClickCloseAlert"
+        :statusCorrect="statusCheckData.statusCorrect"
+        :visibleClose="false"
+      ></alert-status>
+    </transition>
     <!-- ALERT NOT YET -->
     <not-yet nameStatus="products" :status="vv.length == 0"></not-yet>
     <!-- NORMAL BUTTON ADD -->
-    <normal-button nameBtn="add" @normalBtn="c" :status="!statusModel">
+    <normal-button nameBtn="add" @normalBtn="statusModel = true" :status="!statusModel">
       <GSvg nameIcon="add" title="add icon"></GSvg>
     </normal-button>
     <!-- LOADER PAGE -->
@@ -12,10 +24,15 @@
     <transition name="model">
       <model-pop-up
         v-if="statusModel"
-        @clickExit="statusModel = $event"
         title="add new product"
+        :check="statusCheckData.check"
+        :correct="statusCheckData.correct"
+        :wrong="statusCheckData.wrong"
         :getAllCategory="getAllGategory"
-        @postAllData="getNewData"
+        :sendNewImage="imageFromDb"
+        @sendDataImg="testing"
+        @clickExit="statusModel = $event"
+        @postAllData="sendAllProducts"
       ></model-pop-up>
     </transition>
     <!-- PRODUCTS PAGE ACTIONS -->
@@ -77,7 +94,12 @@
     </div>
     <!-- ALL PRODUCTS TABLE -->
     <div class="products-page__all-products-tabel" v-if="!statusGrid">
-      <table-data :headerData="titles" :bodyData="newDataFilter" @dataFilter="filterBy = $event" @deleteItem="deleteItemFromData">
+      <table-data
+        :headerData="titlesTable"
+        :bodyData="newDataFilter"
+        @dataFilter="filterBy = $event"
+        @deleteItem="deleteItemFromData"
+      >
         <GSvg slot="icon-edit" nameIcon="edit"></GSvg>
         <GSvg slot="icon-delete" nameIcon="delete"></GSvg>
       </table-data>
@@ -95,10 +117,11 @@
 import ModelPopUp from '@/components/Admin/ModelPopUp/ModelPopUp';
 import CardView from '@/components/Admin/CardView/CardView';
 import TableData from '@/components/Admin/TableData/TableData';
+import * as Type from '@/store/Type/index';
 //
 export default {
   name: 'Products',
-  mixins: ['modelPop'],
+  mixins: ['modelPop', 'alertStatus', 'btnConfirmAndAlert'],
   data() {
     return {
       filterBy: 'name',
@@ -154,8 +177,25 @@ export default {
           quantity: 40
         }
       ],
-      titles: ['#', 'name', 'price', 'discount', 'quantity', 'edit', 'delete']
+      titlesTable: ['#', 'name', 'price', 'discount', 'quantity', 'edit', 'delete'],
+      imageFromDb: null
     };
+  },
+  computed: {
+    // CHANGE PLACEHOLDER
+    changePlaceHolder() {
+      if (this.filterBy == 'name') {
+        return `search in table with ${this.filterBy}`;
+      } else if (this.filterBy == 'price' || this.filterBy == 'discount' || this.filterBy == 'quantity') {
+        return `search in table with ${this.filterBy} - can use filter > <`;
+      } else {
+        return 'no';
+      }
+    },
+    // GET ALL CATEGORY
+    getAllGategory() {
+      return this.$store.state.Admin.allCategory;
+    }
   },
   methods: {
     // ASC DATA
@@ -170,11 +210,28 @@ export default {
       this.sort.asc = false;
       this.sort.desc = true;
     },
-    c() {
-      return (this.statusModel = true);
-    },
-    getNewData(data) {
-      return this.vv.push(data);
+    // SEND ALL CATEGORY
+    sendAllProducts(dataProducts) {
+      // DESTRUCTRING OBJECT
+      const { selectCategory, dataImg, ...data } = dataProducts;
+      // RUN ALL ACTION WILL CLICK SEND DATA BASE
+      this.allActionsChangeStatus({ check: true });
+      // AJAX CALL WILL BE SEND NAME PRODUCTS
+      this.$store
+        .dispatch(Type.ADD_PRODUCT_IN_CATEGORY, { nameDoc: selectCategory, name: data.name, image: dataImg, data })
+        .then(data => {
+          this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, data });
+          // SET TIME OUT
+          setTimeout(() => {
+            // WILL BE CLOSE MODEL
+            this.statusModel = false;
+            // ALL ACTIONS CHANGE STATUS
+            this.allActionsChangeStatus({ check: true, correct: true });
+          }, 2000);
+        })
+        .catch(data => {
+          console.log('no some error');
+        });
     },
     // GET PAGE
     getPage(page) {
@@ -211,6 +268,12 @@ export default {
           this.newDataFilter = this.vv;
         }
       });
+    },
+    // test
+    testing(data) {
+      return this.$store.dispatch(Type.PREVIEW_IMAGE_PRODUCT, data).then(data => {
+        this.imageFromDb = data;
+      });
     }
   },
   watch: {
@@ -227,29 +290,20 @@ export default {
       } else {
         this.sort.statusSort = false;
       }
-    }
-  },
-  computed: {
-    // CHANGE PLACEHOLDER
-    changePlaceHolder() {
-      if (this.filterBy == 'name') {
-        return `search in table with ${this.filterBy}`;
-      } else if (this.filterBy == 'price' || this.filterBy == 'discount' || this.filterBy == 'quantity') {
-        return `search in table with ${this.filterBy} - can use filter > <`;
-      } else {
-        return 'no';
-      }
     },
-    // GET ALL CATEGORY
-    getAllGategory() {
-      return this.$store.state.Admin.allCategory;
+    statusModel(n) {
+      if (!n) {
+        this.imageFromDb = null;
+      }
     }
   },
-  // COMPONENTS
   components: {
     ModelPopUp,
     CardView,
     TableData
+  },
+  created() {
+    if (this.getAllGategory.length == 0) this.$store.dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE);
   }
 };
 </script>
@@ -342,6 +396,18 @@ export default {
         }
       }
     }
+  }
+
+  // ALERT STATUS SLIDE
+  .alert__status--slide {
+    @extend %alert-status-slide;
+  }
+
+  //
+  .loader__icon {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
   }
 }
 </style>
