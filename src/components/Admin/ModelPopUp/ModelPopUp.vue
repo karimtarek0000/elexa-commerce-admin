@@ -21,7 +21,7 @@
             addImageAvatar="image-global/item.png"
             :sendNewImage="sendNewImage"
             nameLabel="select image product"
-            @postFile="allData.dataImg = $event"
+            @postFile="allData.image = $event"
           ></upload-file>
         </div>
         <!-- PRICE ITEM -->
@@ -129,7 +129,6 @@ export default {
         name: null,
         price: 0,
         discount: 0,
-        dataImg: null,
         image: null,
         quantity: 0,
         selectCategory: null
@@ -175,8 +174,8 @@ export default {
     }
   },
   watch: {
-    'allData.dataImg'() {
-      this.$emit('sendDataImg', this.allData.dataImg);
+    'allData.image'() {
+      this.$emit('sendDataImg', this.allData.image);
     }
   },
   mounted() {

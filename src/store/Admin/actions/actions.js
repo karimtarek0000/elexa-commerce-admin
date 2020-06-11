@@ -50,7 +50,6 @@ export default {
     return new Promise((resolve, reject) => {
       createSubCollection(Type.NAME_COLLECTION_CATEGORY, info.nameDoc, info.name, info.data)
         .then(() => {
-          addImageAndGetImage(info.image);
           resolve('create products successfully');
         })
         .catch(() => {

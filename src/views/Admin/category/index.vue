@@ -73,7 +73,7 @@ export default {
         .dispatch(Type.ADD_AND_UPDATE_CATEGORY, nameCategory)
         .then(data => {
           // ALL ACTIONS CHANGE STATUS
-          this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, data });
+          this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, title: data });
           // SET TIME OUT
           setTimeout(() => {
             // WILL BE CLOSE MODEL
@@ -82,12 +82,12 @@ export default {
             this.allActionsChangeStatus({ check: true, correct: true });
           }, 2000);
         })
-        .catch(data => {
+        .catch(err => {
           // ALL ACTIONS CHANGE STATUS
-          this.allActionsChangeStatus({ check: true, wrong: true, data, statusAlert: true });
+          this.allActionsChangeStatus({ check: true, wrong: true, title: err, statusAlert: true });
           // SET TIME OUT
           setTimeout(() => {
-            this.allActionsChangeStatus({});
+            this.allActionsChangeStatus();
           }, 2000);
         });
     }

@@ -200,20 +200,20 @@ const btnConfirmAndAlert = {
       correct = false,
       statusAlert = false,
       statusCorrect = false,
-      data = null
-    }) {
+      title = null
+    } = {}) {
       this.statusCheckData.wrong = wrong;
       this.statusCheckData.check = check;
       this.statusCheckData.correct = correct;
       this.statusClickCloseAlert = statusAlert;
       this.statusCheckData.statusCorrect = statusCorrect;
-      this.titles = data;
+      this.titles = title;
     }
   },
   watch: {
     statusModel(n) {
       if (!n) {
-        this.allActionsChangeStatus({});
+        this.allActionsChangeStatus();
       }
     }
   }

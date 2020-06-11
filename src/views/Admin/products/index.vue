@@ -29,8 +29,8 @@
         :correct="statusCheckData.correct"
         :wrong="statusCheckData.wrong"
         :getAllCategory="getAllGategory"
-        :sendNewImage="imageFromDb"
-        @sendDataImg="testing"
+        :sendNewImage="imageUrl"
+        @sendDataImg="getImageData"
         @clickExit="statusModel = $event"
         @postAllData="sendAllProducts"
       ></model-pop-up>
@@ -178,7 +178,7 @@ export default {
         }
       ],
       titlesTable: ['#', 'name', 'price', 'discount', 'quantity', 'edit', 'delete'],
-      imageFromDb: null
+      imageUrl: null
     };
   },
   computed: {
@@ -213,14 +213,17 @@ export default {
     // SEND ALL CATEGORY
     sendAllProducts(dataProducts) {
       // DESTRUCTRING OBJECT
-      const { selectCategory, dataImg, ...data } = dataProducts;
+      const { selectCategory, ...data } = dataProducts;
       // RUN ALL ACTION WILL CLICK SEND DATA BASE
       this.allActionsChangeStatus({ check: true });
+      // ASSIGN URL IN IMAGE
+      const updateData = Object.assign(data, { image: this.imageUrl });
       // AJAX CALL WILL BE SEND NAME PRODUCTS
       this.$store
-        .dispatch(Type.ADD_PRODUCT_IN_CATEGORY, { nameDoc: selectCategory, name: data.name, image: dataImg, data })
+        .dispatch(Type.ADD_PRODUCT_IN_CATEGORY, { nameDoc: selectCategory, name: data.name, data: updateData })
         .then(data => {
-          this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, data });
+          // ALL ACTIONS CHANGE STATUS
+          this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, title: data });
           // SET TIME OUT
           setTimeout(() => {
             // WILL BE CLOSE MODEL
@@ -229,8 +232,13 @@ export default {
             this.allActionsChangeStatus({ check: true, correct: true });
           }, 2000);
         })
-        .catch(data => {
-          console.log('no some error');
+        .catch(err => {
+          // ALL ACTIONS CHANGE STATUS
+          this.allActionsChangeStatus({ check: true, wrong: true, title: err, statusAlert: true });
+          // SET TIME OUT
+          setTimeout(() => {
+            this.allActionsChangeStatus();
+          }, 2000);
         });
     },
     // GET PAGE
@@ -269,10 +277,11 @@ export default {
         }
       });
     },
-    // test
-    testing(data) {
-      return this.$store.dispatch(Type.PREVIEW_IMAGE_PRODUCT, data).then(data => {
-        this.imageFromDb = data;
+    // GET IMAGE DATA
+    getImageData(dataImage) {
+      return this.$store.dispatch(Type.PREVIEW_IMAGE_PRODUCT, dataImage).then(imageUrl => {
+        // ADD IMAGE URL TO THIS IMAGE URL
+        this.imageUrl = imageUrl;
       });
     }
   },
@@ -293,7 +302,7 @@ export default {
     },
     statusModel(n) {
       if (!n) {
-        this.imageFromDb = null;
+        this.imageUrl = null;
       }
     }
   },
