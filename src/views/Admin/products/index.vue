@@ -28,11 +28,14 @@
         :check="statusCheckData.check"
         :correct="statusCheckData.correct"
         :wrong="statusCheckData.wrong"
+        :statusLoader="statusLoader"
         :getAllCategory="getAllGategory"
         :sendNewImage="imageUrl"
+        :textButton="textButton"
         @sendDataImg="getImageData"
         @clickExit="statusModel = $event"
         @postAllData="sendAllProducts"
+        @changeNewImage="imageUrl = $event"
       ></model-pop-up>
     </transition>
     <!-- PRODUCTS PAGE ACTIONS -->
@@ -178,7 +181,11 @@ export default {
         }
       ],
       titlesTable: ['#', 'name', 'price', 'discount', 'quantity', 'edit', 'delete'],
-      imageUrl: null
+      imageUrl: null,
+      imageName: null,
+      statusLoader: false,
+      textButton: 'upload image',
+      sendDataSuccess: false
     };
   },
   computed: {
@@ -230,6 +237,9 @@ export default {
             this.statusModel = false;
             // ALL ACTIONS CHANGE STATUS
             this.allActionsChangeStatus({ check: true, correct: true });
+
+            //
+            this.sendDataSuccess = true;
           }, 2000);
         })
         .catch(err => {
@@ -277,10 +287,33 @@ export default {
         }
       });
     },
+    //
+    deleteImage(getDataImage) {
+      // IF THIS IMAGE NAME EXSIST IMAGE NAME WILL BE DELETE IMAGE IN FIREBASE
+      // DELETE IMAGE BEFORE NEW ADD IMAGE IN FIRESTORE
+      if (this.imageName) this.$store.dispatch(Type.DELETE_IMAGE, this.imageName);
+
+      // GET DATA IMAGE AND DESTRICURING
+      const { name, lastModified } = getDataImage;
+
+      // ADD NAME IMAGE IN IMAGE NAME
+      this.imageName = `${lastModified}_${name}`;
+    },
     // GET IMAGE DATA
     getImageData(dataImage) {
-      return this.$store.dispatch(Type.PREVIEW_IMAGE_PRODUCT, dataImage).then(imageUrl => {
-        // ADD IMAGE URL TO THIS IMAGE URL
+      // CHANGE STATUS LOADER EQUAL TRUE
+      this.statusLoader = true;
+
+      // RUN DELETE IMAGE
+      this.deleteImage(dataImage);
+
+      // UPLOAD IMAGE IN FIRESTORE
+      this.$store.dispatch(Type.PREVIEW_IMAGE_PRODUCT, dataImage).then(imageUrl => {
+        // CHANGE TEXT BUTTON
+        this.textButton = 'change image';
+        // CHANGE STATUS LOADER EQUAL FALSE
+        this.statusLoader = false;
+        // ADD IMAGE URL IN IMAGE URL
         this.imageUrl = imageUrl;
       });
     }
@@ -302,7 +335,18 @@ export default {
     },
     statusModel(n) {
       if (!n) {
+        // RETURN IMAGE URL EQUAL NULL
         this.imageUrl = null;
+        // RETURN TEXT BUTTON PERVIOUES CASE
+        this.textButton = 'upload image';
+        // IF SEND DATA SECCESS EQUAL FALSE WILL BE DELETE IMAGE FROM FIREBASE
+        if (!this.sendDataSuccess) {
+          this.$store.dispatch(Type.DELETE_IMAGE, this.imageName).then(() => {
+            this.imageName = null;
+          });
+        } else {
+          this.imageName = null;
+        }
       }
     }
   },

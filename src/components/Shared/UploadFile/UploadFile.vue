@@ -3,6 +3,7 @@
     <!-- PREVIEW IMAGE -->
     <div class="upload-file__preview-image">
       <img v-if="sendNewImage" :src="sendNewImage" alt="image" />
+      <loader v-else-if="statusLoader" selectColorLoader="#0064ff" :status="statusLoader"></loader>
       <img v-else :src="require(`@/assets/image/${addImageAvatar}`)" alt="image" />
     </div>
     <!-- SELECT -->
@@ -11,7 +12,7 @@
       <div class="upload-file__custom-input">
         <input type="file" ref="file" @change="getData($event)" />
         <div class="edit">
-          <button>upload image</button>
+          <button v-text="textButton" :class="{ change: textButton == 'change image' }"></button>
           <p>{{ nameFile.name ? nameFile.name : nameFile }}</p>
         </div>
       </div>
@@ -31,9 +32,17 @@ export default {
       type: String,
       default: 'select'
     },
+    textButton: {
+      type: String,
+      default: 'upload file'
+    },
     sendNewImage: {
-      type: [String, Number],
+      type: [String, Boolean],
       required: false
+    },
+    statusLoader: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -46,6 +55,8 @@ export default {
     getData(el) {
       // NAME FILE
       this.nameFile = el.target.files[0];
+      // WILL BE POST CHANGE IMAGE
+      this.$emit('changeNewImage', false);
       //   WILL BE POST DATA OTHER COMPONENTS
       this.$emit('postFile', this.nameFile);
     }
@@ -64,6 +75,7 @@ export default {
   }
   // PREVIEW IMAGE
   &__preview-image {
+    position: relative;
     width: 80px;
     height: 80px;
     margin-right: 1.5rem;
@@ -114,7 +126,7 @@ export default {
       @include translate('top', 'left', 0, 0);
       z-index: 1;
 
-      //
+      // BUTTON
       & > button {
         @include btnManger(
           $fSize: 1.5rem,
@@ -128,7 +140,12 @@ export default {
         }
       }
 
-      //
+      // CHANGE
+      .change {
+        background-color: map-get($background, back-sixth);
+      }
+
+      // P
       & > p {
         font-size: 1.5rem;
       }

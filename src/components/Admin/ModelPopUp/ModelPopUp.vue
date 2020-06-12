@@ -20,8 +20,11 @@
           <upload-file
             addImageAvatar="image-global/item.png"
             :sendNewImage="sendNewImage"
+            :statusLoader="statusLoader"
+            :textButton="textButton"
             nameLabel="select image product"
             @postFile="allData.image = $event"
+            @changeNewImage="changeImage"
           ></upload-file>
         </div>
         <!-- PRICE ITEM -->
@@ -115,12 +118,19 @@ export default {
       default: true
     },
     sendNewImage: {
-      type: String,
+      type: [String, Boolean],
       required: false
     },
     getAllCategory: {
       type: Array,
       default: null
+    },
+    statusLoader: {
+      type: Boolean,
+      default: false
+    },
+    textButton: {
+      type: String
     }
   },
   data() {
@@ -171,6 +181,10 @@ export default {
     // SEND EVENT CANCEL
     sendEventCancel() {
       return this.$emit('clickExit', false);
+    },
+    //
+    changeImage(status) {
+      this.$emit('changeNewImage', status);
     }
   },
   watch: {

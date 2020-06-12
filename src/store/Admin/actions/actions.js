@@ -1,6 +1,6 @@
 //
 import { loopIntoCollections, createSubCollection } from '@/firebase/helps/firestore';
-import { addImageAndGetImage } from '@/firebase/helps/firestorge';
+import { addImageAndGetImage, deleteFile } from '@/firebase/helps/firestorage';
 import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
 
@@ -60,5 +60,10 @@ export default {
   // PREVIEW IMAGE PRODUCTS
   [Type.PREVIEW_IMAGE_PRODUCT]({ commit }, dataImage) {
     return addImageAndGetImage(Type.FOLDER_NAME_STORAGE, dataImage);
+  },
+
+  // DELETE IMAGE
+  [Type.DELETE_IMAGE]({ commit }, imageName) {
+    return deleteFile(Type.FOLDER_NAME_STORAGE, imageName);
   }
 };
