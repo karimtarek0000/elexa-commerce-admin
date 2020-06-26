@@ -45,9 +45,9 @@
         v-if="!statusGrid"
         :getData="vv"
         :placeholder="changePlaceHolder"
-        @postData="newDataFilter = $event"
         :filterBy="filterBy"
         :filterData="filterProducts"
+        @postData="newDataFilter = $event"
       ></search-input-table>
       <!-- SORT -->
       <div class="products-page__actions__sort" v-if="sort.statusSort">
@@ -238,7 +238,7 @@ export default {
             // ALL ACTIONS CHANGE STATUS
             this.allActionsChangeStatus({ check: true, correct: true });
 
-            //
+            // SEND DATA SUCCESS
             this.sendDataSuccess = true;
           }, 2000);
         })
@@ -247,6 +247,7 @@ export default {
           this.allActionsChangeStatus({ check: true, wrong: true, title: err, statusAlert: true });
           // SET TIME OUT
           setTimeout(() => {
+            // ALL ACTIONS CHANGE STATUS
             this.allActionsChangeStatus();
           }, 2000);
         });

@@ -7,7 +7,7 @@
     <options-center></options-center>
 
     <!-- COMPONENT USER -->
-    <user imgUser="image/image-global/avatar.png" :userName="userName" :logOut="logOutAction"></user>
+    <user imgUser="image/image-global/avatar.png" @if="userName" :userName="userName" :logOut="logOutAction"></user>
   </div>
 </template>
 
@@ -32,22 +32,20 @@ export default {
     }),
     // GET DATA USER
     dataUser() {
-      this.getDataUser({ nameCollection: 'profiles-admin', nameWhere: 'id' }).then(data => {
+      this.getDataUser({ nameCollection: Type.NAME_COLLECTION_PROFILE_ADMIN, nameWhere: 'id' }).then(data => {
         this.userName = data.name;
       });
     },
     // LOG OUT ACTIONS
     logOutAction() {
-      this.exitSignOut().then(() => {
-        this.$router.replace({ name: 'register' });
-      });
+      this.exitSignOut().then(() => this.$router.replace({ name: 'register' }));
     }
   },
   components: {
     SearchInput,
     User
   },
-  created() {
+  mounted() {
     // RUN GET DATA USER
     this.dataUser();
   }

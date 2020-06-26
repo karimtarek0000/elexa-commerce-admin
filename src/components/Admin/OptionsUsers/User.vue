@@ -59,16 +59,13 @@ export default {
     // TOGGLE SLIDE
     toggleSlide() {
       return (this.statusToggle = !this.statusToggle);
-    },
-    //
-    v() {
-      return this.$router.push({ name: 'Setting' });
     }
   },
   watch: {
     // WATCH WHEN CLICK WINDOW WILL BE CHANGE STATUS TOGGLE TO FALSE
     statusToggle(n) {
-      if (n) window.onclick = () => (this.statusToggle = false);
+      // ADD EVENT LISTENER ON WINDOW
+      if (n) window.addEventListener('click', () => (this.statusToggle = false));
     }
   }
 };
