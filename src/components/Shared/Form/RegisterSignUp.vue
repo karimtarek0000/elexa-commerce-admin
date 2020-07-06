@@ -115,7 +115,8 @@ export default {
     ...mapActions({
       checkInfo: Type.CHECK_INFO,
       createNewAccount: Type.CREATE_NEW_ACCOUNT,
-      createProfileUser: Type.CREATE_PROFILE_USER
+      createProfileUser: Type.CREATE_PROFILE_USER,
+      exitSignOut: Type.EXIT_SIGN_OUT
     }),
     // ACTION SUBMIT
     actionSubmitAdmin() {
@@ -148,7 +149,7 @@ export default {
           });
       }
     },
-    //
+    // ACTION SUBMIT END USER
     actionSubmitEndUser() {
       // RUN LOADER
       this.check = true;
@@ -200,7 +201,11 @@ export default {
               this.correct = true;
               this.allActions(this.correct, 'create account successful', false);
               setTimeout(() => {
-                this.$emit('changeCompon', 'RegisterSignIn');
+                // SIGN OUT
+                this.exitSignOut().then(() => {
+                  // MOVE DIRECT SIGN IN
+                  this.$emit('changeCompon', 'RegisterSignIn');
+                });
               }, 2000);
             })
             // CATCH
@@ -235,7 +240,7 @@ export default {
     statusId() {
       return this.statusInputId ? this.finalData.id : true;
     },
-    //
+    // SELECT RUN FN SUBMIT
     selectRunFnSubmit() {
       return this.statusNameFunctionSubmit == 'admin' ? this.actionSubmitAdmin : this.actionSubmitEndUser;
     }
