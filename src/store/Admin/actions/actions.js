@@ -1,15 +1,15 @@
 //
-import { loopIntoCollections, createSubCollection } from '@/firebase/helps/firestore';
+import { loopIntoCollections, createSubCollection, getAllDoc } from '@/firebase/helps/firestore';
 import { addImageAndGetImage, deleteFile } from '@/firebase/helps/firestorage';
 import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
-
+//
 export default {
   // ADD CATEGORY
   [Type.ADD_AND_UPDATE_CATEGORY]({ commit, state }, nameDoc) {
     return new Promise((resolve, reject) => {
       // REF
-      const ref = db.collection(Type.NAME_COLLECTION_CATEGORY).doc(nameDoc);
+      const ref = db.collection(Type.NAME_COLLECTION_CATEGORY).doc(nameDoc.toLowerCase());
       // PROMISE
       ref
         .get()
@@ -48,8 +48,11 @@ export default {
   // ADD PRODUCTS IN CATEGORY
   [Type.ADD_PRODUCT_IN_CATEGORY]({ commit }, info) {
     return new Promise((resolve, reject) => {
-      createSubCollection(Type.NAME_COLLECTION_CATEGORY, info.nameDoc, info.name, info.data)
+      createSubCollection(Type.NAME_COLLECTION_CATEGORY, info.nameDoc.toLowerCase(), info.name, info.data)
         .then(() => {
+          // UPDATE ALL ITEMS
+          commit(Type.SET_ALL_ITEMS, info.data);
+          //
           resolve('create products successfully');
         })
         .catch(() => {
@@ -61,9 +64,23 @@ export default {
   [Type.PREVIEW_IMAGE_PRODUCT]({ commit }, dataImage) {
     return addImageAndGetImage(Type.FOLDER_NAME_STORAGE, dataImage);
   },
-
   // DELETE IMAGE
   [Type.DELETE_IMAGE]({ commit }, imageName) {
     return deleteFile(Type.FOLDER_NAME_STORAGE, imageName);
+  },
+  // GET ALL ITEMS CATEGORY
+  async [Type.GET_ALL_ITEMS_CATEGORY]({ commit, state }) {
+    //
+    const getItems = await getAllDoc(Type.NAME_COLLECTION_CATEGORY);
+    //
+    getItems.forEach(doc => {
+      for (const item of Object.values(doc.data())) {
+        //
+        commit(Type.SET_ALL_ITEMS, item);
+        //
+        commit('setEndIndex');
+        // console.log(doc.id);
+      }
+    });
   }
 };

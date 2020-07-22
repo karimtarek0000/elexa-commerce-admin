@@ -13,7 +13,7 @@
       ></alert-status>
     </transition>
     <!-- ALERT NOT YET -->
-    <not-yet nameStatus="products" :status="vv.length == 0"></not-yet>
+    <not-yet nameStatus="products" :status="allItems.length == 0"></not-yet>
     <!-- NORMAL BUTTON ADD -->
     <normal-button nameBtn="add" @normalBtn="statusModel = true" :status="!statusModel">
       <GSvg nameIcon="add" title="add icon"></GSvg>
@@ -29,7 +29,7 @@
         :correct="statusCheckData.correct"
         :wrong="statusCheckData.wrong"
         :statusLoader="statusLoader"
-        :getAllCategory="getAllGategory"
+        :getAllCategory="allCategory"
         :sendNewImage="imageUrl"
         :textButton="textButton"
         @sendDataImg="getImageData"
@@ -43,14 +43,13 @@
       <!-- SEARCH INPUT TABLE -->
       <search-input-table
         v-if="!statusGrid"
-        :getData="vv"
-        :placeholder="changePlaceHolder"
+        :getData="allItems"
         :filterBy="filterBy"
         :filterData="filterProducts"
-        @postData="newDataFilter = $event"
+        @postData="updateData = $event"
       ></search-input-table>
       <!-- SORT -->
-      <div class="products-page__actions__sort" v-if="sort.statusSort">
+      <div class="products-page__actions__sort" v-if="statusShowSort">
         <!-- ASC -->
         <div
           :class="['products-page__actions__sort__asc', { 'products-page__actions__sort__asc--active': sort.asc }]"
@@ -87,22 +86,18 @@
     <!-- ALL PRODUCTS CARD-->
     <div class="products-page__all-products-card" v-if="statusGrid">
       <card-view
-        v-for="(data, index) in vv"
+        v-for="(data, index) in allItems"
         :key="index"
         :title="data.name"
         :price="data.price"
         :discount="data.discount"
         :quantity="data.quantity"
+        :image="data.image"
       ></card-view>
     </div>
     <!-- ALL PRODUCTS TABLE -->
     <div class="products-page__all-products-tabel" v-if="!statusGrid">
-      <table-data
-        :headerData="titlesTable"
-        :bodyData="newDataFilter"
-        @dataFilter="filterBy = $event"
-        @deleteItem="deleteItemFromData"
-      >
+      <table-data :headerData="titlesTable" :bodyData="updateData" v-model="filterBy" @deleteItem="deleteItemFromData">
         <GSvg slot="icon-edit" nameIcon="edit"></GSvg>
         <GSvg slot="icon-delete" nameIcon="delete"></GSvg>
       </table-data>
@@ -117,69 +112,26 @@
 
 <script>
 //
+import { mapGetters } from 'vuex';
 import ModelPopUp from '@/components/Admin/ModelPopUp/ModelPopUp';
 import CardView from '@/components/Admin/CardView/CardView';
 import TableData from '@/components/Admin/TableData/TableData';
 import * as Type from '@/store/Type/index';
+import { db } from '@/firebase/init';
 //
 export default {
   name: 'Products',
   mixins: ['modelPop', 'alertStatus', 'btnConfirmAndAlert'],
   data() {
     return {
-      filterBy: 'name',
+      filterBy: 'quantity',
       sort: {
         asc: false,
-        desc: false,
-        statusSort: false
+        desc: false
       },
       statusGrid: true,
       current: this.$route.query.page || 1,
-      newDataFilter: [],
-      vv: [
-        {
-          name: 'samsung note 10',
-          price: 2000,
-          discount: 300,
-          quantity: 10
-        },
-        {
-          name: 'apple iphone pro max',
-          price: 19000,
-          discount: 0,
-          quantity: 100
-        },
-        {
-          name: 'apple - mac book pro',
-          price: 22000,
-          discount: 1000,
-          quantity: 20
-        },
-        {
-          name: 'toshiba tv',
-          price: 22000,
-          discount: 1000,
-          quantity: 20
-        },
-        {
-          name: 'toshiba mobile',
-          price: 5000,
-          discount: 1000,
-          quantity: 45
-        },
-        {
-          name: 'nokia 20',
-          price: 10000,
-          discount: 1000,
-          quantity: 40
-        },
-        {
-          name: 'nokia 23',
-          price: 10000,
-          discount: 1000,
-          quantity: 40
-        }
-      ],
+      updateData: [],
       titlesTable: ['#', 'name', 'price', 'discount', 'quantity', 'edit', 'delete'],
       imageUrl: null,
       imageName: null,
@@ -189,31 +141,26 @@ export default {
     };
   },
   computed: {
-    // CHANGE PLACEHOLDER
-    changePlaceHolder() {
-      if (this.filterBy == 'name') {
-        return `search in table with ${this.filterBy}`;
-      } else if (this.filterBy == 'price' || this.filterBy == 'discount' || this.filterBy == 'quantity') {
-        return `search in table with ${this.filterBy} - can use filter > <`;
-      } else {
-        return 'no';
-      }
-    },
-    // GET ALL CATEGORY
-    getAllGategory() {
-      return this.$store.state.Admin.allCategory;
+    // ALL GATTERS
+    ...mapGetters({
+      allCategory: Type.GET_ALL_CATEGORY,
+      allItems: Type.GET_ALL_ITEMS
+    }),
+    // STATUS SHOW SORT
+    statusShowSort() {
+      return this.filterBy != 'name' && this.statusGrid != true;
     }
   },
   methods: {
     // ASC DATA
     ascData() {
-      this.newDataFilter.sort((asc, desc) => asc[this.filterBy] - desc[this.filterBy]);
+      this.updateData.sort((asc, desc) => asc[this.filterBy] - desc[this.filterBy]);
       this.sort.asc = true;
       this.sort.desc = false;
     },
     // DESC DATA
     descData() {
-      this.newDataFilter.sort((asc, desc) => desc[this.filterBy] - asc[this.filterBy]);
+      this.updateData.sort((asc, desc) => desc[this.filterBy] - asc[this.filterBy]);
       this.sort.asc = false;
       this.sort.desc = true;
     },
@@ -284,7 +231,7 @@ export default {
       this.vv.forEach((cur, index) => {
         if (cur.name == name) {
           this.vv.splice(index, 1);
-          this.newDataFilter = this.vv;
+          this.updateData = this.vv;
         }
       });
     },
@@ -320,20 +267,15 @@ export default {
     }
   },
   watch: {
-    // WATCH FILTER BY
-    filterBy(newGet) {
-      this.sort.asc = false;
-      this.sort.desc = false;
-      newGet !== 'name' ? (this.sort.statusSort = true) : (this.sort.statusSort = false);
-    },
-    statusGrid(n) {
-      if (!n) {
+    // STATUS GRID
+    statusGrid(newValue) {
+      if (!newValue) {
+        this.sort.asc = false;
+        this.sort.desc = false;
         this.filterBy = 'name';
-        this.sort.statusSort = false;
-      } else {
-        this.sort.statusSort = false;
       }
     },
+    // STATUS MODEL
     statusModel(n) {
       if (!n) {
         // RETURN IMAGE URL EQUAL NULL
@@ -357,7 +299,21 @@ export default {
     TableData
   },
   created() {
-    if (this.getAllGategory.length == 0) this.$store.dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE);
+    //
+    if (this.allCategory.length == 0) this.$store.dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE);
+    //
+    if (this.allItems.length == 0) this.$store.dispatch(Type.GET_ALL_ITEMS_CATEGORY);
+
+    const data = db.collection('all-category-items').limit(2);
+
+    data
+      .get()
+      .then(docs => {
+        docs.forEach(doc => {
+          console.log(doc.data());
+        });
+      })
+      .catch(() => console.log('err'));
   }
 };
 </script>
@@ -379,7 +335,9 @@ export default {
     // CARD
     &-card {
       overflow: auto;
-      max-height: 60vh;
+      height: 100%;
+      max-height: 62vh;
+      padding: 1.5rem;
       @extend %gridPageItem;
     }
 

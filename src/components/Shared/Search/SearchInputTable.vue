@@ -2,7 +2,7 @@
   <div class="search-table">
     <div class="search-table__input">
       <!-- SEARCH INPUT -->
-      <input class="search-table__input__feild" v-model="value" type="text" :placeholder="placeholder" />
+      <input class="search-table__input__feild" v-model="value" type="text" :placeholder="changePlaceHolder" />
       <!-- SEARCH ICONS SEARCH -->
       <div class="search-table__icons search-table__icons--search">
         <svg xmlns="http://www.w3.org/2000/svg" width="50.875" height="50.875">
@@ -38,9 +38,6 @@ export default {
     filterBy: {
       type: String,
       required: true
-    },
-    placeholder: {
-      required: true
     }
   },
   data() {
@@ -50,6 +47,16 @@ export default {
     };
   },
   computed: {
+    // CHANGE PLACEHOLDER
+    changePlaceHolder() {
+      if (this.filterBy == 'name') {
+        return `search in table with ${this.filterBy}`;
+      } else if (this.filterBy == 'price' || this.filterBy == 'discount' || this.filterBy == 'quantity') {
+        return `search in table with ${this.filterBy} - can use filter > <`;
+      } else {
+        return 'no';
+      }
+    },
     // STATUS VALUE INPUT
     statusValueInput() {
       return this.value ? true : false;

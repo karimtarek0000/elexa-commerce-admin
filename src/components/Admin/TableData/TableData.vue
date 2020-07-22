@@ -5,7 +5,7 @@
       <div class="table-info__row">
         <template v-for="(title, index) in headerData">
           <span
-            :class="['table-info__data', { 'table-info__data--active': index == current }]"
+            :class="['table-info__data', { 'table-info__data--active': title == filterBy }]"
             :key="index"
             @click="getHeaderTitle(index, title)"
             >{{ title }}</span
@@ -35,7 +35,15 @@
 <script>
 export default {
   name: 'TableData',
+  model: {
+    prop: 'filterBy',
+    event: 'changePlaceHolder'
+  },
   props: {
+    filterBy: {
+      type: String,
+      default: 'name'
+    },
     headerData: {
       type: Array,
       required: true
@@ -46,19 +54,16 @@ export default {
     }
   },
   data() {
-    return {
-      current: 1
-    };
+    return {};
   },
   methods: {
     // GET HEADER TITLE
     getHeaderTitle(index, title) {
       if (title !== 'edit' && title !== 'delete' && title !== '#') {
-        this.$emit('dataFilter', title);
-        this.current = index;
+        this.$emit('changePlaceHolder', title);
       }
     },
-    //
+    // DELETE ITEM
     deleteItem(name) {
       return this.$emit('deleteItem', name);
     }

@@ -6,5 +6,8 @@ export default {
   nameCollection: Type.NAME_COLLECTION_PROFILE_ADMIN,
   statusAside: false,
   // ----------------
-  allCategory: []
+  allCategory: [],
+  allItems: [],
+  // ----------------
+  countIndex: 0
 };

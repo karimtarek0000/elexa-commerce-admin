@@ -4,7 +4,7 @@
     <div class="card-view__inner">
       <!-- IMAGE -->
       <div class="card-view__image">
-        <img :src="require('@/assets/image/image3.jpeg')" alt="" />
+        <img :src="image" alt="" />
       </div>
 
       <!-- INFO CARD -->
@@ -12,9 +12,9 @@
         <h2 class="card-view__info-card__title" v-text="title"></h2>
         <!-- INFO CARD DATA -->
         <div class="card-view__info-card__data">
-          <span class="card-view__info-card__data__price"><span>&dollar;</span>{{ price }}</span>
-          <span class="card-view__info-card__data__discount" v-if="discount" v-text="discount"></span>
-          <span class="card-view__info-card__data__quantity">{{ quantity }}</span>
+          <span class="card-view__info-card__data__price">price: <span>&dollar;</span>{{ price }}</span>
+          <span class="card-view__info-card__data__discount" v-if="discount">discount: {{ discount }}</span>
+          <span class="card-view__info-card__data__quantity">quantity: {{ quantity }}</span>
         </div>
         <!-- INFO CARD ACTION -->
         <div class="card-view__info-card__actions">
@@ -46,6 +46,10 @@ export default {
     quantity: {
       type: Number,
       required: true
+    },
+    image: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -68,7 +72,6 @@ export default {
     @include translate('top', 'left', 0, 0);
     width: 100%;
     height: 100%;
-
     // IMG
     img {
       width: 100%;
@@ -76,7 +79,6 @@ export default {
       max-height: 100%;
       object-fit: cover;
     }
-
     // AFTER
     &::after {
       content: '';
@@ -84,7 +86,7 @@ export default {
       @include translate('top', 'left', 0, 0);
       width: 100%;
       height: 100%;
-      background: linear-gradient(to top, rgba(map-get($background, back-first), 0.8) 40%, rgba(white, 0.3));
+      background: rgba(map-get($background, back-first), 0.8);
     }
   }
   // INNER
@@ -124,13 +126,14 @@ export default {
 
       // PRICE
       &__price {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 0.7rem;
       }
       // DISCOUNT
       &__discount {
         font-size: 2rem;
-        margin: 0.7rem 0;
         text-decoration: line-through;
+        margin-bottom: 0.7rem;
       }
       // QUANTITY
       &__quantity {

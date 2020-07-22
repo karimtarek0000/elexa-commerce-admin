@@ -10,7 +10,10 @@ const getData = (nameCollection, nameDoc = null) => {
     .doc(nameDoc)
     .get();
 };
-
+// GET ALL DOCS
+const getAllDoc = nameCollection => {
+  return db.collection(nameCollection).get();
+};
 // ADD DATA
 const setData = (nameCollection, nameDoc, data = {}) => {
   return db
@@ -51,4 +54,4 @@ const whereAndGet = (nameCollection, nameWhere, equalData) => {
 };
 
 // ALL EXPORTS
-export { getData, setData, whereAndGet, loopIntoCollections, onSnapShot, createSubCollection };
+export { getData, setData, whereAndGet, loopIntoCollections, onSnapShot, createSubCollection, getAllDoc };
