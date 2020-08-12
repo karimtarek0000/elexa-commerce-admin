@@ -304,16 +304,16 @@ export default {
     //
     if (this.allItems.length == 0) this.$store.dispatch(Type.GET_ALL_ITEMS_CATEGORY);
 
-    const data = db.collection('all-category-items').limit(2);
+    // const data = db.collection('all-category-items').limit(2);
 
-    data
-      .get()
-      .then(docs => {
-        docs.forEach(doc => {
-          console.log(doc.data());
-        });
-      })
-      .catch(() => console.log('err'));
+    // data
+    //   .get()
+    //   .then(docs => {
+    //     docs.forEach(doc => {
+    //       console.log(doc.data());
+    //     });
+    //   })
+    //   .catch(() => console.log('err'));
   }
 };
 </script>
