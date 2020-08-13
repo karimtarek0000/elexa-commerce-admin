@@ -32,8 +32,8 @@
         :getAllCategory="allCategory"
         :sendNewImage="imageUrl"
         :textButton="textButton"
-        @sendDataImg="getImageData"
         @clickExit="statusModel = $event"
+        @sendDataImg="getImageData"
         @postAllData="sendAllProducts"
         @changeNewImage="imageUrl = $event"
       ></model-pop-up>
@@ -103,7 +103,7 @@
       </table-data>
     </div>
     <!-- PAGINATION -->
-    <pagination :total="5000" :perPage="10" :currentPage="current" @changePage="getPage">
+    <pagination :total="100" :perPage="5" :currentPage="current" @changePage="getPage">
       <GSvg slot="prev" nameIcon="angle-up"></GSvg>
       <GSvg slot="next" nameIcon="angle-up"></GSvg>
     </pagination>
@@ -113,7 +113,6 @@
 <script>
 //
 import { mapGetters } from 'vuex';
-import ModelPopUp from '@/components/Admin/ModelPopUp/ModelPopUp';
 import CardView from '@/components/Admin/CardView/CardView';
 import TableData from '@/components/Admin/TableData/TableData';
 import * as Type from '@/store/Type/index';
@@ -294,9 +293,9 @@ export default {
     }
   },
   components: {
-    ModelPopUp,
-    CardView,
-    TableData
+    ModelPopUp: () => import('@/components/Admin/ModelPopUp/ModelPopUp'),
+    TableData: () => import('@/components/Admin/TableData/TableData'),
+    CardView
   },
   created() {
     //
@@ -304,16 +303,19 @@ export default {
     //
     if (this.allItems.length == 0) this.$store.dispatch(Type.GET_ALL_ITEMS_CATEGORY);
 
-    // const data = db.collection('all-category-items').limit(2);
+    const data = db.collection('all-category-items').limit(2);
 
-    // data
-    //   .get()
-    //   .then(docs => {
-    //     docs.forEach(doc => {
-    //       console.log(doc.data());
-    //     });
-    //   })
-    //   .catch(() => console.log('err'));
+    data
+      .get()
+      .then(docs => {
+        docs.forEach(doc => {
+          for (const d of Object.values(doc.data())) {
+            // console.log(d.name, d.price);
+          }
+        });
+      })
+      .catch(() => console.log('err'));
+    console.log(this.allItems.length);
   }
 };
 </script>
@@ -336,7 +338,7 @@ export default {
     &-card {
       overflow: auto;
       height: 100%;
-      max-height: 62vh;
+      max-height: 60vh;
       padding: 1.5rem;
       @extend %gridPageItem;
     }

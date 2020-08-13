@@ -14,8 +14,8 @@
     </transition>
     <!-- NOT YET -->
     <not-yet nameStatus="category" :status="getAllGategory == 0 || statusError"></not-yet>
-    <!--  -->
-    <loader class="beforeSend" :status="statusLoader" selectColorLoader="#0064ff"></loader>
+    <!-- LOADER  -->
+    <loader class="beforeSend" :status="statusLoaderPage" selectColorLoader="#0064ff"></loader>
     <!-- ADD BUTTON -->
     <normal-button nameBtn="add" @normalBtn="statusModel = true" :status="!statusModel">
       <GSvg nameIcon="add" title="add icon"></GSvg>
@@ -38,7 +38,28 @@
       ></model-pop-up>
     </transition>
     <!-- CATEGORY -->
-    <category-card v-if="getAllGategory.length !== 0" :allCategory="getAllGategory"></category-card>
+    <category-card
+      v-if="getAllGategory.length !== 0"
+      @opnedCategory="getAllProductsCategory"
+      @statusOpenCloseCategory="statusOpenCloseCategory = $event"
+      :allCategory="getAllGategory"
+    >
+      <template slot="renderProducts">
+        <!-- LOADER -->
+        <loader :status="statusLoaderCategory" selectColorLoader="white"></loader>
+        <!-- IF ARRAY GREATER THAN OR EQUAL 1 -->
+        <template v-if="test.length >= 1">
+          <li v-for="t in test" :key="t.name">
+            <span>{{ t.name }}</span>
+            <span>$ {{ t.price }}</span>
+          </li>
+        </template>
+        <!-- ELSE -->
+        <template v-else>
+          <p>{{ messageEmpty }}</p>
+        </template>
+      </template>
+    </category-card>
   </div>
 </template>
 
@@ -53,8 +74,12 @@ export default {
   mixins: ['modelPop', 'alertStatus', 'btnConfirmAndAlert'],
   data() {
     return {
-      statusLoader: false,
-      statusError: false
+      statusLoaderPage: false,
+      statusError: false,
+      statusOpenCloseCategory: false,
+      test: [],
+      messageEmpty: null,
+      statusLoaderCategory: false
     };
   },
   computed: {
@@ -90,7 +115,37 @@ export default {
             this.allActionsChangeStatus();
           }, 2000);
         });
+    },
+    // GET ALL PRODUCTS CATEGORY
+    getAllProductsCategory(nameCategory) {
+      this.statusLoaderCategory = true;
+      return this.$store
+        .dispatch(Type.GET_PRODUCTS_WITH_NAME_CATEGORY, nameCategory)
+        .then(data => {
+          if (Object.keys(data.data()).length !== 0) {
+            this.test = Object.values(data.data()).map(({ name, price }) => Object.assign({}, { name, price }));
+          } else {
+            this.messageEmpty = 'this category is empty!';
+          }
+          this.statusLoaderCategory = false;
+        })
+        .catch(() => console.log('error'));
     }
+  },
+  watch: {
+    //
+    statusOpenCloseCategory(newValue) {
+      if (!newValue) {
+        this.test = [];
+        this.messageEmpty = null;
+      }
+    }
+    //
+    // test(newValue) {
+    //   if (newValue.length == 0) {
+    //     console.log('empty');
+    //   }
+    // }
   },
   components: {
     ModelPopUp,
@@ -98,14 +153,14 @@ export default {
   },
   created() {
     if (this.getAllGategory.length == 0) {
-      this.statusLoader = true;
+      this.statusLoaderPage = true;
       this.$store
         .dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE)
         .then(() => {
-          this.statusLoader = false;
+          this.statusLoaderPage = false;
         })
         .catch(() => {
-          this.statusLoader = false;
+          this.statusLoaderPage = false;
           this.statusError = true;
         });
     }

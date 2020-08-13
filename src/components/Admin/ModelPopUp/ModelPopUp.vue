@@ -149,7 +149,13 @@ export default {
     // STATUS DISABLED
     statusDisabled() {
       if (this.statusPrice && this.statusDiscount && this.statusSelect && this.statusQuantity) {
-        if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity) {
+        if (
+          this.allData.name &&
+          this.allData.price &&
+          this.allData.selectCategory &&
+          this.allData.quantity &&
+          this.allData.image
+        ) {
           return false;
         } else {
           return true;
@@ -164,7 +170,7 @@ export default {
   methods: {
     // ACTION SUBMIT
     actionSubmit() {
-      if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity) {
+      if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity && this.allData.image) {
         // CONVERT DATA TO NUMBER FROM INPUT
         const price = parseFloat(this.allData.price);
         const discount = parseFloat(this.allData.discount) || 0;
@@ -185,6 +191,9 @@ export default {
     //
     changeImage(status) {
       this.$emit('changeNewImage', status);
+    },
+    test() {
+      return console.log('testing');
     }
   },
   watch: {

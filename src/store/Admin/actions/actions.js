@@ -1,5 +1,5 @@
 //
-import { loopIntoCollections, createSubCollection, getAllDoc } from '@/firebase/helps/firestore';
+import { loopIntoCollections, createSubCollection, getAllDoc, getData } from '@/firebase/helps/firestore';
 import { addImageAndGetImage, deleteFile } from '@/firebase/helps/firestorage';
 import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
@@ -46,18 +46,25 @@ export default {
     });
   },
   // ADD PRODUCTS IN CATEGORY
-  [Type.ADD_PRODUCT_IN_CATEGORY]({ commit }, info) {
+  [Type.ADD_PRODUCT_IN_CATEGORY]({ commit, state }, info) {
     return new Promise((resolve, reject) => {
-      createSubCollection(Type.NAME_COLLECTION_CATEGORY, info.nameDoc.toLowerCase(), info.name, info.data)
-        .then(() => {
-          // UPDATE ALL ITEMS
-          commit(Type.SET_ALL_ITEMS, info.data);
-          //
-          resolve('create products successfully');
-        })
-        .catch(() => {
-          reject('some error please try again!');
-        });
+      // CHECK ITEM BEFORE EXSIST
+      const checkItemBeforeExsist = state.allItems.find(item => item.name === info.name);
+      //
+      if (checkItemBeforeExsist) {
+        reject('this product before exsist!');
+      } else {
+        createSubCollection(Type.NAME_COLLECTION_CATEGORY, info.nameDoc.toLowerCase(), info.name, info.data)
+          .then(() => {
+            // UPDATE ARRAY ALL ITEMS IN STATE
+            commit(Type.SET_ALL_ITEMS, info.data);
+            //
+            resolve('create products successfully');
+          })
+          .catch(() => {
+            reject('some error please try again!');
+          });
+      }
     });
   },
   // PREVIEW IMAGE PRODUCTS
@@ -69,7 +76,7 @@ export default {
     return deleteFile(Type.FOLDER_NAME_STORAGE, imageName);
   },
   // GET ALL ITEMS CATEGORY
-  async [Type.GET_ALL_ITEMS_CATEGORY]({ commit, state }) {
+  async [Type.GET_ALL_ITEMS_CATEGORY]({ commit }) {
     //
     const getItems = await getAllDoc(Type.NAME_COLLECTION_CATEGORY);
     //
@@ -79,8 +86,11 @@ export default {
         commit(Type.SET_ALL_ITEMS, item);
         //
         commit('setEndIndex');
-        // console.log(doc.id);
       }
     });
+  },
+  // GET PRODUCTS SPECIFIC DOC
+  [Type.GET_PRODUCTS_WITH_NAME_CATEGORY]({ commit }, nameDoc) {
+    return getData(Type.NAME_COLLECTION_CATEGORY, nameDoc);
   }
 };

@@ -11,12 +11,12 @@
       ]"
       v-for="(category, index) in allCategory"
       :key="index"
-      @click="categoryOpen(index)"
+      @click="loadProductsInCategory(index, category)"
     >
       <!-- INFO -->
       <div class="category-page__all-category__category__info">
         <!-- FOLDER -->
-        <div class="category-page__all-category__category__icon-folder">
+        <div class="category-page__all-category__category__icon-folder" v-if="!statusOpenClose">
           <GSvg nameIcon="folder"></GSvg>
         </div>
         <!-- TITLE -->
@@ -25,11 +25,11 @@
       <!-- ACTIONS -->
       <div class="category-page__all-category__category__actions">
         <!-- DELETE -->
-        <div class="category-page__all-category__category__icon-delete">
+        <div class="category-page__all-category__category__icon-delete" v-if="!statusOpenClose">
           <GSvg nameIcon="delete" title="delete icon"></GSvg>
         </div>
         <!-- EDIT -->
-        <div class="category-page__all-category__category__icon-edit">
+        <div class="category-page__all-category__category__icon-edit" v-if="!statusOpenClose">
           <GSvg nameIcon="edit" title="edit icon"></GSvg>
         </div>
       </div>
@@ -38,6 +38,9 @@
         <GSvg nameIcon="wrong" title="close icon"></GSvg>
       </div>
       <!-- RENDER ALL PRODUCTS -->
+      <ul class="category-page__all-category__renderProducts" v-if="statusOpenClose">
+        <slot name="renderProducts"> </slot>
+      </ul>
     </li>
   </ul>
 </template>
@@ -65,14 +68,17 @@ export default {
   },
   methods: {
     // CATEGORY OPEN
-    categoryOpen(index) {
+    loadProductsInCategory(index, nameCategory) {
       this.currentIndex = index;
       this.statusOpenClose = true;
+      this.$emit('opnedCategory', nameCategory);
+      this.$emit('statusOpenCloseCategory', this.statusOpenClose);
     },
     // CLOSE CATEGORY
     closeCategory() {
       this.currentIndex = null;
       this.statusOpenClose = false;
+      this.$emit('statusOpenCloseCategory', this.statusOpenClose);
     }
   },
   watch: {
@@ -224,6 +230,29 @@ export default {
     // HOVER
     &:hover {
       box-shadow: map-get($shadow, first);
+    }
+  }
+  // RENDER PRODUCTS
+  &__renderProducts {
+    position: relative;
+    list-style: none;
+    height: 100%;
+    max-width: 100%;
+    width: 91%;
+    margin: 70px auto;
+    margin-bottom: 0px;
+    overflow: auto;
+    //
+    & li {
+      background-color: rgb(71, 71, 201);
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.5rem;
+      &:not(:last-of-type) {
+        margin-bottom: 10px;
+      }
     }
   }
 }

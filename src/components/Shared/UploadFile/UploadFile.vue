@@ -13,7 +13,7 @@
         <input type="file" ref="file" @change="getData($event)" />
         <div class="edit">
           <button v-text="textButton" :class="{ change: textButton == 'change image' }"></button>
-          <p>{{ nameFile.name ? nameFile.name : nameFile }}</p>
+          <p>{{ image.name ? image.name : image }}</p>
         </div>
       </div>
     </div>
@@ -47,18 +47,18 @@ export default {
   },
   data() {
     return {
-      nameFile: 'no select image'
+      image: 'no select image'
     };
   },
   methods: {
     // GET DATA
     getData(el) {
       // NAME FILE
-      this.nameFile = el.target.files[0];
+      this.image = el.target.files[0];
       // WILL BE POST CHANGE IMAGE
-      this.$emit('changeNewImage', false);
-      //   WILL BE POST DATA OTHER COMPONENTS
-      this.$emit('postFile', this.nameFile);
+      this.$emit('changeNewImage', null);
+      // WILL BE POST DATA OTHER COMPONENTS
+      this.$emit('postFile', this.image);
     }
   }
 };

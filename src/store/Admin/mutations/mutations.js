@@ -13,9 +13,12 @@ export default {
   // SET ALL ITEMS
   [Type.SET_ALL_ITEMS](state, items) {
     state.allItems.push(items);
-  },
-  //
-  setEndIndex(state) {
-    return (state.countIndex += 1);
   }
+  // [Type.STORE_DATA_FROM_CATEGORY](state, item) {
+
+  // }
+  //
+  // setEndIndex(state) {
+  //   return (state.countIndex += 1);
+  // }
 };
