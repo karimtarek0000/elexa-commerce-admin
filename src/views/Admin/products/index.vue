@@ -15,7 +15,7 @@
     <!-- ALERT NOT YET -->
     <not-yet nameStatus="products" :status="allItems.length == 0"></not-yet>
     <!-- NORMAL BUTTON ADD -->
-    <normal-button nameBtn="add" @normalBtn="statusModel = true" :status="!statusModel">
+    <normal-button nameBtn="add" @normalBtn="statusModelProducts = true" :status="!statusModelProducts">
       <GSvg nameIcon="add" title="add icon"></GSvg>
     </normal-button>
     <!-- LOADER PAGE -->
@@ -23,7 +23,7 @@
     <!-- MODEL POP UP -->
     <transition name="model">
       <model-pop-up
-        v-if="statusModel"
+        v-if="statusModelProducts"
         title="add new product"
         :check="statusCheckData.check"
         :correct="statusCheckData.correct"
@@ -32,7 +32,9 @@
         :getAllCategory="allCategory"
         :sendNewImage="imageUrl"
         :textButton="textButton"
-        @clickExit="statusModel = $event"
+        :data="dataAdd"
+        :getDataInfo="dataInfo"
+        @clickExit="statusModelProducts = $event"
         @sendDataImg="getImageData"
         @postAllData="sendAllProducts"
         @changeNewImage="imageUrl = $event"
@@ -41,44 +43,26 @@
     <!-- PRODUCTS PAGE ACTIONS -->
     <div class="products-page__actions">
       <!-- SEARCH INPUT TABLE -->
-      <search-input-table
-        v-if="!statusGrid"
-        :getData="allItems"
-        :filterBy="filterBy"
-        :filterData="filterProducts"
-        @postData="updateData = $event"
-      ></search-input-table>
+      <search-input-table v-if="!statusGrid" :getData="allItems" :filterBy="filterBy" :filterData="filterProducts" @postData="updateData = $event"></search-input-table>
       <!-- SORT -->
       <div class="products-page__actions__sort" v-if="statusShowSort">
         <!-- ASC -->
-        <div
-          :class="['products-page__actions__sort__asc', { 'products-page__actions__sort__asc--active': sort.asc }]"
-          @click="ascData"
-        >
+        <div :class="['products-page__actions__sort__asc', { 'products-page__actions__sort__asc--active': sort.asc }]" @click="ascData">
           <GSvg nameIcon="sort-numeric-asc" title="asc sort"></GSvg>
         </div>
         <!-- DESC -->
-        <div
-          :class="['products-page__actions__sort__desc', { 'products-page__actions__sort__desc--active': sort.desc }]"
-          @click="descData"
-        >
+        <div :class="['products-page__actions__sort__desc', { 'products-page__actions__sort__desc--active': sort.desc }]" @click="descData">
           <GSvg nameIcon="sort-numberic-desc" title="desc sort"></GSvg>
         </div>
       </div>
       <!-- CHANGE GRID -->
       <div class="products-page__actions__grid">
         <!-- TABLE -->
-        <div
-          :class="['products-page__actions__grid__table', { 'products-page__actions__grid__table--active': !statusGrid }]"
-          @click="statusGrid = false"
-        >
+        <div :class="['products-page__actions__grid__table', { 'products-page__actions__grid__table--active': !statusGrid }]" @click="statusGrid = false">
           <GSvg nameIcon="list" title="list view"></GSvg>
         </div>
         <!-- CARD -->
-        <div
-          :class="['products-page__actions__grid__card', { 'products-page__actions__grid__card--active': statusGrid }]"
-          @click="statusGrid = true"
-        >
+        <div :class="['products-page__actions__grid__card', { 'products-page__actions__grid__card--active': statusGrid }]" @click="statusGrid = true">
           <GSvg nameIcon="grid" title="card view"></GSvg>
         </div>
       </div>
@@ -120,9 +104,12 @@ import { db } from '@/firebase/init';
 //
 export default {
   name: 'Products',
-  mixins: ['modelPop', 'alertStatus', 'btnConfirmAndAlert'],
+  mixins: ['alertStatus', 'btnConfirmAndAlert'],
   data() {
     return {
+      dataInfo: {
+        name: null
+      },
       filterBy: 'quantity',
       sort: {
         asc: false,
@@ -136,7 +123,16 @@ export default {
       imageName: null,
       statusLoader: false,
       textButton: 'upload image',
-      sendDataSuccess: false
+      sendDataSuccess: false,
+      statusModelProducts: false,
+      dataAdd: {
+        label: 'enter',
+        labelBtn: 'add'
+      },
+      dataChange: {
+        label: 'enter',
+        labelBtn: 'add'
+      }
     };
   },
   computed: {
@@ -180,7 +176,7 @@ export default {
           // SET TIME OUT
           setTimeout(() => {
             // WILL BE CLOSE MODEL
-            this.statusModel = false;
+            this.statusModelProducts = false;
             // ALL ACTIONS CHANGE STATUS
             this.allActionsChangeStatus({ check: true, correct: true });
 
@@ -275,7 +271,7 @@ export default {
       }
     },
     // STATUS MODEL
-    statusModel(n) {
+    statusModelProducts(n) {
       if (!n) {
         // RETURN IMAGE URL EQUAL NULL
         this.imageUrl = null;

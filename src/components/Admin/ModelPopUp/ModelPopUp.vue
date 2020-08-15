@@ -12,8 +12,8 @@
       <div class="model-pop-up__box">
         <!-- NAME ITEM -->
         <div class="model-pop-up__category model-pop-up__category--name-item">
-          <label for="nameItem">enter name</label>
-          <input type="text" name="nameItem" v-model="allData.name" placeholder="enter name" ref="nameItem" />
+          <label for="nameItem">{{ data.label }} name</label>
+          <input type="text" name="nameItem" v-model="allData.name" :placeholder="`${data.label} name`" ref="nameItem" />
         </div>
         <!-- SELECT IMAGE -->
         <div class="model-pop-up__category model-pop-up__category--select-image" v-if="statusSelectImage">
@@ -29,22 +29,22 @@
         </div>
         <!-- PRICE ITEM -->
         <div class="model-pop-up__category model-pop-up__category--price-item" v-if="statusPrice">
-          <label for="priceItem">enter price</label>
+          <label for="priceItem">{{ data.label }} price</label>
           <input type="number" name="priceItem" min="0" v-model="allData.price" />
         </div>
         <!-- DISCOUNT ITEM -->
         <div class="model-pop-up__category model-pop-up__category--discount-item" v-if="statusDiscount">
-          <label for="discountItem">enter discount</label>
+          <label for="discountItem">{{ data.label }} discount</label>
           <input type="number" name="discountItem" min="0" v-model="allData.discount" />
         </div>
         <!-- QUANTITY ITEM -->
         <div class="model-pop-up__category model-pop-up__category--quantity-item" v-if="statusQuantity">
-          <label for="quantityItem">enter quantity</label>
+          <label for="quantityItem">{{ data.label }} quantity</label>
           <input type="number" name="quantityItem" min="0" v-model="allData.quantity" />
         </div>
         <!-- SELECT CATEGORY -->
         <div class="model-pop-up__category model-pop-up__category--select-category" v-if="statusSelect">
-          <label for="selectCategory">select category</label>
+          <label for="selectCategory">{{ data.label }} category</label>
           <!--  -->
           <div class="custom-select">
             <div class="custom-select__icon">
@@ -62,7 +62,7 @@
           <!-- ADD ITEM -->
           <button-confirm
             :statusLoader="true"
-            textButton="add"
+            :textButton="data.labelBtn"
             :classCheck="check"
             :classCorrect="correct"
             :classWrong="wrong"
@@ -80,6 +80,7 @@
 <script>
 export default {
   name: 'ModelPopUp',
+  model: {},
   props: {
     check: {
       type: Boolean,
@@ -93,6 +94,11 @@ export default {
       type: Boolean,
       default: false
     },
+    statusLoader: {
+      type: Boolean,
+      default: false
+    },
+    ///////////////////////////////////
     title: {
       type: String,
       required: true
@@ -125,23 +131,27 @@ export default {
       type: Array,
       default: null
     },
-    statusLoader: {
-      type: Boolean,
-      default: false
-    },
     textButton: {
       type: String
+    },
+    ///////////////////////////////////
+    data: {
+      type: Object,
+      required: true
+    },
+    getDataInfo: {
+      type: Object
     }
   },
   data() {
     return {
       allData: {
-        name: null,
-        price: 0,
-        discount: 0,
+        name: this.getDataInfo.name,
+        price: 0 || this.getDataInfo.price,
+        discount: 0 || this.getDataInfo.discount,
         image: null,
-        quantity: 0,
-        selectCategory: null
+        quantity: 0 || this.getDataInfo.discount,
+        selectCategory: null || this.getDataInfo.selectCategory
       }
     };
   },
@@ -149,13 +159,7 @@ export default {
     // STATUS DISABLED
     statusDisabled() {
       if (this.statusPrice && this.statusDiscount && this.statusSelect && this.statusQuantity) {
-        if (
-          this.allData.name &&
-          this.allData.price &&
-          this.allData.selectCategory &&
-          this.allData.quantity &&
-          this.allData.image
-        ) {
+        if (this.allData.name && this.allData.price && this.allData.selectCategory && this.allData.quantity && this.allData.image) {
           return false;
         } else {
           return true;

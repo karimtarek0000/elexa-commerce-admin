@@ -24,7 +24,7 @@
     <transition name="model">
       <model-pop-up
         v-if="statusModel"
-        title="add new category"
+        :title="statusViewData.title"
         :statusPrice="false"
         :statusDiscount="false"
         :statusQuantity="false"
@@ -33,8 +33,10 @@
         :check="statusCheckData.check"
         :correct="statusCheckData.correct"
         :wrong="statusCheckData.wrong"
+        :data="statusViewData.data"
+        :getDataInfo="statusViewData.passData"
         @clickExit="statusModel = $event"
-        @postAllData="sendAllCategory"
+        @postAllData="statusViewData.selectFn"
       ></model-pop-up>
     </transition>
     <!-- CATEGORY -->
@@ -43,13 +45,14 @@
       @opnedCategory="getAllProductsCategory"
       @statusOpenCloseCategory="statusOpenCloseCategory = $event"
       :allCategory="getAllGategory"
+      @editCategory="getNameCategory"
     >
       <template slot="renderProducts">
         <!-- LOADER -->
         <loader :status="statusLoaderCategory" selectColorLoader="white"></loader>
         <!-- IF ARRAY GREATER THAN OR EQUAL 1 -->
-        <template v-if="test.length >= 1">
-          <li v-for="t in test" :key="t.name">
+        <template v-if="storeData.length >= 1">
+          <li v-for="t in storeData" :key="t.name">
             <span>{{ t.name }}</span>
             <span>$ {{ t.price }}</span>
           </li>
@@ -65,27 +68,60 @@
 
 <script>
 //
-import ModelPopUp from '@/components/Admin/ModelPopUp/ModelPopUp';
 import CategoryCard from '@/components/Admin/CategoryCard/CategoryCard';
 import * as Type from '@/store/Type/index';
 //
 export default {
   name: 'Category',
-  mixins: ['modelPop', 'alertStatus', 'btnConfirmAndAlert'],
+  mixins: ['alertStatus', 'btnConfirmAndAlert'],
   data() {
     return {
+      dataInfo: {
+        name: null
+      },
       statusLoaderPage: false,
-      statusError: false,
+      statusLoaderCategory: false,
+      statusModel: false,
+      statusModelEditCategory: false,
       statusOpenCloseCategory: false,
-      test: [],
+      statusError: false,
+      /////////////////////////////////////
+      storeData: [],
       messageEmpty: null,
-      statusLoaderCategory: false
+      dataAdd: {
+        title: 'add new category',
+        label: 'enter',
+        labelBtn: 'add'
+      },
+      dataChange: {
+        title: 'change name category',
+        label: 'change',
+        labelBtn: 'change'
+      }
     };
   },
   computed: {
     // GET ALL CATEGORY
     getAllGategory() {
       return this.$store.state.Admin.allCategory;
+    },
+    // STATUS VIEW DATA
+    statusViewData() {
+      //
+      const { title: titleAdd, ...allDataAdd } = this.dataAdd;
+      const { title: titleChange, ...allDataChange } = this.dataChange;
+      //
+      const title = this.statusModelEditCategory ? titleChange : titleAdd;
+      const data = this.statusModelEditCategory ? allDataChange : allDataAdd;
+      const passData = this.statusModelEditCategory ? this.dataInfo : {};
+      const selectFn = this.statusModelEditCategory ? this.editCategory : this.sendAllCategory;
+      //
+      return {
+        title,
+        data,
+        passData,
+        selectFn
+      };
     }
   },
   methods: {
@@ -118,37 +154,97 @@ export default {
     },
     // GET ALL PRODUCTS CATEGORY
     getAllProductsCategory(nameCategory) {
+      //
       this.statusLoaderCategory = true;
+      //
       return this.$store
         .dispatch(Type.GET_PRODUCTS_WITH_NAME_CATEGORY, nameCategory)
         .then(data => {
           if (Object.keys(data.data()).length !== 0) {
-            this.test = Object.values(data.data()).map(({ name, price }) => Object.assign({}, { name, price }));
+            this.storeData = Object.values(data.data()).map(({ name, price }) => Object.assign({}, { name, price }));
           } else {
             this.messageEmpty = 'this category is empty!';
           }
           this.statusLoaderCategory = false;
         })
         .catch(() => console.log('error'));
+    },
+    // GET NAME CATEGORY
+    getNameCategory(nameCategory) {
+      this.dataInfo.name = nameCategory;
+      this.statusModelEditCategory = true;
+      this.statusModel = true;
+    },
+    // EDIT CATEGORY
+    getAllProductsFromCategory() {
+      return new Promise((resolve, reject) => {
+        return this.$store
+          .dispatch(Type.GET_PRODUCTS_WITH_NAME_CATEGORY, this.dataInfo.name)
+          .then(items => {
+            if (items) {
+              resolve(items.data());
+            } else {
+              reject();
+            }
+          })
+          .catch(() => reject());
+      });
+    },
+    //
+    async editCategory(newNameCategory) {
+      try {
+        // RUN ALL ACTION WILL CLICK SEND DATA BASE
+        this.allActionsChangeStatus({ check: true });
+        //
+        if (newNameCategory !== this.dataInfo.name) {
+          // GET ALL PRODUCTS FROM CATEGORY
+          const data = await this.getAllProductsFromCategory();
+          // CREATE NEW DOC AND SET ALL DATA FROM OLD DOC
+          await this.$store.dispatch(Type.CREATE_NEW_DOC, { newNameCategory, data });
+          //
+          this.$store.dispatch(Type.DELETE_DOC, this.dataInfo.name);
+          // ALL ACTIONS CHANGE STATUS
+          this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, title: 'changed name category' });
+          // SET TIME OUT
+          setTimeout(() => {
+            // WILL BE CLOSE MODEL
+            this.statusModel = false;
+            // ALL ACTIONS CHANGE STATUS
+            this.allActionsChangeStatus({ check: true, correct: true });
+          }, 2000);
+        } else {
+          // ALL ACTIONS CHANGE STATUS
+          this.allActionsChangeStatus({ check: true, wrong: true, title: 'not any change name please change name or cancel', statusAlert: true });
+          // SET TIME OUT
+          setTimeout(() => {
+            this.allActionsChangeStatus();
+          }, 2000);
+        }
+      } catch {
+        // ALL ACTIONS CHANGE STATUS
+        this.allActionsChangeStatus({ check: true, wrong: true, title: 'error', statusAlert: true });
+        // SET TIME OUT
+        setTimeout(() => {
+          this.allActionsChangeStatus();
+        }, 2000);
+      }
     }
   },
   watch: {
-    //
+    // STATUS OPEN CLOSE CATEGORY
     statusOpenCloseCategory(newValue) {
       if (!newValue) {
-        this.test = [];
+        this.storeData = [];
         this.messageEmpty = null;
       }
+    },
+    // STATUS MODEL
+    statusModel(newValue) {
+      if (!newValue) this.statusModelEditCategory = false;
     }
-    //
-    // test(newValue) {
-    //   if (newValue.length == 0) {
-    //     console.log('empty');
-    //   }
-    // }
   },
   components: {
-    ModelPopUp,
+    ModelPopUp: () => import('@/components/Admin/ModelPopUp/ModelPopUp'),
     CategoryCard
   },
   created() {

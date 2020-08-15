@@ -11,12 +11,9 @@ Vue.config.productionTip = false;
 
 // IMPORT MIXINS
 import allMixinsShared from './mixin/Shared/index';
-import allMixinsAdmin from './mixin/Admin/index';
-// ALL MIXINS CONCAT
-const allMixins = [...allMixinsShared, ...allMixinsAdmin];
 
 // RENDER ALL MIXINS GLOBAL
-allMixins.forEach(nameMixin => {
+allMixinsShared.forEach(nameMixin => {
   Vue.mixin(nameMixin);
 });
 

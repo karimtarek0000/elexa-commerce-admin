@@ -1,5 +1,5 @@
 //
-import { loopIntoCollections, createSubCollection, getAllDoc, getData } from '@/firebase/helps/firestore';
+import { loopIntoCollections, createSubCollection, getAllDoc, getData, deleteDoc, setData } from '@/firebase/helps/firestore';
 import { addImageAndGetImage, deleteFile } from '@/firebase/helps/firestorage';
 import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
@@ -92,5 +92,13 @@ export default {
   // GET PRODUCTS SPECIFIC DOC
   [Type.GET_PRODUCTS_WITH_NAME_CATEGORY]({ commit }, nameDoc) {
     return getData(Type.NAME_COLLECTION_CATEGORY, nameDoc);
+  },
+  // CREATE NEW DOC
+  [Type.CREATE_NEW_DOC]({ commit }, info) {
+    return setData(Type.NAME_COLLECTION_CATEGORY, info.newNameCategory, info.data);
+  },
+  //
+  [Type.DELETE_DOC]({ commit }, nameDoc) {
+    return deleteDoc(Type.NAME_COLLECTION_CATEGORY, nameDoc);
   }
 };

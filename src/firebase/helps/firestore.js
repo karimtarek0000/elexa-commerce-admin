@@ -10,6 +10,13 @@ const getData = (nameCollection, nameDoc = null) => {
     .doc(nameDoc)
     .get();
 };
+// DELETE DOC
+const deleteDoc = (nameCollection, nameDoc) => {
+  return db
+    .collection(nameCollection)
+    .doc(nameDoc)
+    .delete();
+};
 // GET ALL DOCS
 const getAllDoc = nameCollection => {
   return db.collection(nameCollection).get();
@@ -19,7 +26,7 @@ const setData = (nameCollection, nameDoc, data = {}) => {
   return db
     .collection(nameCollection)
     .doc(nameDoc)
-    .set(data);
+    .set(data, { merge: true });
 };
 
 // ADD DATA
@@ -54,4 +61,4 @@ const whereAndGet = (nameCollection, nameWhere, equalData) => {
 };
 
 // ALL EXPORTS
-export { getData, setData, whereAndGet, loopIntoCollections, onSnapShot, createSubCollection, getAllDoc };
+export { getData, deleteDoc, setData, whereAndGet, loopIntoCollections, onSnapShot, createSubCollection, getAllDoc };

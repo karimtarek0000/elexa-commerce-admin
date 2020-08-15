@@ -29,7 +29,7 @@
           <GSvg nameIcon="delete" title="delete icon"></GSvg>
         </div>
         <!-- EDIT -->
-        <div class="category-page__all-category__category__icon-edit" v-if="!statusOpenClose">
+        <div class="category-page__all-category__category__icon-edit" @click.stop="sendNameCategory(category)" v-if="!statusOpenClose">
           <GSvg nameIcon="edit" title="edit icon"></GSvg>
         </div>
       </div>
@@ -79,6 +79,10 @@ export default {
       this.currentIndex = null;
       this.statusOpenClose = false;
       this.$emit('statusOpenCloseCategory', this.statusOpenClose);
+    },
+    // SEND NAME CATEGORY
+    sendNameCategory(nameCategory) {
+      return this.$emit('editCategory', nameCategory);
     }
   },
   watch: {
