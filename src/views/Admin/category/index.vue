@@ -190,19 +190,21 @@ export default {
           .catch(() => reject());
       });
     },
-    //
+    // EDIT CATEGORY
     async editCategory(newNameCategory) {
       try {
         // RUN ALL ACTION WILL CLICK SEND DATA BASE
         this.allActionsChangeStatus({ check: true });
-        //
+        // IF NEW NAME CATEGORY NOT EQUAL DATAINFO NAME
         if (newNameCategory !== this.dataInfo.name) {
           // GET ALL PRODUCTS FROM CATEGORY
           const data = await this.getAllProductsFromCategory();
           // CREATE NEW DOC AND SET ALL DATA FROM OLD DOC
           await this.$store.dispatch(Type.CREATE_NEW_DOC, { newNameCategory, data });
-          //
+          // DELETE OLD DOC
           this.$store.dispatch(Type.DELETE_DOC, this.dataInfo.name);
+          // CHANGE NAME FROM VUEX WITH UPDATE VIEW
+          this.$store.commit(Type.CHANGE_NAME_CATEGORY, { oldNameCategory: this.dataInfo.name, newNameCategory });
           // ALL ACTIONS CHANGE STATUS
           this.allActionsChangeStatus({ check: true, correct: true, statusAlert: true, statusCorrect: true, title: 'changed name category' });
           // SET TIME OUT
@@ -222,7 +224,7 @@ export default {
         }
       } catch {
         // ALL ACTIONS CHANGE STATUS
-        this.allActionsChangeStatus({ check: true, wrong: true, title: 'error', statusAlert: true });
+        this.allActionsChangeStatus({ check: true, wrong: true, title: 'someting error please try again!', statusAlert: true });
         // SET TIME OUT
         setTimeout(() => {
           this.allActionsChangeStatus();

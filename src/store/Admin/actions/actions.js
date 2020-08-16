@@ -82,8 +82,9 @@ export default {
     //
     getItems.forEach(doc => {
       for (const item of Object.values(doc.data())) {
-        //
-        commit(Type.SET_ALL_ITEMS, item);
+        const finalItem = Object.assign(item, { nameCategory: doc.id });
+        // SET NEW ITEM INTO STATE ALL ITEMS WITH MUTATIONS
+        commit(Type.SET_ALL_ITEMS, finalItem);
         //
         commit('setEndIndex');
       }

@@ -8,7 +8,6 @@ export default {
   // ----------------
   allCategory: [],
   allItems: [],
-  allItemsSpecificCategory: [],
   // ----------------
   countIndex: 0
 };
