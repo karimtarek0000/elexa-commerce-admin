@@ -46,6 +46,7 @@
       @statusOpenCloseCategory="statusOpenCloseCategory = $event"
       :allCategory="getAllGategory"
       @editCategory="getNameCategory"
+      @deleteCategory="openConfirmAlert"
     >
       <template slot="renderProducts">
         <!-- LOADER -->
@@ -79,6 +80,7 @@ export default {
       dataInfo: {
         name: null
       },
+      nameCategory: null,
       statusLoaderPage: false,
       statusLoaderCategory: false,
       statusModel: false,
@@ -122,6 +124,10 @@ export default {
         passData,
         selectFn
       };
+    },
+    //
+    confirmedAlert() {
+      return this.$store.state.Admin.confirmedDeleted;
     }
   },
   methods: {
@@ -230,6 +236,20 @@ export default {
           this.allActionsChangeStatus();
         }, 2000);
       }
+    },
+    // OPEN CONFIRM ALERT
+    openConfirmAlert(nameCategory) {
+      //
+      const messageConfirmAlert = `are you sure delete ${nameCategory} category ?`;
+      const titleBtnDelete = 'delete category';
+      //
+      this.nameCategory = nameCategory;
+      //
+      this.$store.commit(Type.CHANGE_ACTION_CONFIRM_ALERT, { messageConfirmAlert, titleBtnDelete });
+    },
+    // DELETE CATEGORY
+    deleteCategory(nameCategory) {
+      this.$store.dispatch(Type.DELETE_CATEGORY_AND_PRODUCTS, nameCategory);
     }
   },
   watch: {
@@ -243,6 +263,12 @@ export default {
     // STATUS MODEL
     statusModel(newValue) {
       if (!newValue) this.statusModelEditCategory = false;
+    },
+    //
+    confirmedAlert(newValue) {
+      if (newValue) {
+        this.deleteCategory(this.nameCategory);
+      }
     }
   },
   components: {

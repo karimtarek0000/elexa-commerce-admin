@@ -9,5 +9,12 @@ export default {
   allCategory: [],
   allItems: [],
   // ----------------
+  actionConfirmAlert: {
+    statusConfirmAlert: false,
+    messageConfirmAlert: null,
+    titleBtnDelete: null
+  },
+  confirmedDeleted: false,
+  // ----------------
   countIndex: 0
 };

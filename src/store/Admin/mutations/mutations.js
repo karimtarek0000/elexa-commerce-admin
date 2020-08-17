@@ -1,5 +1,6 @@
 //
 import * as Type from '@/store/Type/index';
+import state from '../state/state';
 //
 export default {
   // CHANGE STATUS ASIDE
@@ -31,6 +32,36 @@ export default {
   // SET ALL ITEMS
   [Type.SET_ALL_ITEMS](state, items) {
     state.allItems.push(items);
+  },
+  // DELETE ALL PRODUCTS WITH CATEGORY
+  [Type.DELETE_ALL_PRODUCTS_WITH_CATEGORY](state, nameCategory) {
+    // REMOVE ALL PRODUCTS WITH NAME CATEGORY
+    if (state.allItems.length !== 0) {
+      state.allItems.forEach((item, index, array) => {
+        if (item.nameCategory == nameCategory) array.splice(index, 1);
+      });
+    }
+    // DELETE CATEGORY FROM ALL CATEGORY
+    const indexCategory = state.allCategory.findIndex(category => category == nameCategory);
+    state.allCategory.splice(indexCategory, 1);
+  },
+  // CHANGE ACTION CONFIRM ALERT
+  [Type.CHANGE_ACTION_CONFIRM_ALERT](state, info) {
+    const { messageConfirmAlert, titleBtnDelete } = info;
+    return (state.actionConfirmAlert = { statusConfirmAlert: true, messageConfirmAlert, titleBtnDelete });
+  },
+  // CHNAGE STATUS BTN CONFIRM ALERT
+  [Type.CHANGE_STATUS_BTN_CONFRIM_ALERT](state, status) {
+    if (status) {
+      state.confirmedDeleted = status;
+      state.actionConfirmAlert.statusConfirmAlert = !status;
+    } else {
+      state.actionConfirmAlert.statusConfirmAlert = status;
+    }
+  },
+  //
+  [Type.CHNAGE_CONFIRMED_DELETE](state) {
+    return (state.confirmedDeleted = false);
   },
   //
   setEndIndex(state) {

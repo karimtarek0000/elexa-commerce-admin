@@ -98,8 +98,17 @@ export default {
   [Type.CREATE_NEW_DOC]({ commit }, info) {
     return setData(Type.NAME_COLLECTION_CATEGORY, info.newNameCategory, info.data);
   },
-  //
+  // DELET DOC
   [Type.DELETE_DOC]({ commit }, nameDoc) {
     return deleteDoc(Type.NAME_COLLECTION_CATEGORY, nameDoc);
+  },
+  // DELETE DOC AND PRODUCTS
+  async [Type.DELETE_CATEGORY_AND_PRODUCTS]({ commit }, nameDoc) {
+    // DELETE CATEGORY AND PRODUCTS
+    await deleteDoc(Type.NAME_COLLECTION_CATEGORY, nameDoc);
+    // DELETE PRODUCTS FROM VUEX
+    await commit(Type.DELETE_ALL_PRODUCTS_WITH_CATEGORY, nameDoc);
+    // FINALY CHNAGE CONFIRMED DELETED
+    commit(Type.CHNAGE_CONFIRMED_DELETE);
   }
 };

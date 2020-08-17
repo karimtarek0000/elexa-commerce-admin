@@ -2,7 +2,6 @@
 import { db } from '../init';
 
 //// ALL FUNCTIONS HELPS FIREBASE
-
 // GET DATA
 const getData = (nameCollection, nameDoc = null) => {
   return db

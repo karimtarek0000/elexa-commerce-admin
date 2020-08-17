@@ -52,8 +52,7 @@ Screen big from 1800 to xxxxxxl;
   } @else if ($pointbreak == pixel) {
     // RESOLUTION 2X // LARGE
 
-    @media only screen and (min-resolution: 192dpi) and ($pointbreak),
-      only screen and (-webkit-min-device-pixel-ratio: 2) and ($pointbreak) {
+    @media only screen and (min-resolution: 192dpi) and ($pointbreak), only screen and (-webkit-min-device-pixel-ratio: 2) and ($pointbreak) {
       @content;
     }
   } @else {
@@ -255,8 +254,14 @@ $paragraphs: (
   width: $width;
   height: $height;
   text-transform: $tTransform;
+  border: 1px solid transparent;
   cursor: pointer;
   @content;
+
+  &:focus {
+    outline: none;
+    border-color: map-get($background, back-second);
+  }
 
   // RESPONSIVE
   @include respond(phone) {
@@ -393,17 +398,7 @@ $paragraphs: (
 
 ////////////////////////////
 // FLEXBOX
-@mixin flexBox(
-  $width: fit-content,
-  $height: false,
-  $margin: false,
-  $padding: false,
-  $fFlow: false,
-  $fDirection: false,
-  $jContent: center,
-  $aItems: center,
-  $flex: false
-) {
+@mixin flexBox($width: fit-content, $height: false, $margin: false, $padding: false, $fFlow: false, $fDirection: false, $jContent: center, $aItems: center, $flex: false) {
   // ALL PROPERITES IN PARENT
   width: $width;
   height: $height;

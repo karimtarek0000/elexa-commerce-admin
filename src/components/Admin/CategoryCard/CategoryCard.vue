@@ -25,7 +25,7 @@
       <!-- ACTIONS -->
       <div class="category-page__all-category__category__actions">
         <!-- DELETE -->
-        <div class="category-page__all-category__category__icon-delete" v-if="!statusOpenClose">
+        <div class="category-page__all-category__category__icon-delete" @click.stop="deleteCategory(category)" v-if="!statusOpenClose">
           <GSvg nameIcon="delete" title="delete icon"></GSvg>
         </div>
         <!-- EDIT -->
@@ -83,6 +83,10 @@ export default {
     // SEND NAME CATEGORY
     sendNameCategory(nameCategory) {
       return this.$emit('editCategory', nameCategory);
+    },
+    //
+    deleteCategory(nameCategory) {
+      return this.$emit('deleteCategory', nameCategory);
     }
   },
   watch: {
@@ -148,7 +152,7 @@ export default {
     &--active-narrow {
       position: absolute;
       @include translate('top', 'left', 0, 0);
-      width: 80vw;
+      width: 79vw;
       height: 78vh;
 
       // RESPONSIVE
@@ -190,7 +194,7 @@ export default {
 
     // ACTIVE WIDE
     &--active-wide {
-      width: 92vw;
+      width: 93vw;
 
       // RESPONSIVE
       @include respond(700px) {

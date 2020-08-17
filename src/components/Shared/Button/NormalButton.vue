@@ -16,10 +16,6 @@ export default {
     nameBtn: {
       type: String,
       default: 'click here'
-    },
-    statusIcon: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
@@ -34,7 +30,7 @@ export default {
   display: flex;
   align-items: center;
 
-  //
+  // BTN MANGER
   @include btnManger(
     $fSize: 2rem,
     $width: auto,
