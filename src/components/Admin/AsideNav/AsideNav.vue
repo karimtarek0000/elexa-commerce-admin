@@ -85,7 +85,11 @@ export default {
   &__aside {
     position: relative;
     grid-area: start-global-row / start-aside / end-global-row / end-aside;
-    background-color: map-get($background, back-first);
+    background-image: linear-gradient(to top, rgba(map-get($background, back-first), 1), rgba(map-get($background, back-first), 0.5)),
+      url('~@/assets/image/image-global/back-sidebar.jpg');
+    background-size: cover;
+    background-repeat: norepeat;
+    background-origin: left;
     color: map-get($color, color-first);
     border-radius: 0 20px 20px 0;
     display: flex;
@@ -171,6 +175,7 @@ export default {
     // ITEM
     &__item {
       position: relative;
+      height: 75px;
       display: flex;
       align-items: center;
       padding: 1rem;
@@ -186,7 +191,7 @@ export default {
         [class$='__icon'] {
           svg {
             use {
-              fill: map-get($color, color-second) !important;
+              fill: map-get($color, color-second);
             }
           }
         }
@@ -194,24 +199,14 @@ export default {
         // AFTER
         &::after {
           content: '';
+          position: absolute;
           mask-image: url('~@/assets/image/icons/shape.svg');
           mask-size: cover;
           background-color: map-get($background, back-second);
-          position: absolute;
           display: block;
-          @include translate('top', 'right', -84%, -0.5px);
+          @include translate('top', 'right', 50%, -0.5px);
           width: 100%;
-          height: 125px;
-
-          // RESPONSIVE
-          @include respond(1196px) {
-            top: -57%;
-            height: 87px;
-          }
-          @include respond(tablet-p) {
-            top: -73%;
-            height: 91px;
-          }
+          height: 160%;
         }
       }
 
@@ -229,13 +224,8 @@ export default {
 
       // NOT LAST CHILD
       &:not(:last-child) {
-        margin-bottom: 2rem;
+        margin-bottom: 0.5rem;
       }
-
-      // HOVER
-      // &:hover {
-      //   background-color: darken(map-get($background, back-first), 5%);
-      // }
     }
   }
 }
