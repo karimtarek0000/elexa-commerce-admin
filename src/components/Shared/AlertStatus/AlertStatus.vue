@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="[
-      'alert__status',
-      'alert__status--not-correct',
-      { 'alert__status--correct': statusCorrect, 'alert__status--slide': visibleSlide }
-    ]"
-    v-if="status"
-  >
+  <div :class="['alert__status', 'alert__status--not-correct', { 'alert__status--correct': statusCorrect, 'alert__status--slide': visibleSlide }]" v-if="status">
     <span class="alert__status__close" v-if="visibleClose" @click="$emit('close', false)">&times;</span>
     <p class="alert__status__title" v-text="title"></p>
   </div>
@@ -41,9 +34,6 @@ export default {
       required: false,
       default: false
     }
-  },
-  data() {
-    return {};
   }
 };
 </script>

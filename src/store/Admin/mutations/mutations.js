@@ -37,9 +37,10 @@ export default {
   [Type.DELETE_ALL_PRODUCTS_WITH_CATEGORY](state, nameCategory) {
     // REMOVE ALL PRODUCTS WITH NAME CATEGORY
     if (state.allItems.length !== 0) {
-      state.allItems.forEach((item, index, array) => {
-        if (item.nameCategory == nameCategory) array.splice(index, 1);
-      });
+      // NEW ALL ITEMS
+      const newAllItems = state.allItems.filter(item => item.nameCategory !== nameCategory);
+      // SET NEW ALL ITEMS AFTER FILTER
+      state.allItems = newAllItems;
     }
     // DELETE CATEGORY FROM ALL CATEGORY
     const indexCategory = state.allCategory.findIndex(category => category == nameCategory);

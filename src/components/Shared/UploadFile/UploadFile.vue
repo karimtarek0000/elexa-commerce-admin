@@ -128,12 +128,7 @@ export default {
 
       // BUTTON
       & > button {
-        @include btnManger(
-          $fSize: 1.5rem,
-          $backgroundColor: map-get($background, back-first),
-          $padding: 1rem,
-          $fontColor: black
-        ) {
+        @include btnManger($fSize: 1.5rem, $backgroundColor: map-get($background, back-first), $padding: 1rem, $fontColor: black) {
           border-radius: map-get($border-radius, second);
           color: map-get($color, color-first);
           margin-right: 10px;

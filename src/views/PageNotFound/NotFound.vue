@@ -4,7 +4,7 @@
     <div class="page-not-found__info">
       <h2 class="page-not-found__info__head">this page not found in site</h2>
       <p class="page-not-found__info__subtitle">click on this button will be go home :)</p>
-      <router-link tag="div" :to="{ name }">
+      <router-link tag="div" :to="{ name: 'admin' }">
         <normal-button nameBtn="go to home"></normal-button>
       </router-link>
     </div>
@@ -17,21 +17,7 @@
 
 <script>
 export default {
-  name: 'NotFound',
-  data() {
-    return {
-      name: null
-    };
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (to.fullPath.includes('admin')) {
-        vm.name = 'admin';
-      } else {
-        vm.name = 'home';
-      }
-    });
-  }
+  name: 'NotFound'
 };
 </script>
 

@@ -13,13 +13,13 @@
       ></alert-status>
     </transition>
     <!-- ALERT NOT YET -->
-    <not-yet nameStatus="products" :status="allItems.length == 0"></not-yet>
+    <not-yet nameStatus="products" :status="allItems.length == 0 && statusLoaderPage == false"></not-yet>
     <!-- NORMAL BUTTON ADD -->
     <normal-button nameBtn="add" @normalBtn="statusModelProducts = true" :status="!statusModelProducts">
       <GSvg nameIcon="add" title="add icon"></GSvg>
     </normal-button>
     <!-- LOADER PAGE -->
-    <loader :status="false" selectColorLoader="#0064ff"></loader>
+    <loader :status="statusLoaderPage" selectColorLoader="#0064ff"></loader>
     <!-- MODEL POP UP -->
     <transition name="model">
       <model-pop-up
@@ -76,7 +76,7 @@
         :price="data.price"
         :discount="data.discount"
         :quantity="data.quantity"
-        :image="data.image"
+        :image="data.imageUrl"
       ></card-view>
     </div>
     <!-- ALL PRODUCTS TABLE -->
@@ -98,7 +98,6 @@
 //
 import { mapGetters } from 'vuex';
 import CardView from '@/components/Admin/CardView/CardView';
-import TableData from '@/components/Admin/TableData/TableData';
 import * as Type from '@/store/Type/index';
 import { db } from '@/firebase/init';
 //
@@ -122,6 +121,7 @@ export default {
       imageUrl: null,
       imageName: null,
       statusLoader: false,
+      statusLoaderPage: true,
       textButton: 'upload image',
       sendDataSuccess: false,
       statusModelProducts: false,
@@ -162,11 +162,11 @@ export default {
     // SEND ALL CATEGORY
     sendAllProducts(dataProducts) {
       // DESTRUCTRING OBJECT
-      const { selectCategory, ...data } = dataProducts;
+      const { selectCategory, image, ...data } = dataProducts;
       // RUN ALL ACTION WILL CLICK SEND DATA BASE
       this.allActionsChangeStatus({ check: true });
       // ASSIGN URL IN IMAGE
-      const updateData = Object.assign(data, { image: this.imageUrl });
+      const updateData = Object.assign(data, { nameCategory: selectCategory, imageUrl: this.imageUrl, imageName: this.imageName });
       // AJAX CALL WILL BE SEND NAME PRODUCTS
       this.$store
         .dispatch(Type.ADD_PRODUCT_IN_CATEGORY, { nameDoc: selectCategory, name: data.name, data: updateData })
@@ -223,14 +223,9 @@ export default {
     },
     // DELETE ITEM
     deleteItemFromData(name) {
-      this.vv.forEach((cur, index) => {
-        if (cur.name == name) {
-          this.vv.splice(index, 1);
-          this.updateData = this.vv;
-        }
-      });
+      console.log(name);
     },
-    //
+    // DELETE IMAGE
     deleteImage(getDataImage) {
       // IF THIS IMAGE NAME EXSIST IMAGE NAME WILL BE DELETE IMAGE IN FIREBASE
       // DELETE IMAGE BEFORE NEW ADD IMAGE IN FIRESTORE
@@ -250,6 +245,9 @@ export default {
       // RUN DELETE IMAGE
       this.deleteImage(dataImage);
 
+      // GET DATA IMAGE AND DESTRICURING
+      const { name, lastModified } = dataImage;
+
       // UPLOAD IMAGE IN FIRESTORE
       this.$store.dispatch(Type.PREVIEW_IMAGE_PRODUCT, dataImage).then(imageUrl => {
         // CHANGE TEXT BUTTON
@@ -258,6 +256,8 @@ export default {
         this.statusLoader = false;
         // ADD IMAGE URL IN IMAGE URL
         this.imageUrl = imageUrl;
+        // IMAGE NAME
+        this.imageName = `${lastModified}_${name}`;
       });
     }
   },
@@ -271,12 +271,14 @@ export default {
       }
     },
     // STATUS MODEL
-    statusModelProducts(n) {
-      if (!n) {
+    statusModelProducts(newValue) {
+      if (!newValue) {
         // RETURN IMAGE URL EQUAL NULL
         this.imageUrl = null;
         // RETURN TEXT BUTTON PERVIOUES CASE
         this.textButton = 'upload image';
+        // ALL ACTIONS WILL BE SET
+        this.allActionsChangeStatus({});
         // IF SEND DATA SECCESS EQUAL FALSE WILL BE DELETE IMAGE FROM FIREBASE
         if (!this.sendDataSuccess) {
           this.$store.dispatch(Type.DELETE_IMAGE, this.imageName).then(() => {
@@ -294,24 +296,36 @@ export default {
     CardView
   },
   created() {
-    //
+    // GET CATEGORY
     if (this.allCategory.length == 0) this.$store.dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE);
-    //
-    if (this.allItems.length == 0) this.$store.dispatch(Type.GET_ALL_ITEMS_CATEGORY);
-
-    const data = db.collection('all-category-items').limit(2);
-
-    data
-      .get()
-      .then(docs => {
-        docs.forEach(doc => {
-          for (const d of Object.values(doc.data())) {
-            // console.log(d.name, d.price);
-          }
+    // GET PRODUCTS
+    if (this.allItems.length == 0) {
+      this.$store
+        .dispatch(Type.GET_ALL_ITEMS_CATEGORY)
+        .then(() => {
+          this.statusLoaderPage = false;
+        })
+        .catch(() => {
+          this.statusNotYet = true;
+          this.statusLoaderPage = false;
         });
-      })
-      .catch(() => console.log('err'));
-    console.log(this.allItems.length);
+    } else {
+      this.statusLoaderPage = false;
+    }
+
+    // const data = db.collection('all-category-items').limit(2);
+
+    // data
+    //   .get()
+    //   .then(docs => {
+    //     docs.forEach(doc => {
+    //       for (const d of Object.values(doc.data())) {
+    //         // console.log(d.name, d.price);
+    //       }
+    //     });
+    //   })
+    //   .catch(() => console.log('err'));
+    // console.log(this.allItems.length);
   }
 };
 </script>
@@ -354,10 +368,17 @@ export default {
 
   // CHANGE SOME PROP
   .loader {
+    height: 85%;
     &__icon {
       width: 50px;
       height: 50px;
       border-width: 4px;
+    }
+  }
+  //
+  .model-pop-up {
+    .loader {
+      height: 100%;
     }
   }
 

@@ -180,7 +180,7 @@ export default {
         const discount = parseFloat(this.allData.discount) || 0;
         const quantity = parseFloat(this.allData.quantity);
         // ASSIGN DATA INTO OBJECT
-        const finalData = Object.assign({}, this.allData, { price, discount, quantity });
+        const finalData = Object.assign(this.allData, { price, discount, quantity });
         // CUSTOM EVENT RETURN ALL DATA
         return this.$emit('postAllData', finalData);
       } else if (this.allData.name) {
@@ -195,9 +195,6 @@ export default {
     //
     changeImage(status) {
       this.$emit('changeNewImage', status);
-    },
-    test() {
-      return console.log('testing');
     }
   },
   watch: {

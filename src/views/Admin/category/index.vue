@@ -13,7 +13,7 @@
       ></alert-status>
     </transition>
     <!-- NOT YET -->
-    <not-yet nameStatus="category" :status="getAllGategory == 0 || statusError"></not-yet>
+    <not-yet nameStatus="category" :status="allCategory.length == 0 && statusLoaderPage == false"></not-yet>
     <!-- LOADER  -->
     <loader class="beforeSend" :status="statusLoaderPage" selectColorLoader="#0064ff"></loader>
     <!-- ADD BUTTON -->
@@ -41,10 +41,10 @@
     </transition>
     <!-- CATEGORY -->
     <category-card
-      v-if="getAllGategory.length !== 0"
+      v-if="allCategory.length !== 0"
       @opnedCategory="getAllProductsCategory"
       @statusOpenCloseCategory="statusOpenCloseCategory = $event"
-      :allCategory="getAllGategory"
+      :allCategory="allCategory"
       @editCategory="getNameCategory"
       @deleteCategory="openConfirmAlert"
     >
@@ -86,7 +86,6 @@ export default {
       statusModel: false,
       statusModelEditCategory: false,
       statusOpenCloseCategory: false,
-      statusError: false,
       /////////////////////////////////////
       storeData: [],
       messageEmpty: null,
@@ -104,7 +103,7 @@ export default {
   },
   computed: {
     // GET ALL CATEGORY
-    getAllGategory() {
+    allCategory() {
       return this.$store.state.Admin.allCategory;
     },
     // STATUS VIEW DATA
@@ -249,6 +248,7 @@ export default {
     },
     // DELETE CATEGORY
     deleteCategory(nameCategory) {
+      console.log(nameCategory);
       this.$store.dispatch(Type.DELETE_CATEGORY_AND_PRODUCTS, nameCategory);
     }
   },
@@ -276,7 +276,7 @@ export default {
     CategoryCard
   },
   created() {
-    if (this.getAllGategory.length == 0) {
+    if (this.allCategory.length == 0) {
       this.statusLoaderPage = true;
       this.$store
         .dispatch(Type.GET_ALL_CATEGORY_FROM_DATABASE)
@@ -285,8 +285,9 @@ export default {
         })
         .catch(() => {
           this.statusLoaderPage = false;
-          this.statusError = true;
         });
+    } else {
+      this.statusLoaderPage = false;
     }
   }
 };
@@ -298,6 +299,11 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+
+  // CHANGE SOME PROP
+  .loader {
+    height: 90%;
+  }
 
   & > .normal-btn {
     @extend %editNormalBtn;
