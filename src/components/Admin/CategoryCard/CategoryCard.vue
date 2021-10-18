@@ -11,7 +11,7 @@
       ]"
       v-for="(category, index) in allCategory"
       :key="index"
-      @click="loadProductsInCategory(index, category)"
+      @click="!statusOpenClose ? loadProductsInCategory(index, category) : true"
     >
       <!-- INFO -->
       <div class="category-page__all-category__category__info">

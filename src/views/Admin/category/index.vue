@@ -53,9 +53,9 @@
         <loader :status="statusLoaderCategory" selectColorLoader="white"></loader>
         <!-- IF ARRAY GREATER THAN OR EQUAL 1 -->
         <template v-if="storeData.length >= 1">
-          <li v-for="t in storeData" :key="t.name">
-            <span>{{ t.name }}</span>
-            <span>$ {{ t.price }}</span>
+          <li v-for="item in storeData" :key="item.name">
+            <span>{{ item.name }}</span>
+            <span>$ {{ item.price }}</span>
           </li>
         </template>
         <!-- ELSE -->
@@ -172,7 +172,7 @@ export default {
           }
           this.statusLoaderCategory = false;
         })
-        .catch(() => console.log('error'));
+        .catch(() => (this.messageEmpty = 'some error please try again!'));
     },
     // GET NAME CATEGORY
     getNameCategory(nameCategory) {
@@ -248,7 +248,6 @@ export default {
     },
     // DELETE CATEGORY
     deleteCategory(nameCategory) {
-      console.log(nameCategory);
       this.$store.dispatch(Type.DELETE_CATEGORY_AND_PRODUCTS, nameCategory);
     }
   },
